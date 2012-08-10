@@ -128,8 +128,19 @@ def heatmap(d, steps, cmap_name=None):
     #Colorbar hack continued.
     pyplot.colorbar(CS3)
 
+## Convenience Functions ##
+    
 def plot_heatmap(func, steps=40, boundary=True, cmap_name=None):
+    """Computes func on heatmap coordinates and plots heatmap."""
     d = dict()
     for x1, x2, x3 in simplex_points(steps=steps, boundary=boundary):
         d[(x1, x2)] = func(normalize([x1, x2, x3]))
     heatmap(d, steps, cmap_name=cmap_name)
+    
+def plot_multiple(trajectories):
+    """Plots multiple trajectories and the boundary."""
+    for t in trajectories:
+        plot(t, linewidth=2.0)
+    draw_boundary()
+    
+    
