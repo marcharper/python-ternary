@@ -53,7 +53,8 @@ def project(s):
         return project_point(s)
 
 def plot(t, color=None, linewidth=1.0):
-    """Plots trajectory points where each point satisfies x + y + z = 1."""
+    """Plots trajectory points where each point satisfies x + y + z = 1.
+    Takes input of list of tuples, numpy array of shape (N, 3), etc."""
     xs, ys = project(t)
     if color:
         pyplot.plot(xs, ys, c=color, linewidth=linewidth)
