@@ -24,13 +24,15 @@ def normalize(xs):
 
 ## Boundary ##
 
-def draw_boundary(scale=1.0, linewidth=2.0, color='black'):
+def draw_boundary(scale=1.0, linewidth=2.0, color='black', ax=None):
     # Plot boundary of 3-simplex.
+    if not ax:
+        ax = pyplot
     scale = float(scale)
     # Note that the math.sqrt term is such to prevent noticable roundoff on the top corner point.
-    pyplot.plot([0, scale, scale / 2, 0], [0, 0, math.sqrt(scale * scale * 3.) / 2, 0], color, linewidth=linewidth)
-    pyplot.ylim([-0.05 * scale, .90 * scale])
-    pyplot.xlim([-0.05 * scale, 1.05 * scale])
+    ax.plot([0, scale, scale / 2, 0], [0, 0, math.sqrt(scale * scale * 3.) / 2, 0], color, linewidth=linewidth)
+    ax.ylim([-0.05 * scale, .90 * scale])
+    ax.xlim([-0.05 * scale, 1.05 * scale])
 
 ## Curve Plotting ##
 def project_point(p):
@@ -91,19 +93,15 @@ def triangle_coordinates(i, j, alt=False):
         # Alt refers to the inner triangles not covered by the default case
         return [(i/2. + j + 1, i * SQRT3OVER2), (i/2. + j + 1.5, (i + 1) * SQRT3OVER2), (i/2. + j + 0.5, (i + 1) * SQRT3OVER2)]
 
-def heatmap(d, steps, cmap_name=None):
+def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=True):
     """Plots counts in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = i + j + k."""
+    if not ax:
+        #ax = pyplot
+        fig, ax = pyplot.subplots()
     if not cmap_name:
         cmap = DEFAULT_COLOR_MAP
     else:
         cmap = pyplot.get_cmap(cmap_name)
-    # Colorbar hack -- make fake figure and throw it away.
-    Z = [[0,0],[0,0]]
-    levels = [v for v in d.values()]
-    levels.sort()
-    CS3 = pyplot.contourf(Z, levels, cmap=cmap)
-    # Plot polygons
-    pyplot.clf()
     a = min(d.values())
     b = max(d.values())
     # Color data triangles.
@@ -112,10 +110,13 @@ def heatmap(d, steps, cmap_name=None):
         vertices = triangle_coordinates(i,j)
         x,y = unzip(vertices)
         color = colormapper(d[i,j],a,b,cmap=cmap)
-        pyplot.fill(x, y, facecolor=color, edgecolor=color)
+        ax.fill(x, y, facecolor=color, edgecolor=color)
     # Color smoothing triangles.
-    for i in range(steps+1):
-        for j in range(steps - i):
+    offset = 0
+    if not boundary:
+        offset = 1
+    for i in range(offset, steps+1-offset):
+        for j in range(offset, steps -i -offset):
             try:
                 alt_color = (d[i,j] + d[i, j + 1] + d[i + 1, j])/3.
                 color = colormapper(alt_color, a, b, cmap=cmap)
@@ -125,8 +126,15 @@ def heatmap(d, steps, cmap_name=None):
             except KeyError:
                 # Allow for some portions to have no color, such as the boundary
                 pass
-    #Colorbar hack continued.
-    pyplot.colorbar(CS3)
+    # Colorbar hack
+    sm = pyplot.cm.ScalarMappable(cmap=cmap, norm=pyplot.Normalize(vmin=a, vmax=b))
+    # fake up the array of the scalar mappable. Urgh...
+    sm._A = []
+    cb = pyplot.colorbar(sm, ax=ax, format='%.3f')
+    if scientific:
+        cb.formatter = matplotlib.ticker.ScalarFormatter()
+        cb.formatter.set_powerlimits((0, 0))
+        cb.update_ticks()
 
 ## Convenience Functions ##
     
@@ -137,10 +145,8 @@ def plot_heatmap(func, steps=40, boundary=True, cmap_name=None):
         d[(x1, x2)] = func(normalize([x1, x2, x3]))
     heatmap(d, steps, cmap_name=cmap_name)
     
-def plot_multiple(trajectories):
+def plot_multiple(trajectories, linewidth=2.0):
     """Plots multiple trajectories and the boundary."""
     for t in trajectories:
-        plot(t, linewidth=2.0)
+        plot(t, linewidth=linewidth)
     draw_boundary()
-    
-    
