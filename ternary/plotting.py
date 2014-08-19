@@ -96,8 +96,7 @@ def triangle_coordinates(i, j, alt=False):
 def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=True):
     """Plots counts in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = i + j + k."""
     if not ax:
-        #ax = pyplot
-        fig, ax = pyplot.subplots()
+        ax = pyplot
     if not cmap_name:
         cmap = DEFAULT_COLOR_MAP
     else:
