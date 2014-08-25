@@ -8,13 +8,13 @@ The library provides functions for plotting curves (trajectories) and heatmaps.
 
 Minimal example:
 
->from maplotlib import pyplot
+> from maplotlib import pyplot
 >
->import ternary
+> import ternary
 >
->ax = ternary.draw_boundary()
+> ax = ternary.draw_boundary()
 >
->pyplot.show()
+> pyplot.show()
 
 
 
