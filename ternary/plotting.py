@@ -27,12 +27,12 @@ def normalize(xs):
 def draw_boundary(scale=1.0, linewidth=2.0, color='black', ax=None):
     # Plot boundary of 3-simplex.
     if not ax:
-        ax = pyplot
+        ax = pyplot.subplot()
     scale = float(scale)
     # Note that the math.sqrt term is such to prevent noticable roundoff on the top corner point.
     ax.plot([0, scale, scale / 2, 0], [0, 0, math.sqrt(scale * scale * 3.) / 2, 0], color, linewidth=linewidth)
-    ax.ylim([-0.05 * scale, .90 * scale])
-    ax.xlim([-0.05 * scale, 1.05 * scale])
+    ax.set_ylim((-0.05 * scale, .90 * scale))
+    ax.set_xlim((-0.05 * scale, 1.05 * scale))
     return ax
 
 ## Curve Plotting ##
