@@ -60,9 +60,9 @@ def plot(t, color=None, linewidth=1.0, ax=None):
         ax = pyplot.subplot()
     xs, ys = project(t)
     if color:
-        pyplot.plot(xs, ys, c=color, linewidth=linewidth)
+        ax.plot(xs, ys, c=color, linewidth=linewidth)
     else:
-        pyplot.plot(xs, ys, linewidth=linewidth)
+        ax.plot(xs, ys, linewidth=linewidth)
 
 ## Heatmaps##
 
@@ -148,8 +148,6 @@ def plot_heatmap(func, steps=40, boundary=True, cmap_name=None, ax=None):
     
 def plot_multiple(trajectories, linewidth=2.0, ax=None):
     """Plots multiple trajectories and the boundary."""
-    if not ax:
-        ax = pyplot.subplot()
     for t in trajectories:
-        plot(t, linewidth=linewidth)
+        plot(t, linewidth=linewidth, ax=ax)
     draw_boundary()
