@@ -33,6 +33,7 @@ def draw_boundary(scale=1.0, linewidth=2.0, color='black', ax=None):
     ax.plot([0, scale, scale / 2, 0], [0, 0, math.sqrt(scale * scale * 3.) / 2, 0], color, linewidth=linewidth)
     ax.ylim([-0.05 * scale, .90 * scale])
     ax.xlim([-0.05 * scale, 1.05 * scale])
+    return ax
 
 ## Curve Plotting ##
 def project_point(p):
@@ -63,6 +64,7 @@ def plot(t, color=None, linewidth=1.0, ax=None):
         ax.plot(xs, ys, c=color, linewidth=linewidth)
     else:
         ax.plot(xs, ys, linewidth=linewidth)
+    return ax
 
 ## Heatmaps##
 
@@ -96,7 +98,7 @@ def triangle_coordinates(i, j, alt=False):
         return [(i/2. + j + 1, i * SQRT3OVER2), (i/2. + j + 1.5, (i + 1) * SQRT3OVER2), (i/2. + j + 0.5, (i + 1) * SQRT3OVER2)]
 
 def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
-    """Plots values in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = i + j + k."""
+    """Plots values in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = steps = i + j + k."""
     if not ax:
         ax = pyplot.subplot()
     if not cmap_name:
@@ -137,6 +139,7 @@ def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
         cb.formatter = matplotlib.ticker.ScalarFormatter()
         cb.formatter.set_powerlimits((0, 0))
         cb.update_ticks()
+    return ax
 
 ## Convenience Functions ##
     
@@ -149,6 +152,9 @@ def plot_heatmap(func, steps=40, boundary=True, cmap_name=None, ax=None):
     
 def plot_multiple(trajectories, linewidth=2.0, ax=None):
     """Plots multiple trajectories and the boundary."""
+    if not ax:
+        ax = pyplot.subplot()
     for t in trajectories:
         plot(t, linewidth=linewidth, ax=ax)
-    draw_boundary()
+    draw_boundary(ax=ax)
+    return ax
