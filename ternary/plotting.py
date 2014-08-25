@@ -54,8 +54,10 @@ def project(s):
     except IndexError: # for numpy arrays
         return project_point(s)
 
-def plot(t, color=None, linewidth=1.0):
+def plot(t, color=None, linewidth=1.0, ax=None):
     """Plots trajectory points where each point satisfies x + y + z = 1."""
+    if not ax:
+        ax = pyplot.subplot()
     xs, ys = project(t)
     if color:
         pyplot.plot(xs, ys, c=color, linewidth=linewidth)
@@ -137,15 +139,17 @@ def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
 
 ## Convenience Functions ##
     
-def plot_heatmap(func, steps=40, boundary=True, cmap_name=None):
+def plot_heatmap(func, steps=40, boundary=True, cmap_name=None, ax=None):
     """Computes func on heatmap coordinates and plots heatmap."""
     d = dict()
     for x1, x2, x3 in simplex_points(steps=steps, boundary=boundary):
         d[(x1, x2)] = func(normalize([x1, x2, x3]))
-    heatmap(d, steps, cmap_name=cmap_name)
+    heatmap(d, steps, cmap_name=cmap_name, ax=ax)
     
-def plot_multiple(trajectories, linewidth=2.0):
+def plot_multiple(trajectories, linewidth=2.0, ax=None):
     """Plots multiple trajectories and the boundary."""
+    if not ax:
+        ax = pyplot.subplot()
     for t in trajectories:
         plot(t, linewidth=linewidth)
     draw_boundary()
