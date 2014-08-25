@@ -93,10 +93,10 @@ def triangle_coordinates(i, j, alt=False):
         # Alt refers to the inner triangles not covered by the default case
         return [(i/2. + j + 1, i * SQRT3OVER2), (i/2. + j + 1.5, (i + 1) * SQRT3OVER2), (i/2. + j + 0.5, (i + 1) * SQRT3OVER2)]
 
-def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=True):
+def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
     """Plots counts in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = i + j + k."""
     if not ax:
-        ax = pyplot
+        ax = pyplot.subplot()
     if not cmap_name:
         cmap = DEFAULT_COLOR_MAP
     else:
