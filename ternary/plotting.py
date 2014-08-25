@@ -15,10 +15,10 @@ DEFAULT_COLOR_MAP = pyplot.get_cmap('jet')
 
 ## Helpers ##
 def unzip(l):
-    #return [x for (x,y) in l], [y for (x,y) in l]
     return zip(*l)
 
 def normalize(xs):
+    """Normalize input list."""
     s = float(sum(xs))
     return [x / s for x in xs]
 
@@ -55,7 +55,7 @@ def project(s):
         return project_point(s)
 
 def plot(t, color=None, linewidth=1.0, ax=None):
-    """Plots trajectory points where each point satisfies x + y + z = 1."""
+    """Plots trajectory points where each point satisfies x + y + z = 1. First argument is a list or numpy array of tuples of length 3."""
     if not ax:
         ax = pyplot.subplot()
     xs, ys = project(t)
@@ -67,7 +67,7 @@ def plot(t, color=None, linewidth=1.0, ax=None):
 ## Heatmaps##
 
 def simplex_points(steps=100, boundary=True):
-    """Systematically iterate through a lattice of points on the simplex."""
+    """Systematically iterate through a lattice of points on the 2 dimensional simplex."""
     steps = steps - 1
     start = 0
     if not boundary:
@@ -96,7 +96,7 @@ def triangle_coordinates(i, j, alt=False):
         return [(i/2. + j + 1, i * SQRT3OVER2), (i/2. + j + 1.5, (i + 1) * SQRT3OVER2), (i/2. + j + 0.5, (i + 1) * SQRT3OVER2)]
 
 def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
-    """Plots counts in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = i + j + k."""
+    """Plots values in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = i + j + k."""
     if not ax:
         ax = pyplot.subplot()
     if not cmap_name:
@@ -128,8 +128,9 @@ def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
                 # Allow for some portions to have no color, such as the boundary
                 pass
     # Colorbar hack
+    # http://stackoverflow.com/questions/8342549/matplotlib-add-colorbar-to-a-sequence-of-line-plots
     sm = pyplot.cm.ScalarMappable(cmap=cmap, norm=pyplot.Normalize(vmin=a, vmax=b))
-    # fake up the array of the scalar mappable. Urgh...
+    # Fake up the array of the scalar mappable. Urgh...
     sm._A = []
     cb = pyplot.colorbar(sm, ax=ax, format='%.3f')
     if scientific:
@@ -140,7 +141,7 @@ def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
 ## Convenience Functions ##
     
 def plot_heatmap(func, steps=40, boundary=True, cmap_name=None, ax=None):
-    """Computes func on heatmap coordinates and plots heatmap."""
+    """Computes func on heatmap coordinates and plots heatmap. In other words, computes the function on sample points of the simplex (normalized points) and creates a heatmap from the values."""
     d = dict()
     for x1, x2, x3 in simplex_points(steps=steps, boundary=boundary):
         d[(x1, x2)] = func(normalize([x1, x2, x3]))
