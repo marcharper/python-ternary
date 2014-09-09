@@ -15,22 +15,25 @@ DEFAULT_COLOR_MAP = sns.color_palette()
 
 ## Helpers ##
 def unzip(l):
-    #return [x for (x,y) in l], [y for (x,y) in l]
     return zip(*l)
 
 def normalize(xs):
+    """Normalize input list."""
     s = float(sum(xs))
     return [x / s for x in xs]
 
 ## Boundary ##
 
-def draw_boundary(scale=1.0, linewidth=2.0, color='black'):
+def draw_boundary(scale=1.0, linewidth=2.0, color='black', ax=None):
     # Plot boundary of 3-simplex.
+    if not ax:
+        ax = pyplot.subplot()
     scale = float(scale)
     # Note that the math.sqrt term is such to prevent noticable roundoff on the top corner point.
-    pyplot.plot([0, scale, scale / 2, 0], [0, 0, math.sqrt(scale * scale * 3.) / 2, 0], color, linewidth=linewidth)
-    pyplot.ylim([-0.05 * scale, .90 * scale])
-    pyplot.xlim([-0.05 * scale, 1.05 * scale])
+    ax.plot([0, scale, scale / 2, 0], [0, 0, math.sqrt(scale * scale * 3.) / 2, 0], color, linewidth=linewidth)
+    ax.set_ylim((-0.05 * scale, .90 * scale))
+    ax.set_xlim((-0.05 * scale, 1.05 * scale))
+    return ax
 
 ## Curve Plotting ##
 def project_point(p):
@@ -52,19 +55,23 @@ def project(s):
     except IndexError: # for numpy arrays
         return project_point(s)
 
-def plot(t, color=None, linewidth=1.0):
+
+def plot(t, color=None, linewidth=1.0, ax=None):
     """Plots trajectory points where each point satisfies x + y + z = 1.
-    Takes input of list of tuples, numpy array of shape (N, 3), etc."""
+    First argument is a list or numpy array of tuples of length 3."""
+    if not ax:
+        ax = pyplot.subplot()
     xs, ys = project(t)
     if color:
-        pyplot.plot(xs, ys, c=color, linewidth=linewidth)
+        ax.plot(xs, ys, c=color, linewidth=linewidth)
     else:
-        pyplot.plot(xs, ys, linewidth=linewidth)
+        ax.plot(xs, ys, linewidth=linewidth)
+    return ax
 
 ## Heatmaps##
 
 def simplex_points(steps=100, boundary=True):
-    """Systematically iterate through a lattice of points on the simplex."""
+    """Systematically iterate through a lattice of points on the 2 dimensional simplex."""
     steps = steps - 1
     start = 0
     if not boundary:
@@ -92,19 +99,14 @@ def triangle_coordinates(i, j, alt=False):
         # Alt refers to the inner triangles not covered by the default case
         return [(i/2. + j + 1, i * SQRT3OVER2), (i/2. + j + 1.5, (i + 1) * SQRT3OVER2), (i/2. + j + 0.5, (i + 1) * SQRT3OVER2)]
 
-def heatmap(d, steps, cmap_name=None):
-    """Plots counts in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = i + j + k."""
+def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
+    """Plots values in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = steps = i + j + k."""
+    if not ax:
+        ax = pyplot.subplot()
     if not cmap_name:
         cmap = DEFAULT_COLOR_MAP
     else:
         cmap = pyplot.get_cmap(cmap_name)
-    # Colorbar hack -- make fake figure and throw it away.
-    Z = [[0,0],[0,0]]
-    levels = [v for v in d.values()]
-    levels.sort()
-    CS3 = pyplot.contourf(Z, levels, cmap=cmap)
-    # Plot polygons
-    pyplot.clf()
     a = min(d.values())
     b = max(d.values())
     # Color data triangles.
@@ -113,10 +115,13 @@ def heatmap(d, steps, cmap_name=None):
         vertices = triangle_coordinates(i,j)
         x,y = unzip(vertices)
         color = colormapper(d[i,j],a,b,cmap=cmap)
-        pyplot.fill(x, y, facecolor=color, edgecolor=color)
+        ax.fill(x, y, facecolor=color, edgecolor=color)
     # Color smoothing triangles.
-    for i in range(steps+1):
-        for j in range(steps - i):
+    offset = 0
+    if not boundary:
+        offset = 1
+    for i in range(offset, steps+1-offset):
+        for j in range(offset, steps -i -offset):
             try:
                 alt_color = (d[i,j] + d[i, j + 1] + d[i + 1, j])/3.
                 color = colormapper(alt_color, a, b, cmap=cmap)
@@ -126,22 +131,32 @@ def heatmap(d, steps, cmap_name=None):
             except KeyError:
                 # Allow for some portions to have no color, such as the boundary
                 pass
-    #Colorbar hack continued.
-    pyplot.colorbar(CS3)
+    # Colorbar hack
+    # http://stackoverflow.com/questions/8342549/matplotlib-add-colorbar-to-a-sequence-of-line-plots
+    sm = pyplot.cm.ScalarMappable(cmap=cmap, norm=pyplot.Normalize(vmin=a, vmax=b))
+    # Fake up the array of the scalar mappable. Urgh...
+    sm._A = []
+    cb = pyplot.colorbar(sm, ax=ax, format='%.3f')
+    if scientific:
+        cb.formatter = matplotlib.ticker.ScalarFormatter()
+        cb.formatter.set_powerlimits((0, 0))
+        cb.update_ticks()
+    return ax
 
 ## Convenience Functions ##
     
-def plot_heatmap(func, steps=40, boundary=True, cmap_name=None):
-    """Computes func on heatmap coordinates and plots heatmap."""
+def plot_heatmap(func, steps=40, boundary=True, cmap_name=None, ax=None):
+    """Computes func on heatmap coordinates and plots heatmap. In other words, computes the function on sample points of the simplex (normalized points) and creates a heatmap from the values."""
     d = dict()
     for x1, x2, x3 in simplex_points(steps=steps, boundary=boundary):
         d[(x1, x2)] = func(normalize([x1, x2, x3]))
-    heatmap(d, steps, cmap_name=cmap_name)
+    heatmap(d, steps, cmap_name=cmap_name, ax=ax)
     
-def plot_multiple(trajectories):
+def plot_multiple(trajectories, linewidth=2.0, ax=None):
     """Plots multiple trajectories and the boundary."""
+    if not ax:
+        ax = pyplot.subplot()
     for t in trajectories:
-        plot(t, linewidth=2.0)
-    draw_boundary()
-    
-    
+        plot(t, linewidth=linewidth, ax=ax)
+    draw_boundary(ax=ax)
+    return ax

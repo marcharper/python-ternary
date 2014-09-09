@@ -6,7 +6,5 @@ setup(
     packages=['ternary'],
     url='',
     license='',
-    author='Bryan Weinstein',
-    author_email='bweinstein@seas.harvard.edu',
     description=''
 )
