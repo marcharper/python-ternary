@@ -11,7 +11,7 @@ import seaborn as sns
 SQRT3OVER2 = math.sqrt(3) / 2.
 
 ## Use the default colormap of seaborn
-DEFAULT_COLOR_MAP = sns.color_palette()
+DEFAULT_COLOR_MAP = sns.cubehelix_palette(as_cmap=True)
 
 ## Helpers ##
 def unzip(l):
@@ -71,7 +71,8 @@ def plot(t, color=None, linewidth=1.0, ax=None):
 ## Heatmaps##
 
 def simplex_points(steps=100, boundary=True):
-    """Systematically iterate through a lattice of points on the 2 dimensional simplex."""
+    """Systematically iterate through a lattice of points on the 2 dimensional
+    simplex."""
     steps = steps - 1
     start = 0
     if not boundary:
@@ -91,7 +92,8 @@ def colormapper(x, a=0, b=1, cmap=None):
     return hex_
 
 def triangle_coordinates(i, j, alt=False):
-    """Returns the ordered coordinates of the triangle vertices for i + j + k = N. Alt refers to the averaged triangles; the ordinary triangles are those with base parallel to the axis on the lower end (rather than the upper end)"""
+    """Returns the ordered coordinates of the triangle vertices for i + j + k = N. Alt refers to the averaged triangles;
+    the ordinary triangles are those with base  parallel to the axis on the lower end (rather than the upper end)"""
     # N = i + j + k
     if not alt:
         return [(i/2. + j, i * SQRT3OVER2), (i/2. + j + 1, i * SQRT3OVER2), (i/2. + j + 0.5, (i + 1) * SQRT3OVER2)]
@@ -146,7 +148,8 @@ def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
 ## Convenience Functions ##
     
 def plot_heatmap(func, steps=40, boundary=True, cmap_name=None, ax=None):
-    """Computes func on heatmap coordinates and plots heatmap. In other words, computes the function on sample points of the simplex (normalized points) and creates a heatmap from the values."""
+    """Computes func on heatmap coordinates and plots heatmap. In other words, computes the function on sample points
+    of the simplex (normalized points) and creates a heatmap from the values."""
     d = dict()
     for x1, x2, x3 in simplex_points(steps=steps, boundary=boundary):
         d[(x1, x2)] = func(normalize([x1, x2, x3]))
