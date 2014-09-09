@@ -6,7 +6,7 @@ import seaborn as sns
 
 """Matplotlib Ternary plotting utility."""
 
-## Constants ##
+# # Constants ##
 
 SQRT3OVER2 = math.sqrt(3) / 2.
 
@@ -17,10 +17,12 @@ DEFAULT_COLOR_MAP = sns.cubehelix_palette(as_cmap=True)
 def unzip(l):
     return zip(*l)
 
+
 def normalize(xs):
     """Normalize input list."""
     s = float(sum(xs))
     return [x / s for x in xs]
+
 
 ## Boundary ##
 
@@ -35,6 +37,7 @@ def draw_boundary(scale=1.0, linewidth=2.0, color='black', ax=None):
     ax.set_xlim((-0.05 * scale, 1.05 * scale))
     return ax
 
+
 ## Curve Plotting ##
 def project_point(p):
     """Maps (x,y,z) coordinates to planar-simplex."""
@@ -45,6 +48,7 @@ def project_point(p):
     y = SQRT3OVER2 * c
     return (x, y)
 
+
 def project(s):
     """Maps (x,y,z) coordinates to planar-simplex."""
     # Is s an appropriate sequence or just a single point?
@@ -52,7 +56,7 @@ def project(s):
         return unzip(map(project_point, s))
     except TypeError:
         return project_point(s)
-    except IndexError: # for numpy arrays
+    except IndexError:  # for numpy arrays
         return project_point(s)
 
 
@@ -68,6 +72,7 @@ def plot(t, color=None, linewidth=1.0, ax=None):
         ax.plot(xs, ys, linewidth=linewidth)
     return ax
 
+
 ## Heatmaps##
 
 def simplex_points(steps=100, boundary=True):
@@ -77,10 +82,11 @@ def simplex_points(steps=100, boundary=True):
     start = 0
     if not boundary:
         start = 1
-    for x1 in range(start, steps + (1-start)):
-        for x2 in range(start, steps + (1-start) - x1):
+    for x1 in range(start, steps + (1 - start)):
+        for x2 in range(start, steps + (1 - start) - x1):
             x3 = steps - x1 - x2
             yield (x1, x2, x3)
+
 
 def colormapper(x, a=0, b=1, cmap=None):
     """Maps color values to [0,1] and obtains rgba from the given color map for triangle coloring."""
@@ -91,15 +97,19 @@ def colormapper(x, a=0, b=1, cmap=None):
     hex_ = matplotlib.colors.rgb2hex(rgba)
     return hex_
 
+
 def triangle_coordinates(i, j, alt=False):
     """Returns the ordered coordinates of the triangle vertices for i + j + k = N. Alt refers to the averaged triangles;
     the ordinary triangles are those with base  parallel to the axis on the lower end (rather than the upper end)"""
     # N = i + j + k
     if not alt:
-        return [(i/2. + j, i * SQRT3OVER2), (i/2. + j + 1, i * SQRT3OVER2), (i/2. + j + 0.5, (i + 1) * SQRT3OVER2)]
+        return [(i / 2. + j, i * SQRT3OVER2), (i / 2. + j + 1, i * SQRT3OVER2),
+                (i / 2. + j + 0.5, (i + 1) * SQRT3OVER2)]
     else:
         # Alt refers to the inner triangles not covered by the default case
-        return [(i/2. + j + 1, i * SQRT3OVER2), (i/2. + j + 1.5, (i + 1) * SQRT3OVER2), (i/2. + j + 0.5, (i + 1) * SQRT3OVER2)]
+        return [(i / 2. + j + 1, i * SQRT3OVER2), (i / 2. + j + 1.5, (i + 1) * SQRT3OVER2),
+                (i / 2. + j + 0.5, (i + 1) * SQRT3OVER2)]
+
 
 def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
     """Plots values in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = steps = i + j + k."""
@@ -114,21 +124,21 @@ def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
     # Color data triangles.
     for k, v in d.items():
         i, j = k
-        vertices = triangle_coordinates(i,j)
-        x,y = unzip(vertices)
-        color = colormapper(d[i,j],a,b,cmap=cmap)
+        vertices = triangle_coordinates(i, j)
+        x, y = unzip(vertices)
+        color = colormapper(d[i, j], a, b, cmap=cmap)
         ax.fill(x, y, facecolor=color, edgecolor=color)
     # Color smoothing triangles.
     offset = 0
     if not boundary:
         offset = 1
-    for i in range(offset, steps+1-offset):
-        for j in range(offset, steps -i -offset):
+    for i in range(offset, steps + 1 - offset):
+        for j in range(offset, steps - i - offset):
             try:
-                alt_color = (d[i,j] + d[i, j + 1] + d[i + 1, j])/3.
+                alt_color = (d[i, j] + d[i, j + 1] + d[i + 1, j]) / 3.
                 color = colormapper(alt_color, a, b, cmap=cmap)
-                vertices = triangle_coordinates(i,j, alt=True)
-                x,y = unzip(vertices)
+                vertices = triangle_coordinates(i, j, alt=True)
+                x, y = unzip(vertices)
                 pyplot.fill(x, y, facecolor=color, edgecolor=color)
             except KeyError:
                 # Allow for some portions to have no color, such as the boundary
@@ -145,8 +155,9 @@ def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
         cb.update_ticks()
     return ax
 
+
 ## Convenience Functions ##
-    
+
 def plot_heatmap(func, steps=40, boundary=True, cmap_name=None, ax=None):
     """Computes func on heatmap coordinates and plots heatmap. In other words, computes the function on sample points
     of the simplex (normalized points) and creates a heatmap from the values."""
@@ -154,7 +165,8 @@ def plot_heatmap(func, steps=40, boundary=True, cmap_name=None, ax=None):
     for x1, x2, x3 in simplex_points(steps=steps, boundary=boundary):
         d[(x1, x2)] = func(normalize([x1, x2, x3]))
     heatmap(d, steps, cmap_name=cmap_name, ax=ax)
-    
+
+
 def plot_multiple(trajectories, linewidth=2.0, ax=None):
     """Plots multiple trajectories and the boundary."""
     if not ax:
