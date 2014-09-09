@@ -2,6 +2,7 @@ import math
 
 import matplotlib
 import matplotlib.pyplot as pyplot
+import seaborn as sns
 
 """Matplotlib Ternary plotting utility."""
 
@@ -9,9 +10,8 @@ import matplotlib.pyplot as pyplot
 
 SQRT3OVER2 = math.sqrt(3) / 2.
 
-## Default colormap, other options here: http://www.scipy.org/Cookbook/Matplotlib/Show_colormaps
-DEFAULT_COLOR_MAP = pyplot.get_cmap('jet')
-#DEFAULT_COLOR_MAP = pyplot.get_cmap('gist_stern')
+## Use the default colormap of seaborn
+DEFAULT_COLOR_MAP = sns.color_palette()
 
 ## Helpers ##
 def unzip(l):
