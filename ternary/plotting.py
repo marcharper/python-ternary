@@ -78,7 +78,6 @@ def plot(t, color=None, linewidth=1.0, ax=None):
 def simplex_points(steps=100, boundary=True):
     """Systematically iterate through a lattice of points on the 2 dimensional
     simplex."""
-    steps = steps - 1
     start = 0
     if not boundary:
         start = 1
@@ -142,25 +141,28 @@ _i_vec_down = np.array([1. / 2., -np.sqrt(3) / 2.])
 
 def hex_coordinates(i, j, steps):
     ij = i_j_to_x_y(i, j)
-    print ij
     coords = np.array([ij + _alpha, ij + _deltaup, ij + _deltadown, ij - _alpha, ij - _deltaup, ij - _deltadown])
     if i == 0:
         # Along the base of the triangle
-        if j != 0 and j != steps:  # Not a bizarre corner entity
+        if (j != steps) and (j != 0):  # Not a bizarre corner entity
             # Bound at y = zero
             deltaX_vec = np.array([_deltadown[0], 0])
             coords = np.array([ij - deltaX_vec, ij - _deltadown, ij + _alpha, ij + _deltaup, ij + deltaX_vec])
+        else:
+            coords = None
     if j == 0:
         # Along the left of the triangle
-        if i != 0 and i != steps:  # Not a corner
-            coords = np.array([ij + _i_vec / 2, ij + _deltaup, ij + _deltadown, ij - _alpha, ij - _i_vec / 2])
-    if i == steps:
-        # Along the right of the triangle
-        if j != 0 and j != steps:  # Not a bizarre corner entity
-            coords = np.array([ij + _i_vec_down / 2, ij - _alpha, ij - _deltaup, ij - _deltadown, ij - _i_vec_down / 2])
+        if (i != steps) and (i != 0):  # Not a corner
+            coords = np.array([ij + _i_vec / 2., ij + _deltaup, ij + _deltadown, ij - _alpha, ij - _i_vec / 2.])
+        else:
+            coords = None
+    if i + j == steps:
+        if (i != 0 ) and (j != 0):
+            coords = np.array(
+                [ij + _i_vec_down / 2., ij - _alpha, ij - _deltaup, ij - _deltadown, ij - _i_vec_down / 2.])
+        else:
+            coords = None
 
-    if (i == 0 and j == 0) or (i == steps and j == 0) or (i == steps and j == steps):
-        coords = None
     return coords
 
 
@@ -175,6 +177,7 @@ def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
     a = min(d.values())
     b = max(d.values())
     # Color data triangles.
+
     for k, v in d.items():
         i, j = k
         vertices = hex_coordinates(i, j, steps)
