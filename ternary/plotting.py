@@ -129,7 +129,7 @@ def triangle_coordinates(i, j, alt=False):
 #     return x_y_list
 
 def i_j_to_x_y(i, j):
-    return np.array([i / 2. + j, SQRT3OVER2 * i / 2.])
+    return np.array([i / 2. + j, SQRT3OVER2 * i])
 
 
 _alpha = np.array([0, 1. / np.sqrt(3)])
@@ -142,6 +142,7 @@ _i_vec_down = np.array([1. / 2., -np.sqrt(3) / 2.])
 
 def hex_coordinates(i, j, steps):
     ij = i_j_to_x_y(i, j)
+    print ij
     coords = np.array([ij + _alpha, ij + _deltaup, ij + _deltadown, ij - _alpha, ij - _deltaup, ij - _deltadown])
     if i == 0:
         # Along the base of the triangle
@@ -157,6 +158,9 @@ def hex_coordinates(i, j, steps):
         # Along the right of the triangle
         if j != 0 and j != steps:  # Not a bizarre corner entity
             coords = np.array([ij + _i_vec_down / 2, ij - _alpha, ij - _deltaup, ij - _deltadown, ij - _i_vec_down / 2])
+
+    if (i == 0 and j == 0) or (i == steps and j == 0) or (i == steps and j == steps):
+        coords = None
     return coords
 
 
@@ -174,9 +178,10 @@ def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
     for k, v in d.items():
         i, j = k
         vertices = hex_coordinates(i, j, steps)
-        x, y = unzip(vertices)
-        color = colormapper(d[i, j], a, b, cmap=cmap)
-        ax.fill(x, y, facecolor=color, edgecolor=color)
+        if vertices is not None:
+            x, y = unzip(vertices)
+            color = colormapper(d[i, j], a, b, cmap=cmap)
+            ax.fill(x, y, facecolor=color, edgecolor=color)
     # # Color smoothing triangles. THIS IS BAD FOR US, NO SMOOTHING
     # offset = 0
     # if not boundary:
