@@ -138,6 +138,7 @@ _deltadown = np.array([1. / 2., - 1. / (2. * np.sqrt(3))])
 _i_vec = np.array([1. / 2., np.sqrt(3) / 2.])
 _i_vec_down = np.array([1. / 2., -np.sqrt(3) / 2.])
 
+_deltaX_vec = np.array([_deltadown[0], 0])
 
 def hex_coordinates(i, j, steps):
     ij = i_j_to_x_y(i, j)
@@ -146,22 +147,25 @@ def hex_coordinates(i, j, steps):
         # Along the base of the triangle
         if (j != steps) and (j != 0):  # Not a bizarre corner entity
             # Bound at y = zero
-            deltaX_vec = np.array([_deltadown[0], 0])
-            coords = np.array([ij - deltaX_vec, ij - _deltadown, ij + _alpha, ij + _deltaup, ij + deltaX_vec])
-        else:
-            coords = None
+            coords = np.array([ij - _deltaX_vec, ij - _deltadown, ij + _alpha, ij + _deltaup, ij + _deltaX_vec])
+
     if j == 0:
         # Along the left of the triangle
         if (i != steps) and (i != 0):  # Not a corner
             coords = np.array([ij + _i_vec / 2., ij + _deltaup, ij + _deltadown, ij - _alpha, ij - _i_vec / 2.])
-        else:
-            coords = None
+
     if i + j == steps:
         if (i != 0 ) and (j != 0):
             coords = np.array(
                 [ij + _i_vec_down / 2., ij - _alpha, ij - _deltaup, ij - _deltadown, ij - _i_vec_down / 2.])
-        else:
-            coords = None
+
+    # Deal with pathological border cases
+    if i == steps and j == 0:
+        coords = np.array([ij, ij + _i_vec_down / 2., ij - _alpha, ij - _i_vec / 2.])
+    if i == 0 and j == 0:
+        coords = np.array([ij, ij + _i_vec / 2., ij + _deltaup, ij + _deltaX_vec])
+    if j == steps and i == 0:
+        coords = np.array([ij, ij - _deltaX_vec, ij - _deltadown, ij - _i_vec_down / 2.])
 
     return coords
 
