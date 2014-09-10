@@ -3,6 +3,7 @@ import math
 import matplotlib
 import matplotlib.pyplot as pyplot
 import seaborn as sns
+import numpy as np
 
 """Matplotlib Ternary plotting utility."""
 
@@ -22,7 +23,6 @@ def normalize(xs):
     """Normalize input list."""
     s = float(sum(xs))
     return [x / s for x in xs]
-
 
 ## Boundary ##
 
@@ -94,6 +94,8 @@ def colormapper(x, a=0, b=1, cmap=None):
         rgba = cmap(0)
     else:
         rgba = cmap((x - a) / float(b - a))
+    rgba = np.array(rgba)
+    rgba = rgba.flatten()
     hex_ = matplotlib.colors.rgb2hex(rgba)
     return hex_
 
@@ -111,6 +113,53 @@ def triangle_coordinates(i, j, alt=False):
                 (i / 2. + j + 0.5, (i + 1) * SQRT3OVER2)]
 
 
+# _rot_matrix = np.array([[3**.5/2, -1./2.], [1./2., 3**.5/2.]])
+#
+# def hex_coordinates(i, j):
+# i_list = np.array([i + 1./2., i + 1./2., i         , i - 1./2., i - 1./2., i        ])
+#     j_list = np.array([j - 1./2., j        , j + 1./2. , j + 1./2., j        , j - 1./2.])
+#     x_y_list = i_j_to_x_y(i_list, j_list).T
+#     # Rotate each by 30 degrees, as that gives us the correct hexagon
+#
+#     origin = i_j_to_x_y(i, j)
+#     for zeta in range(x_y_list.shape[0]):
+#         x_y_list[zeta] = np.dot(_rot_matrix, x_y_list[zeta] - origin)
+#
+#     print x_y_list
+#     return x_y_list
+
+def i_j_to_x_y(i, j):
+    return np.array([i / 2. + j, SQRT3OVER2 * i / 2.])
+
+
+_alpha = np.array([0, 1. / np.sqrt(3)])
+_deltaup = np.array([1. / 2., 1. / (2. * np.sqrt(3))])
+_deltadown = np.array([1. / 2., - 1. / (2. * np.sqrt(3))])
+
+_i_vec = np.array([1. / 2., np.sqrt(3) / 2.])
+_i_vec_down = np.array([1. / 2., -np.sqrt(3) / 2.])
+
+
+def hex_coordinates(i, j, steps):
+    ij = i_j_to_x_y(i, j)
+    coords = np.array([ij + _alpha, ij + _deltaup, ij + _deltadown, ij - _alpha, ij - _deltaup, ij - _deltadown])
+    if i == 0:
+        # Along the base of the triangle
+        if j != 0 and j != steps:  # Not a bizarre corner entity
+            # Bound at y = zero
+            deltaX_vec = np.array([_deltadown[0], 0])
+            coords = np.array([ij - deltaX_vec, ij - _deltadown, ij + _alpha, ij + _deltaup, ij + deltaX_vec])
+    if j == 0:
+        # Along the left of the triangle
+        if i != 0 and i != steps:  # Not a corner
+            coords = np.array([ij + _i_vec / 2, ij + _deltaup, ij + _deltadown, ij - _alpha, ij - _i_vec / 2])
+    if i == steps:
+        # Along the right of the triangle
+        if j != 0 and j != steps:  # Not a bizarre corner entity
+            coords = np.array([ij + _i_vec_down / 2, ij - _alpha, ij - _deltaup, ij - _deltadown, ij - _i_vec_down / 2])
+    return coords
+
+
 def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
     """Plots values in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = steps = i + j + k."""
     if not ax:
@@ -124,25 +173,25 @@ def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
     # Color data triangles.
     for k, v in d.items():
         i, j = k
-        vertices = triangle_coordinates(i, j)
+        vertices = hex_coordinates(i, j, steps)
         x, y = unzip(vertices)
         color = colormapper(d[i, j], a, b, cmap=cmap)
         ax.fill(x, y, facecolor=color, edgecolor=color)
-    # Color smoothing triangles.
-    offset = 0
-    if not boundary:
-        offset = 1
-    for i in range(offset, steps + 1 - offset):
-        for j in range(offset, steps - i - offset):
-            try:
-                alt_color = (d[i, j] + d[i, j + 1] + d[i + 1, j]) / 3.
-                color = colormapper(alt_color, a, b, cmap=cmap)
-                vertices = triangle_coordinates(i, j, alt=True)
-                x, y = unzip(vertices)
-                pyplot.fill(x, y, facecolor=color, edgecolor=color)
-            except KeyError:
-                # Allow for some portions to have no color, such as the boundary
-                pass
+    # # Color smoothing triangles. THIS IS BAD FOR US, NO SMOOTHING
+    # offset = 0
+    # if not boundary:
+    # offset = 1
+    # for i in range(offset, steps + 1 - offset):
+    #     for j in range(offset, steps - i - offset):
+    #         try:
+    #             alt_color = (d[i, j + 1] + d[i + 1, j]) / 2.
+    #             color = colormapper(alt_color, a, b, cmap=cmap)
+    #             vertices = triangle_coordinates(i, j, alt=True)
+    #             x, y = unzip(vertices)
+    #             pyplot.fill(x, y, facecolor=color, edgecolor=color)
+    #         except KeyError:
+    #             # Allow for some portions to have no color, such as the boundary
+    #             pass
     # Colorbar hack
     # http://stackoverflow.com/questions/8342549/matplotlib-add-colorbar-to-a-sequence-of-line-plots
     sm = pyplot.cm.ScalarMappable(cmap=cmap, norm=pyplot.Normalize(vmin=a, vmax=b))
