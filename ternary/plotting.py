@@ -1,7 +1,7 @@
 import math
 
 import matplotlib
-import matplotlib.pyplot as pyplot
+import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
@@ -29,7 +29,7 @@ def normalize(xs):
 def draw_boundary(scale=1.0, linewidth=2.0, color='black', ax=None):
     # Plot boundary of 3-simplex.
     if not ax:
-        ax = pyplot.subplot()
+        ax = plt.subplot()
     scale = float(scale)
     # Note that the math.sqrt term is such to prevent noticable roundoff on the top corner point.
     ax.plot([0, scale, scale / 2, 0], [0, 0, math.sqrt(scale * scale * 3.) / 2, 0], color, linewidth=linewidth)
@@ -64,7 +64,7 @@ def plot(t, color=None, linewidth=1.0, ax=None):
     """Plots trajectory points where each point satisfies x + y + z = 1.
     First argument is a list or numpy array of tuples of length 3."""
     if not ax:
-        ax = pyplot.subplot()
+        ax = plt.subplot()
     xs, ys = project(t)
     if color:
         ax.plot(xs, ys, c=color, linewidth=linewidth)
@@ -139,6 +139,7 @@ def hex_coordinates(i, j, steps):
             coords = np.array([ij + _i_vec / 2., ij + _deltaup, ij + _deltadown, ij - _alpha, ij - _i_vec / 2.])
 
     if i + j == steps:
+        # Along the right of the triangle
         if (i != 0 ) and (j != 0):
             coords = np.array(
                 [ij + _i_vec_down / 2., ij - _alpha, ij - _deltaup, ij - _deltadown, ij - _i_vec_down / 2.])
@@ -154,16 +155,20 @@ def hex_coordinates(i, j, steps):
     return coords
 
 
-def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
+def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False, min_max_scale=None):
     """Plots values in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = steps = i + j + k."""
     if not ax:
-        ax = pyplot.subplot()
+        ax = plt.subplot()
     if not cmap_name:
         cmap = DEFAULT_COLOR_MAP
     else:
-        cmap = pyplot.get_cmap(cmap_name)
-    a = min(d.values())
-    b = max(d.values())
+        cmap = plt.get_cmap(cmap_name)
+    if min_max_scale is None:
+        a = min(d.values())
+        b = max(d.values())
+    else:
+        a = min_max_scale[0]
+        b = min_max_scale[1]
     # Color data triangles.
 
     for k, v in d.items():
@@ -176,26 +181,28 @@ def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
 
     # Colorbar hack
     # http://stackoverflow.com/questions/8342549/matplotlib-add-colorbar-to-a-sequence-of-line-plots
-    sm = pyplot.cm.ScalarMappable(cmap=cmap, norm=pyplot.Normalize(vmin=a, vmax=b))
+    sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(vmin=a, vmax=b))
+
     # Fake up the array of the scalar mappable. Urgh...
     sm._A = []
-    cb = pyplot.colorbar(sm, ax=ax, format='%.3f')
+    cb = plt.colorbar(sm, ax=ax, format='%.4f')
+    cb.locator = matplotlib.ticker.LinearLocator(numticks=7)
     if scientific:
         cb.formatter = matplotlib.ticker.ScalarFormatter()
         cb.formatter.set_powerlimits((0, 0))
-        cb.update_ticks()
+    cb.update_ticks()
     return ax
 
 
 ## Convenience Functions ##
 
-def plot_heatmap(func, steps=40, boundary=True, cmap_name=None, ax=None):
+def plot_heatmap(func, steps=40, boundary=True, cmap_name=None, ax=None, **kwargs):
     """Computes func on heatmap coordinates and plots heatmap. In other words, computes the function on sample points
     of the simplex (normalized points) and creates a heatmap from the values."""
     d = dict()
     for x1, x2, x3 in simplex_points(steps=steps, boundary=boundary):
         d[(x1, x2)] = func(normalize([x1, x2, x3]))
-    heatmap(d, steps, cmap_name=cmap_name, ax=ax)
+    heatmap(d, steps, cmap_name=cmap_name, ax=ax, **kwargs)
 
 
 def plot_multiple(trajectories, linewidth=2.0, ax=None):
