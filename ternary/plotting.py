@@ -81,6 +81,8 @@ def simplex_points(steps=100, boundary=True):
 
 def colormapper(x, a=0, b=1, cmap=None):
     """Maps color values to [0,1] and obtains rgba from the given color map for triangle coloring."""
+    if not cmap:
+        cmap = DEFAULT_COLOR_MAP
     if b - a == 0:
         rgba = cmap(0)
     else:
