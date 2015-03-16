@@ -61,7 +61,7 @@ if __name__ == '__main__':
     pyplot.figure()
     ternary.draw_gridlines(20)
     pyplot.show()
-    pyplot.exit()
+    exit()
     pyplot.figure()
     heatmap_example(shannon_entropy, steps=100, boundary=True)
     pyplot.figure()

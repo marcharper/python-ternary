@@ -43,21 +43,20 @@ def draw_boundary(scale=1.0, linewidth=2.0, color='black', ax=None):
 def draw_line(p1, p2, ax, linewidth=1., color='black'):
     ax.add_line(Line2D((p1[0], p2[0]), (p1[1], p2[1]), linewidth=linewidth, color=color))
 
-def draw_horizontal_line(ax, steps, i, linewidth=1., color='black'):
+def draw_horizontal_line(ax, i, steps, linewidth=1., color='black'):
     p1 = project_point((0, i, steps-i))
     p2 = project_point((i, 0, steps-i))
     draw_line(p1, p2, ax, linewidth=linewidth, color=color)
 
-def draw_left_parallel_line(ax, steps, i, linewidth=1., color='black'):
+def draw_left_parallel_line(ax, i, steps, linewidth=1., color='black'):
     p1 = project_point((0, i, steps-i))
     p2 = project_point((steps-i, i, 0))
     draw_line(p1, p2, ax, linewidth=linewidth, color=color)
 
-def draw_right_parallel_line(ax, steps, i, linewidth=1., color='black'):
+def draw_right_parallel_line(ax, i, steps, linewidth=1., color='black'):
     p1 = project_point((i, steps-i, 0))
     p2 = project_point((i, 0, steps-i))
     draw_line(p1, p2, ax, linewidth=linewidth, color=color)
-
 
 def draw_gridlines(steps=10, linewidth=1., color='black', ax=None):
     """Plots grid lines excluding boundary."""
