@@ -12,9 +12,9 @@ SQRT3OVER2 = math.sqrt(3) / 2.
 
 ## Default colormap, other options here: http://www.scipy.org/Cookbook/Matplotlib/Show_colormaps
 DEFAULT_COLOR_MAP = pyplot.get_cmap('jet')
-#DEFAULT_COLOR_MAP = pyplot.get_cmap('gist_stern')
 
 ## Helpers ##
+
 def unzip(l):
     return zip(*l)
 
@@ -23,46 +23,59 @@ def normalize(xs):
     s = float(sum(xs))
     return [x / s for x in xs]
 
-## Boundary ##
+## Boundary, Gridlines, Sizing ##
+
+def resize_drawing_canvas(ax, scale):
+    """Makes sure the drawing surface is large enough to display projected content."""
+    ax.set_ylim((-0.05 * scale, .90 * scale))
+    ax.set_xlim((-0.05 * scale, 1.05 * scale))
 
 def draw_boundary(scale=1.0, linewidth=2.0, color='black', ax=None):
-    # Plot boundary of 3-simplex.
+    """Plots the boundary of the simplex."""
     if not ax:
         ax = pyplot.subplot()
     scale = float(scale)
     # Note that the math.sqrt term is such to prevent noticable roundoff on the top corner point.
     ax.plot([0, scale, scale / 2, 0], [0, 0, math.sqrt(scale * scale * 3.) / 2, 0], color, linewidth=linewidth)
-    ax.set_ylim((-0.05 * scale, .90 * scale))
-    ax.set_xlim((-0.05 * scale, 1.05 * scale))
+    resize_drawing_canvas(ax, scale)
     return ax
+
+def draw_line(p1, p2, ax, linewidth=1., color='black'):
+    ax.add_line(Line2D((p1[0], p2[0]), (p1[1], p2[1]), linewidth=linewidth, color=color))
+
+def draw_horizontal_line(ax, steps, i, linewidth=1., color='black'):
+    p1 = project_point((0, i, steps-i))
+    p2 = project_point((i, 0, steps-i))
+    draw_line(p1, p2, ax, linewidth=linewidth, color=color)
+
+def draw_left_parallel_line(ax, steps, i, linewidth=1., color='black'):
+    p1 = project_point((0, i, steps-i))
+    p2 = project_point((steps-i, i, 0))
+    draw_line(p1, p2, ax, linewidth=linewidth, color=color)
+
+def draw_right_parallel_line(ax, steps, i, linewidth=1., color='black'):
+    p1 = project_point((i, steps-i, 0))
+    p2 = project_point((i, 0, steps-i))
+    draw_line(p1, p2, ax, linewidth=linewidth, color=color)
+
 
 def draw_gridlines(steps=10, linewidth=1., color='black', ax=None):
     """Plots grid lines excluding boundary."""
     if not ax:
         ax = pyplot.subplot()
-    # Make sure the drawing surface is large enough to display the lines
-    ax.set_ylim((-0.05 * steps, .90 * steps))
-    ax.set_xlim((-0.05 * steps, 1.05 * steps))
+    resize_drawing_canvas(ax, steps)
     ## Draw lines
     # Parallel to horizontal axis
     for i in range(1, steps):
-        p1 = project_point((0, i, steps-i))
-        p2 = project_point((i, 0, steps-i))
-        ax.add_line(Line2D((p1[0], p2[0]), (p1[1], p2[1]), linewidth=linewidth, color=color))
-        
-    # Parallel to left axis
-    for i in range(1, steps+1):
-        p1 = project_point((0, i, steps-i))
-        p2 = project_point((steps-i, i, 0))
-        ax.add_line(Line2D((p1[0], p2[0]), (p1[1], p2[1]), linewidth=linewidth, color=color))
+        draw_horizontal_line(ax, i, steps, linewidth=linewidth, color=color)
 
-    # Parallel to right axis
+    # Parallel to left and right axes
     for i in range(1, steps+1):
-        p1 = project_point((i, steps-i, 0))
-        p2 = project_point((i, 0, steps-i))
-        ax.add_line(Line2D((p1[0], p2[0]), (p1[1], p2[1]), linewidth=linewidth, color=color))
+        draw_left_parallel_line(ax, i, steps, linewidth=linewidth, color=color)
+        draw_right_parallel_line(ax, i, steps, linewidth=linewidth, color=color)
 
-## Curve Plotting ##
+## Projections and Curve Plotting ##
+
 def project_point(p):
     """Maps (x,y,z) coordinates to planar-simplex."""
     a = p[0]
