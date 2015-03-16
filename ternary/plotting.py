@@ -4,7 +4,6 @@ import matplotlib
 import matplotlib.pyplot as pyplot
 from matplotlib.lines import Line2D
 
-
 """Matplotlib Ternary plotting utility."""
 
 ## Constants ##
@@ -38,24 +37,27 @@ def draw_boundary(scale=1.0, linewidth=2.0, color='black', ax=None):
     return ax
 
 def draw_gridlines(steps=10, linewidth=1., color='black', ax=None):
-    """Plots grid lines"""
+    """Plots grid lines excluding boundary."""
     if not ax:
         ax = pyplot.subplot()
     # Make sure the drawing surface is large enough to display the lines
     ax.set_ylim((-0.05 * steps, .90 * steps))
     ax.set_xlim((-0.05 * steps, 1.05 * steps))
-    # Draw lines
-    for i in range(steps+1):
+    ## Draw lines
+    # Parallel to horizontal axis
+    for i in range(1, steps):
+        p1 = project_point((0, i, steps-i))
+        p2 = project_point((i, 0, steps-i))
+        ax.add_line(Line2D((p1[0], p2[0]), (p1[1], p2[1]), linewidth=linewidth, color=color))
+        
+    # Parallel to left axis
+    for i in range(1, steps+1):
         p1 = project_point((0, i, steps-i))
         p2 = project_point((steps-i, i, 0))
         ax.add_line(Line2D((p1[0], p2[0]), (p1[1], p2[1]), linewidth=linewidth, color=color))
 
+    # Parallel to right axis
     for i in range(1, steps+1):
-        p1 = project_point((0, i, steps-i))
-        p2 = project_point((i, 0, steps-i))
-        ax.add_line(Line2D((p1[0], p2[0]), (p1[1], p2[1]), linewidth=linewidth, color=color))
-
-    for i in range(steps+1):
         p1 = project_point((i, steps-i, 0))
         p2 = project_point((i, 0, steps-i))
         ax.add_line(Line2D((p1[0], p2[0]), (p1[1], p2[1]), linewidth=linewidth, color=color))
