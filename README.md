@@ -1,13 +1,11 @@
 # python-ternary
-==============
 
-This is a plotting library for use with matplotlib to allow ternary plots,
+This is a plotting library for use with [matplotlib](http://matplotlib.org/index.html) to make [ternary plots](http://en.wikipedia.org/wiki/Ternary_plot),
 plots in the two dimensional simplex projected onto a two dimensional plane.
 
 The library provides functions for plotting projected lines, curves (trajectories), and heatmaps.
 
 # Basic Plotting Functions
-========================
 
 Most ternary functions expect the simplex to be partititioned into some number of steps. A few functions will do this partitioning for you, but when working with real data or simulation output, you may have partitioned already.
 
@@ -15,6 +13,7 @@ Most ternary functions expect the simplex to be partititioned into some number o
 
 The following code draws a boundary for the simplex and gridlines.
 
+```
 > from maplotlib import pyplot
 >
 > import ternary
@@ -26,6 +25,7 @@ The following code draws a boundary for the simplex and gridlines.
 > ax.set_title("Simplex Boundary and Gridlines")
 >
 > pyplot.show()
+```
 
 ![](https://camo.githubusercontent.com/7892a5bc0c1d4023d02e3d9dfe616b9667a77d65/687474703a2f2f692e696d6775722e636f6d2f647074723655412e6a7067)
 
@@ -33,6 +33,7 @@ The following code draws a boundary for the simplex and gridlines.
 
 You can draw individual lines between any two points with draw_line and lines parallel to the axes with draw_horizonal_line, draw_left_parallel_line, and draw_right_parallel_line:
 
+```
 > from maplotlib import pyplot
 >
 > import ternary
@@ -46,6 +47,7 @@ You can draw individual lines between any two points with draw_line and lines pa
 > ax.set_title("Various Lines")
 >
 > pyplot.show()
+```
 
 The line drawing functions accept the matplotlib keyword arguments of Line2D [http://matplotlib.org/api/lines_api.html]
 
@@ -67,6 +69,7 @@ Points is a list of tuples or numpy arrays, e.g. [(0.5, 0.25, 0.25), (1./3, 1./3
 
 Ternary can plot heatmaps in two ways. Given a function, ternary will evaluate the function at the specified number of steps. For example:
 
+```
 > def shannon_entropy(p):
 >    """Computes the Shannon Entropy at a distribution in the simplex."""
 >    s = 0.
@@ -76,9 +79,11 @@ Ternary can plot heatmaps in two ways. Given a function, ternary will evaluate t
 >        except ValueError:
 >            continue
 >    return -1.*s
+```
 
 Then we can get a heatmap by:
 
+```
 > from maplotlib import pyplot
 >
 > import ternary
@@ -86,6 +91,7 @@ Then we can get a heatmap by:
 > ax = ternary.plot_heatmap(func, steps=steps, boundary=True)
 > ternary.draw_boundary(steps, ax=ax)
 > ax.set_title("Shannon Entropy Heatmap")
+```
 
 In this case the kwarg boundary indicates whether you wish to evaluate points on the boundary of the partition (which is sometimes undesirable).
 
@@ -100,10 +106,5 @@ Ternary can also take a dictionary mapping (x,y) to a float as input for a heatm
 [](https://camo.githubusercontent.com/b66c280914cb4a38130b83a3eb4311f94274aefb/687474703a2f2f692e696d6775722e636f6d2f6935516a5147542e6a7067)
 
 
-You may specify a matplotlib heatmap in the cmap_name argument.
-
-
-
-
-
+You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/colormaps_reference.html) in the cmap_name argument.
 
