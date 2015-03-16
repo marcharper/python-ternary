@@ -64,9 +64,6 @@ if __name__ == '__main__':
     ternary.draw_line(ax, p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
     ax.set_title("Various Lines")
 
-    pyplot.show()
-    exit()
-
     ## Heatmap of a function
     pyplot.figure()
     ax = heatmap_example(shannon_entropy, steps=100, boundary=True)
