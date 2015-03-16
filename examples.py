@@ -41,7 +41,7 @@ def shannon_entropy(p):
 
 def heatmap_example(func, steps=100, boundary=True):
     ax = ternary.plot_heatmap(func, steps=steps, boundary=boundary)
-    ternary.draw_boundary(steps, ax=ax)
+    ternary.draw_boundary(steps, ax=ax, color='black')
     return ax
 
 if __name__ == '__main__':
@@ -77,7 +77,7 @@ if __name__ == '__main__':
 
     ## Sample trajectory plot
     pyplot.figure()
-    ax = ternary.draw_boundary()
+    ax = ternary.draw_boundary(color='black')
     ax.set_title("Plotting of sample trajectory data")
     points = []
     with open("curve.txt") as handle:

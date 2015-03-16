@@ -27,7 +27,7 @@ The following code draws a boundary for the simplex and gridlines.
 >
 > pyplot.show()
 
-[Image]
+![](https://camo.githubusercontent.com/7892a5bc0c1d4023d02e3d9dfe616b9667a77d65/687474703a2f2f692e696d6775722e636f6d2f647074723655412e6a7067)
 
 ## Drawing lines
 
@@ -49,15 +49,19 @@ You can draw individual lines between any two points with draw_line and lines pa
 
 The line drawing functions accept the matplotlib keyword arguments of Line2D [http://matplotlib.org/api/lines_api.html]
 
+![](https://camo.githubusercontent.com/1723ffcaa3c843b74b802ba0c0e5a9e8535ea8a7/687474703a2f2f692e696d6775722e636f6d2f49426b454646332e6a7067)
+
 ## Curves
 
 Curves can be plotted by specifying the points of the curve, just like matplotlib's plot. Simply use:
 
 > ternary.plot(points)
 
-Ternary assumes that the points are probability distributions (e.g. x+y+z=1) unless you specify otherwise. Again you can specify axes and line options:
+Points is a list of tuples or numpy arrays, e.g. [(0.5, 0.25, 0.25), (1./3, 1./3, 1//3)]. Ternary assumes that the points are probability distributions (e.g. x+y+z=1) unless you specify otherwise. Again you can specify axes and line options:
 
 > ternary.plot(points, ax=ax, steps=100, linewidth=2.0)
+
+![](https://camo.githubusercontent.com/023639b15fbdf421df2462bc5eed646c326be152/687474703a2f2f692e696d6775722e636f6d2f687753524439372e6a7067)
 
 ## Heatmaps
 
@@ -85,11 +89,20 @@ Then we can get a heatmap by:
 
 In this case the kwarg boundary indicates whether you wish to evaluate points on the boundary of the partition (which is sometimes undesirable).
 
+![](https://camo.githubusercontent.com/c8727b30461d45b860cb49bfde4f48e0f76526ff/687474703a2f2f692e696d6775722e636f6d2f6b586d317075462e6a7067)
+
 Ternary can also take a dictionary mapping (x,y) to a float as input for a heatmap, using the function
 
 > heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False)
 
+![](https://camo.githubusercontent.com/30fb63ec53deb0fda2c892c0732a97620699500b/687474703a2f2f692e696d6775722e636f6d2f64555a6b3355302e6a7067)
+
+[](https://camo.githubusercontent.com/b66c280914cb4a38130b83a3eb4311f94274aefb/687474703a2f2f692e696d6775722e636f6d2f6935516a5147542e6a7067)
+
+
 You may specify a matplotlib heatmap in the cmap_name argument.
+
+
 
 
 
