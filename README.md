@@ -70,7 +70,9 @@ ternary.plot(points, ax=ax, steps=100, linewidth=2.0)
 
 ## Heatmaps
 
-Ternary can plot heatmaps in two ways. Given a function, ternary will evaluate the function at the specified number of steps. For example:
+Ternary can plot heatmaps in two ways and two styles. Given a function, ternary will evaluate the function at the specified number of steps. The simplex can be split up into triangles or hexagons (thanks to contributor btweinstein for the hexagonal heatmap functionality).
+
+For example:
 
 ```
 def shannon_entropy(p):
@@ -84,21 +86,21 @@ def shannon_entropy(p):
     return -1.*s
 ```
 
-Then we can get a heatmap as follows:
+Ee can get a heatmap of this function as follows:
 
 ```
 from maplotlib import pyplot
 
 import ternary
 pyplot.figure()
-ax = ternary.plot_heatmap(func, steps=steps, boundary=True)
+ax = ternary.plot_heatmap(func, steps=steps, boundary=True, style="triangular")
 ternary.draw_boundary(steps, ax=ax)
 ax.set_title("Shannon Entropy Heatmap")
 
 pyplot.show()
 ```
 
-In this case the keyword argument *boundary* indicates whether you wish to evaluate points on the boundary of the partition (which is sometimes undesirable).
+In this case the keyword argument *boundary* indicates whether you wish to evaluate points on the boundary of the partition (which is sometimes undesirable). Specify `style="hexagonal"` for hexagons.
 
 ![](https://camo.githubusercontent.com/c8727b30461d45b860cb49bfde4f48e0f76526ff/687474703a2f2f692e696d6775722e636f6d2f6b586d317075462e6a7067)
 
@@ -114,4 +116,10 @@ ternary.heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=Fal
 
 
 You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/colormaps_reference.html) in the cmap_name argument.
+
+
+# Contributors
+
+- Marc Harper [marcharper]([btweinstein](https://github.com/marcharper)
+- Bryan Weinstein [btweinstein](https://github.com/btweinstein) Hexagonal heatmaps
 

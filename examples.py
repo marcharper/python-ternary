@@ -40,7 +40,7 @@ def shannon_entropy(p):
 ## Examples #
 
 def heatmap_example(func, steps=100, boundary=True):
-    ax = ternary.plot_heatmap(func, steps=steps, boundary=boundary)
+    ax = ternary.plot_heatmap(func, steps=steps, boundary=boundary, style="hexagonal")
     ternary.draw_boundary(steps, ax=ax, color='black')
     return ax
 
