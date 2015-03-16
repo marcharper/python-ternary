@@ -23,57 +23,7 @@ def normalize(xs):
     s = float(sum(xs))
     return [x / s for x in xs]
 
-## Boundary, Gridlines, Sizing ##
-
-def resize_drawing_canvas(ax, scale):
-    """Makes sure the drawing surface is large enough to display projected content."""
-    ax.set_ylim((-0.05 * scale, .90 * scale))
-    ax.set_xlim((-0.05 * scale, 1.05 * scale))
-
-def draw_boundary(scale=1.0, linewidth=2.0, color='black', ax=None):
-    """Plots the boundary of the simplex."""
-    if not ax:
-        ax = pyplot.subplot()
-    scale = float(scale)
-    # Note that the math.sqrt term is such to prevent noticable roundoff on the top corner point.
-    ax.plot([0, scale, scale / 2, 0], [0, 0, math.sqrt(scale * scale * 3.) / 2, 0], color, linewidth=linewidth)
-    resize_drawing_canvas(ax, scale)
-    return ax
-
-def draw_line(p1, p2, ax, linewidth=1., color='black'):
-    ax.add_line(Line2D((p1[0], p2[0]), (p1[1], p2[1]), linewidth=linewidth, color=color))
-
-def draw_horizontal_line(ax, i, steps, linewidth=1., color='black'):
-    p1 = project_point((0, i, steps-i))
-    p2 = project_point((i, 0, steps-i))
-    draw_line(p1, p2, ax, linewidth=linewidth, color=color)
-
-def draw_left_parallel_line(ax, i, steps, linewidth=1., color='black'):
-    p1 = project_point((0, i, steps-i))
-    p2 = project_point((steps-i, i, 0))
-    draw_line(p1, p2, ax, linewidth=linewidth, color=color)
-
-def draw_right_parallel_line(ax, i, steps, linewidth=1., color='black'):
-    p1 = project_point((i, steps-i, 0))
-    p2 = project_point((i, 0, steps-i))
-    draw_line(p1, p2, ax, linewidth=linewidth, color=color)
-
-def draw_gridlines(steps=10, linewidth=1., color='black', ax=None):
-    """Plots grid lines excluding boundary."""
-    if not ax:
-        ax = pyplot.subplot()
-    resize_drawing_canvas(ax, steps)
-    ## Draw lines
-    # Parallel to horizontal axis
-    for i in range(1, steps):
-        draw_horizontal_line(ax, i, steps, linewidth=linewidth, color=color)
-
-    # Parallel to left and right axes
-    for i in range(1, steps+1):
-        draw_left_parallel_line(ax, i, steps, linewidth=linewidth, color=color)
-        draw_right_parallel_line(ax, i, steps, linewidth=linewidth, color=color)
-
-## Projections and Curve Plotting ##
+## Ternary Projections ##
 
 def project_point(p):
     """Maps (x,y,z) coordinates to planar-simplex."""
@@ -94,6 +44,61 @@ def project(s):
         return project_point(s)
     except IndexError: # for numpy arrays
         return project_point(s)
+
+## Boundary, Gridlines, Sizing ##
+
+def resize_drawing_canvas(ax, scale):
+    """Makes sure the drawing surface is large enough to display projected content."""
+    ax.set_ylim((-0.05 * scale, .90 * scale))
+    ax.set_xlim((-0.05 * scale, 1.05 * scale))
+
+def draw_line(ax, p1, p2, linewidth=1., color='black'):
+    ax.add_line(Line2D((p1[0], p2[0]), (p1[1], p2[1]), linewidth=linewidth, color=color))
+
+def draw_horizontal_line(ax, i, steps, linewidth=1., color='black'):
+    #p1 = project_point((0, i, steps-i))
+    #p2 = project_point((i, 0, steps-i))
+    p1 = project_point((0, steps-i, i))
+    p2 = project_point((steps-i, 0, i))
+    draw_line(ax, p1, p2, linewidth=linewidth, color=color)
+
+def draw_left_parallel_line(ax, i, steps, linewidth=1., color='black'):
+    p1 = project_point((0, i, steps-i))
+    p2 = project_point((steps-i, i, 0))
+    draw_line(ax, p1, p2, linewidth=linewidth, color=color)
+
+def draw_right_parallel_line(ax, i, steps, linewidth=1., color='black'):
+    p1 = project_point((i, steps-i, 0))
+    p2 = project_point((i, 0, steps-i))
+    draw_line(ax, p1, p2, linewidth=linewidth, color=color)
+
+def draw_boundary(scale=1.0, linewidth=2.0, color='black', ax=None):
+    """Plots the boundary of the simplex."""
+    if not ax:
+        ax = pyplot.subplot()
+    scale = float(scale)
+    resize_drawing_canvas(ax, scale)
+    draw_horizontal_line(ax, 0, scale)
+    draw_left_parallel_line(ax, 0, scale)
+    draw_right_parallel_line(ax, 0, scale)
+    return ax
+
+def draw_gridlines(steps=10, linewidth=1., color='black', ax=None):
+    """Plots grid lines excluding boundary."""
+    if not ax:
+        ax = pyplot.subplot()
+    resize_drawing_canvas(ax, steps)
+    ## Draw lines
+    # Parallel to horizontal axis
+    for i in range(1, steps):
+        draw_horizontal_line(ax, i, steps, linewidth=linewidth, color=color)
+
+    # Parallel to left and right axes
+    for i in range(1, steps+1):
+        draw_left_parallel_line(ax, i, steps, linewidth=linewidth, color=color)
+        draw_right_parallel_line(ax, i, steps, linewidth=linewidth, color=color)
+
+## Curve Plotting ##
 
 def plot(t, color=None, linewidth=1.0, ax=None):
     """Plots trajectory points where each point satisfies x + y + z = 1. First argument is a list or numpy array of tuples of length 3."""
@@ -195,14 +200,14 @@ def heatmap(*args, **kwargs):
         return heatmap_hexagonal(*args, **kwargs)        
 
 ## Convenience Functions ##
-    
+
 def plot_heatmap(func, steps=40, boundary=True, cmap_name=None, ax=None):
     """Computes func on heatmap coordinates and plots heatmap. In other words, computes the function on sample points of the simplex (normalized points) and creates a heatmap from the values."""
     d = dict()
     for x1, x2, x3 in simplex_points(steps=steps, boundary=boundary):
         d[(x1, x2)] = func(normalize([x1, x2, x3]))
     heatmap(d, steps, cmap_name=cmap_name, ax=ax)
-    
+
 def plot_multiple(trajectories, linewidth=2.0, ax=None):
     """Plots multiple trajectories and the boundary."""
     if not ax:

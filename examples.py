@@ -60,6 +60,7 @@ def plot_shell(steps=10, fill_color='black'):
 if __name__ == '__main__':
     pyplot.figure()
     ternary.draw_gridlines(20)
+    ternary.draw_boundary(20)
     pyplot.show()
     exit()
     pyplot.figure()
