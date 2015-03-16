@@ -84,7 +84,7 @@ def shannon_entropy(p):
     return -1.*s
 ```
 
-Then we can get a heatmap by:
+Then we can get a heatmap as follows:
 
 ```
 from maplotlib import pyplot
@@ -98,7 +98,7 @@ ax.set_title("Shannon Entropy Heatmap")
 pyplot.show()
 ```
 
-In this case the kwarg boundary indicates whether you wish to evaluate points on the boundary of the partition (which is sometimes undesirable).
+In this case the keyword argument *boundary* indicates whether you wish to evaluate points on the boundary of the partition (which is sometimes undesirable).
 
 ![](https://camo.githubusercontent.com/c8727b30461d45b860cb49bfde4f48e0f76526ff/687474703a2f2f692e696d6775722e636f6d2f6b586d317075462e6a7067)
 
