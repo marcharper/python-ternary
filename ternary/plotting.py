@@ -56,8 +56,6 @@ def draw_line(ax, p1, p2, linewidth=1., color='black'):
     ax.add_line(Line2D((p1[0], p2[0]), (p1[1], p2[1]), linewidth=linewidth, color=color))
 
 def draw_horizontal_line(ax, i, steps, linewidth=1., color='black'):
-    #p1 = project_point((0, i, steps-i))
-    #p2 = project_point((i, 0, steps-i))
     p1 = project_point((0, steps-i, i))
     p2 = project_point((steps-i, 0, i))
     draw_line(ax, p1, p2, linewidth=linewidth, color=color)
@@ -73,7 +71,7 @@ def draw_right_parallel_line(ax, i, steps, linewidth=1., color='black'):
     draw_line(ax, p1, p2, linewidth=linewidth, color=color)
 
 def draw_boundary(scale=1.0, linewidth=2.0, color='black', ax=None):
-    """Plots the boundary of the simplex."""
+    """Plots the boundary of the simplex. Creates and returns matplotlib axis if none given."""
     if not ax:
         ax = pyplot.subplot()
     scale = float(scale)
@@ -84,7 +82,7 @@ def draw_boundary(scale=1.0, linewidth=2.0, color='black', ax=None):
     return ax
 
 def draw_gridlines(steps=10, linewidth=1., color='black', ax=None):
-    """Plots grid lines excluding boundary."""
+    """Plots grid lines excluding boundary. Creates and returns matplotlib axis if none given."""
     if not ax:
         ax = pyplot.subplot()
     resize_drawing_canvas(ax, steps)
@@ -97,6 +95,8 @@ def draw_gridlines(steps=10, linewidth=1., color='black', ax=None):
     for i in range(1, steps+1):
         draw_left_parallel_line(ax, i, steps, linewidth=linewidth, color=color)
         draw_right_parallel_line(ax, i, steps, linewidth=linewidth, color=color)
+
+    return ax
 
 ## Curve Plotting ##
 
@@ -206,7 +206,8 @@ def plot_heatmap(func, steps=40, boundary=True, cmap_name=None, ax=None):
     d = dict()
     for x1, x2, x3 in simplex_points(steps=steps, boundary=boundary):
         d[(x1, x2)] = func(normalize([x1, x2, x3]))
-    heatmap(d, steps, cmap_name=cmap_name, ax=ax)
+    ax = heatmap(d, steps, cmap_name=cmap_name, ax=ax)
+    return ax
 
 def plot_multiple(trajectories, linewidth=2.0, ax=None):
     """Plots multiple trajectories and the boundary."""
