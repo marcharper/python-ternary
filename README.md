@@ -120,6 +120,6 @@ You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/col
 
 # Contributors
 
-- Marc Harper [marcharper]([btweinstein](https://github.com/marcharper)
+- Marc Harper [marcharper](https://github.com/marcharper)
 - Bryan Weinstein [btweinstein](https://github.com/btweinstein) Hexagonal heatmaps
 
