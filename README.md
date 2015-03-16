@@ -1,5 +1,4 @@
-==============
-python-ternary
+# python-ternary
 ==============
 
 This is a plotting library for use with matplotlib to allow ternary plots,
@@ -7,14 +6,12 @@ plots in the two dimensional simplex projected onto a two dimensional plane.
 
 The library provides functions for plotting projected lines, curves (trajectories), and heatmaps.
 
-========================
-Basic Plotting Functions
+# Basic Plotting Functions
 ========================
 
 Most ternary functions expect the simplex to be partititioned into some number of steps. A few functions will do this partitioning for you, but when working with real data or simulation output, you may have partitioned already.
 
-Simplex Boundary and Gridlines
-------------------------------
+## Simplex Boundary and Gridlines
 
 The following code draws a boundary for the simplex and gridlines.
 
@@ -32,8 +29,7 @@ The following code draws a boundary for the simplex and gridlines.
 
 [Image]
 
-Drawing lines
--------------
+## Drawing lines
 
 You can draw individual lines between any two points with draw_line and lines parallel to the axes with draw_horizonal_line, draw_left_parallel_line, and draw_right_parallel_line:
 
@@ -53,8 +49,7 @@ You can draw individual lines between any two points with draw_line and lines pa
 
 The line drawing functions accept the matplotlib keyword arguments of Line2D [http://matplotlib.org/api/lines_api.html]
 
-Curves
-------
+## Curves
 
 Curves can be plotted by specifying the points of the curve, just like matplotlib's plot. Simply use:
 
@@ -64,8 +59,7 @@ Ternary assumes that the points are probability distributions (e.g. x+y+z=1) unl
 
 > ternary.plot(points, ax=ax, steps=100, linewidth=2.0)
 
-Heatmaps
---------
+## Heatmaps
 
 Ternary can plot heatmaps in two ways. Given a function, ternary will evaluate the function at the specified number of steps. For example:
 
