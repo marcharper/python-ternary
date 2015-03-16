@@ -40,37 +40,50 @@ def shannon_entropy(p):
 ## Examples #
 
 def heatmap_example(func, steps=100, boundary=True):
-    ternary.plot_heatmap(func, steps=steps, boundary=boundary)
-    ternary.draw_boundary(scale=steps)
-
-def plot_shell(steps=10, fill_color='black'):
-    """Plot an empty heatmap shell for illustration."""
-    for i in range(steps+1):
-        for j in range(steps - i):
-            vertices = ternary.triangle_coordinates(i,j, alt=False)
-            x,y = ternary.unzip(vertices)
-            pyplot.fill(x, y, facecolor=fill_color, edgecolor='black')
-    for i in range(steps+1):
-        for j in range(steps - i-1):
-            vertices = ternary.triangle_coordinates(i,j, alt=True)
-            x,y = ternary.unzip(vertices)
-            pyplot.fill(x, y, facecolor='w', edgecolor='black')
-    ternary.draw_boundary(scale=steps, linewidth=1)
+    ax = ternary.plot_heatmap(func, steps=steps, boundary=boundary)
+    ternary.draw_boundary(steps, ax=ax, color='black')
+    return ax
 
 if __name__ == '__main__':
+    ## Boundary and Gridlines
     pyplot.figure()
-    plot_shell(16)
+    steps = 30
+    ax = ternary.draw_boundary(steps, color='black')
+    ternary.draw_gridlines(steps, ax=ax, color='black')
+    ax.set_title("Simplex Boundary and Gridlines")
+
+    ## Various lines
     pyplot.figure()
-    heatmap_example(shannon_entropy, steps=100, boundary=True)
+    steps = 30
+    ax = ternary.draw_boundary(steps, linewidth=2., color='black')
+    ternary.draw_horizontal_line(ax, steps, 16)
+    ternary.draw_left_parallel_line(ax, steps, 10, linewidth=2., color='red', linestyle="--")
+    ternary.draw_right_parallel_line(ax, steps, 20, linewidth=3., color='blue')
+    p1 = ternary.project_point((12,8,10))
+    p2 = ternary.project_point((2, 26, 2))
+    ternary.draw_line(ax, p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
+    ax.set_title("Various Lines")
+
+    ## Heatmap of a function
+    pyplot.figure()
+    ax = heatmap_example(shannon_entropy, steps=100, boundary=True)
+    ax.set_title("Shannon Entropy Heatmap")
+
+    ## Heatmap of a function
     pyplot.figure()
     func = dirichlet([6, 10, 13])
-    heatmap_example(func, steps=100, boundary=False)
+    ax = heatmap_example(func, steps=100, boundary=False)
+    ax.set_title("Ternary heatmap of Dirichlet function evaluated on partition")
+
+    ## Sample trajectory plot
     pyplot.figure()
+    ax = ternary.draw_boundary(color='black')
+    ax.set_title("Plotting of sample trajectory data")
     points = []
     with open("curve.txt") as handle:
         for line in handle:
             points.append(map(float, line.split(' ')))
-    ternary.plot(points, linewidth=2.0)
-    ternary.draw_boundary()
+    ternary.plot(points, linewidth=2.0, ax=ax)
+
     pyplot.show()
 

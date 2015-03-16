@@ -2,6 +2,9 @@ import math
 
 import matplotlib
 import matplotlib.pyplot as pyplot
+from matplotlib.lines import Line2D
+
+from hexagonal_heatmap import heatmap_hexagonal
 
 """Matplotlib Ternary plotting utility."""
 
@@ -9,7 +12,12 @@ import matplotlib.pyplot as pyplot
 
 SQRT3OVER2 = math.sqrt(3) / 2.
 
+## Default colormap, other options here: http://www.scipy.org/Cookbook/Matplotlib/Show_colormaps
+DEFAULT_COLOR_MAP = pyplot.get_cmap('jet')
+
+
 ## Helpers ##
+
 def unzip(l):
     return zip(*l)
 
@@ -18,27 +26,15 @@ def normalize(xs):
     s = float(sum(xs))
     return [x / s for x in xs]
 
-## Boundary ##
+## Ternary Projections ##
 
-def draw_boundary(scale=1.0, linewidth=2.0, color='black', ax=None):
-    # Plot boundary of 3-simplex.
-    if not ax:
-        ax = pyplot.subplot()
-    scale = float(scale)
-    # Note that the math.sqrt term is such to prevent noticable roundoff on the top corner point.
-    ax.plot([0, scale, scale / 2, 0], [0, 0, math.sqrt(scale * scale * 3.) / 2, 0], color, linewidth=linewidth)
-    ax.set_ylim((-0.05 * scale, .90 * scale))
-    ax.set_xlim((-0.05 * scale, 1.05 * scale))
-    return ax
-
-
-## Curve Plotting ##
 def project_point(p):
     """Maps (x,y,z) coordinates to planar-simplex."""
     a = p[0]
     b = p[1]
     c = p[2]
-    x = 0.5 * (2 * b + c)
+    #x = 0.5 * (2 * b + c)
+    x = b + c/2.
     y = SQRT3OVER2 * c
     return (x, y)
 
@@ -53,16 +49,67 @@ def project(s):
     except IndexError:  # for numpy arrays
         return project_point(s)
 
-def plot(t, color=None, linewidth=1.0, ax=None):
-    """Plots trajectory points where each point satisfies x + y + z = 1.
-    First argument is a list or numpy array of tuples of length 3."""
+## Boundary, Gridlines, Sizing ##
+
+def resize_drawing_canvas(ax, scale):
+    """Makes sure the drawing surface is large enough to display projected content."""
+    ax.set_ylim((-0.05 * scale, .90 * scale))
+    ax.set_xlim((-0.05 * scale, 1.05 * scale))
+
+def draw_line(ax, p1, p2, **kwargs):
+    ax.add_line(Line2D((p1[0], p2[0]), (p1[1], p2[1]), **kwargs))
+
+def draw_horizontal_line(ax, steps, i,   **kwargs):
+    p1 = project_point((0, steps-i, i))
+    p2 = project_point((steps-i, 0, i))
+    draw_line(ax, p1, p2, **kwargs)
+
+def draw_left_parallel_line(ax, steps, i,  **kwargs):
+    p1 = project_point((0, i, steps-i))
+    p2 = project_point((steps-i, i, 0))
+    draw_line(ax, p1, p2, **kwargs)
+
+def draw_right_parallel_line(ax, steps, i, **kwargs):
+    p1 = project_point((i, steps-i, 0))
+    p2 = project_point((i, 0, steps-i))
+    draw_line(ax, p1, p2, **kwargs)
+
+def draw_boundary(scale=1.0, ax=None, **kwargs):
+    """Plots the boundary of the simplex. Creates and returns matplotlib axis if none given."""
+    if not ax:
+        ax = pyplot.subplot()
+    scale = float(scale)
+    resize_drawing_canvas(ax, scale)
+    draw_horizontal_line(ax, scale, 0, **kwargs)
+    draw_left_parallel_line(ax, scale, 0, **kwargs)
+    draw_right_parallel_line(ax, scale, 0, **kwargs)
+    return ax
+
+def draw_gridlines(steps=10, ax=None, **kwargs):
+    """Plots grid lines excluding boundary. Creates and returns matplotlib axis if none given."""
+    if not ax:
+        ax = pyplot.subplot()
+    resize_drawing_canvas(ax, steps)
+    ## Draw lines
+    # Parallel to horizontal axis
+    for i in range(1, steps):
+        draw_horizontal_line(ax, steps, i, **kwargs)
+
+    # Parallel to left and right axes
+    for i in range(1, steps+1):
+        draw_left_parallel_line(ax, steps, i, **kwargs)
+        draw_right_parallel_line(ax, steps, i, **kwargs)
+
+    return ax
+
+## Curve Plotting ##
+
+def plot(t, steps=1., ax=None, **kwargs):
+    """Plots trajectory points where each point satisfies x + y + z = steps. First argument is a list or numpy array of tuples of length 3."""
     if not ax:
         ax = pyplot.subplot()
     xs, ys = project(t)
-    if color:
-        ax.plot(xs, ys, c=color, linewidth=linewidth)
-    else:
-        ax.plot(xs, ys, linewidth=linewidth)
+    ax.plot(xs, ys, **kwargs)
     return ax
 
 
@@ -103,19 +150,72 @@ def triangle_coordinates(i, j, alt=False):
                 (i / 2. + j + 0.5, (i + 1) * SQRT3OVER2)]
     else:
         # Alt refers to the inner triangles not covered by the default case
-        return [(i / 2. + j + 1, i * SQRT3OVER2), (i / 2. + j + 1.5, (i + 1) * SQRT3OVER2),
-                (i / 2. + j + 0.5, (i + 1) * SQRT3OVER2)]
+        return [(i/2. + j + 1, i * SQRT3OVER2), (i/2. + j + 1.5, (i + 1) * SQRT3OVER2), (i/2. + j + 0.5, (i + 1) * SQRT3OVER2)]
+
+def heatmap_triangular(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
+    """Plots values in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = steps = i + j + k."""
+    if not ax:
+        ax = pyplot.subplot()
+    if not cmap_name:
+        cmap = DEFAULT_COLOR_MAP
+    else:
+        cmap = pyplot.get_cmap(cmap_name)
+    a = min(d.values())
+    b = max(d.values())
+    # Color data triangles.
+    for k, v in d.items():
+        i, j = k
+        vertices = triangle_coordinates(i,j)
+        x,y = unzip(vertices)
+        color = colormapper(d[i,j],a,b,cmap=cmap)
+        ax.fill(x, y, facecolor=color, edgecolor=color)
+    # Color smoothing triangles.
+    offset = 0
+    if not boundary:
+        offset = 1
+    for i in range(offset, steps+1-offset):
+        for j in range(offset, steps -i -offset):
+            try:
+                alt_color = (d[i,j] + d[i, j + 1] + d[i + 1, j])/3.
+                color = colormapper(alt_color, a, b, cmap=cmap)
+                vertices = triangle_coordinates(i,j, alt=True)
+                x,y = unzip(vertices)
+                pyplot.fill(x, y, facecolor=color, edgecolor=color)
+            except KeyError:
+                # Allow for some portions to have no color, such as the boundary
+                pass
+    # Colorbar hack
+    # http://stackoverflow.com/questions/8342549/matplotlib-add-colorbar-to-a-sequence-of-line-plots
+    sm = pyplot.cm.ScalarMappable(cmap=cmap, norm=pyplot.Normalize(vmin=a, vmax=b))
+    # Fake up the array of the scalar mappable. Urgh...
+    sm._A = []
+    cb = pyplot.colorbar(sm, ax=ax, format='%.3f')
+    if scientific:
+        cb.formatter = matplotlib.ticker.ScalarFormatter()
+        cb.formatter.set_powerlimits((0, 0))
+        cb.update_ticks()
+    return ax
+
+def heatmap(*args, **kwargs):
+    try:
+        style = kwargs['style']
+    except KeyError:
+        style = "triangular"
+    style = style.lower()
+    if style.startswith('tri'):
+        return heatmap_triangular(*args, **kwargs)
+    if style.startswith('hex'):
+        return heatmap_hexagonal(*args, **kwargs)
 
 ## Convenience Functions ##
 
-def plot_heatmap(func, steps=40, boundary=True, cmap_name=None, ax=None, **kwargs):
-    """Computes func on heatmap coordinates and plots heatmap. In other words, computes the function on sample points
-    of the simplex (normalized points) and creates a heatmap from the values."""
+def plot_heatmap(func, steps=40, boundary=True, cmap_name=None, ax=None):
+    """Computes func on heatmap coordinates and plots heatmap. In other words, computes the function on sample points of the simplex (normalized points) and creates a heatmap from the values."""
     d = dict()
     for x1, x2, x3 in simplex_points(steps=steps, boundary=boundary):
         d[(x1, x2)] = func(normalize([x1, x2, x3]))
-    heatmap(d, steps, cmap_name=cmap_name, ax=ax, **kwargs)
-
+    ax = heatmap(d, steps, cmap_name=cmap_name, ax=ax)
+    return ax
 
 def plot_multiple(trajectories, linewidth=2.0, ax=None):
     """Plots multiple trajectories and the boundary."""
