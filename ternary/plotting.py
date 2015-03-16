@@ -60,7 +60,6 @@ def draw_gridlines(steps=10, linewidth=1., color='black', ax=None):
         p2 = project_point((i, 0, steps-i))
         ax.add_line(Line2D((p1[0], p2[0]), (p1[1], p2[1]), linewidth=linewidth, color=color))
 
-
 ## Curve Plotting ##
 def project_point(p):
     """Maps (x,y,z) coordinates to planar-simplex."""
@@ -126,7 +125,7 @@ def triangle_coordinates(i, j, alt=False):
         # Alt refers to the inner triangles not covered by the default case
         return [(i/2. + j + 1, i * SQRT3OVER2), (i/2. + j + 1.5, (i + 1) * SQRT3OVER2), (i/2. + j + 0.5, (i + 1) * SQRT3OVER2)]
 
-def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
+def heatmap_triangular(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
     """Plots values in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = steps = i + j + k."""
     if not ax:
         ax = pyplot.subplot()
@@ -169,6 +168,17 @@ def heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
         cb.formatter.set_powerlimits((0, 0))
         cb.update_ticks()
     return ax
+
+def heatmap(*args, **kwargs):
+    try:
+        style = kwargs['style']
+    except KeyError:
+        style = "triangular"
+    style = style.lower()
+    if style.startswith('tri'):
+        return heatmap_triangular(*args, **kwargs)
+    if style.startswith('hex'):
+        return heatmap_hexagonal(*args, **kwargs)        
 
 ## Convenience Functions ##
     
