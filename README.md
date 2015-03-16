@@ -33,19 +33,19 @@ pyplot.show()
 You can draw individual lines between any two points with draw_line and lines parallel to the axes with draw_horizonal_line, draw_left_parallel_line, and draw_right_parallel_line:
 
 ```
-> from maplotlib import pyplot
->
-> import ternary
-> steps = 30
->
-> ax = ternary.draw_boundary(steps)
-> ternary.draw_horizontal_line(ax, steps, 10)
-> ternary.draw_left_parallel_line(ax, steps, 15, linewidth=2., color='red')
-> ternary.draw_right_parallel_line(ax, steps, 15, linewidth=3., color='blue')
->
-> ax.set_title("Various Lines")
->
-> pyplot.show()
+from maplotlib import pyplot
+
+import ternary
+steps = 30
+
+ax = ternary.draw_boundary(steps)
+ternary.draw_horizontal_line(ax, steps, 10)
+ternary.draw_left_parallel_line(ax, steps, 15, linewidth=2., color='red')
+ternary.draw_right_parallel_line(ax, steps, 15, linewidth=3., color='blue')
+
+ax.set_title("Various Lines")
+
+pyplot.show()
 ```
 
 The line drawing functions accept the matplotlib keyword arguments of Line2D [http://matplotlib.org/api/lines_api.html]
@@ -57,13 +57,13 @@ The line drawing functions accept the matplotlib keyword arguments of Line2D [ht
 Curves can be plotted by specifying the points of the curve, just like matplotlib's plot. Simply use:
 
 ```
-> ternary.plot(points)
+ternary.plot(points)
 ```
 
 Points is a list of tuples or numpy arrays, e.g. [(0.5, 0.25, 0.25), (1./3, 1./3, 1//3)]. Ternary assumes that the points are probability distributions (e.g. x+y+z=1) unless you specify otherwise. Again you can specify axes and line options:
 
 ```
-> ternary.plot(points, ax=ax, steps=100, linewidth=2.0)
+ternary.plot(points, ax=ax, steps=100, linewidth=2.0)
 ```
 
 ![](https://camo.githubusercontent.com/023639b15fbdf421df2462bc5eed646c326be152/687474703a2f2f692e696d6775722e636f6d2f687753524439372e6a7067)
@@ -73,29 +73,29 @@ Points is a list of tuples or numpy arrays, e.g. [(0.5, 0.25, 0.25), (1./3, 1./3
 Ternary can plot heatmaps in two ways. Given a function, ternary will evaluate the function at the specified number of steps. For example:
 
 ```
-> def shannon_entropy(p):
->    """Computes the Shannon Entropy at a distribution in the simplex."""
->    s = 0.
->    for i in range(len(p)):
->        try:
->            s += p[i] * math.log(p[i])
->        except ValueError:
->            continue
->    return -1.*s
+def shannon_entropy(p):
+    """Computes the Shannon Entropy at a distribution in the simplex."""
+    s = 0.
+    for i in range(len(p)):
+        try:
+            s += p[i] * math.log(p[i])
+        except ValueError:
+            continue
+    return -1.*s
 ```
 
 Then we can get a heatmap by:
 
 ```
-> from maplotlib import pyplot
->
-> import ternary
-> pyplot.figure()
-> ax = ternary.plot_heatmap(func, steps=steps, boundary=True)
-> ternary.draw_boundary(steps, ax=ax)
-> ax.set_title("Shannon Entropy Heatmap")
->
-> pyplot.show()
+from maplotlib import pyplot
+
+import ternary
+pyplot.figure()
+ax = ternary.plot_heatmap(func, steps=steps, boundary=True)
+ternary.draw_boundary(steps, ax=ax)
+ax.set_title("Shannon Entropy Heatmap")
+
+pyplot.show()
 ```
 
 In this case the kwarg boundary indicates whether you wish to evaluate points on the boundary of the partition (which is sometimes undesirable).
@@ -105,7 +105,7 @@ In this case the kwarg boundary indicates whether you wish to evaluate points on
 Ternary can also take a dictionary mapping (x,y) to a float as input for a heatmap, using the function
 
 ```
-> ternary.heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False)
+ternary.heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False)
 ```
 
 ![](https://camo.githubusercontent.com/30fb63ec53deb0fda2c892c0732a97620699500b/687474703a2f2f692e696d6775722e636f6d2f64555a6b3355302e6a7067)
