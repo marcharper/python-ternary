@@ -52,36 +52,36 @@ def resize_drawing_canvas(ax, scale):
     ax.set_ylim((-0.05 * scale, .90 * scale))
     ax.set_xlim((-0.05 * scale, 1.05 * scale))
 
-def draw_line(ax, p1, p2, linewidth=1., color='black'):
-    ax.add_line(Line2D((p1[0], p2[0]), (p1[1], p2[1]), linewidth=linewidth, color=color))
+def draw_line(ax, p1, p2, **kwargs):
+    ax.add_line(Line2D((p1[0], p2[0]), (p1[1], p2[1]), **kwargs))
 
-def draw_horizontal_line(ax, i, steps, linewidth=1., color='black'):
+def draw_horizontal_line(ax, steps, i,   **kwargs):
     p1 = project_point((0, steps-i, i))
     p2 = project_point((steps-i, 0, i))
-    draw_line(ax, p1, p2, linewidth=linewidth, color=color)
+    draw_line(ax, p1, p2, **kwargs)
 
-def draw_left_parallel_line(ax, i, steps, linewidth=1., color='black'):
+def draw_left_parallel_line(ax, steps, i,  **kwargs):
     p1 = project_point((0, i, steps-i))
     p2 = project_point((steps-i, i, 0))
-    draw_line(ax, p1, p2, linewidth=linewidth, color=color)
+    draw_line(ax, p1, p2, **kwargs)
 
-def draw_right_parallel_line(ax, i, steps, linewidth=1., color='black'):
+def draw_right_parallel_line(ax, steps, i, **kwargs):
     p1 = project_point((i, steps-i, 0))
     p2 = project_point((i, 0, steps-i))
-    draw_line(ax, p1, p2, linewidth=linewidth, color=color)
+    draw_line(ax, p1, p2, **kwargs)
 
-def draw_boundary(scale=1.0, linewidth=2.0, color='black', ax=None):
+def draw_boundary(scale=1.0, ax=None, **kwargs):
     """Plots the boundary of the simplex. Creates and returns matplotlib axis if none given."""
     if not ax:
         ax = pyplot.subplot()
     scale = float(scale)
     resize_drawing_canvas(ax, scale)
-    draw_horizontal_line(ax, 0, scale)
-    draw_left_parallel_line(ax, 0, scale)
-    draw_right_parallel_line(ax, 0, scale)
+    draw_horizontal_line(ax, scale, 0, **kwargs)
+    draw_left_parallel_line(ax, scale, 0, **kwargs)
+    draw_right_parallel_line(ax, scale, 0, **kwargs)
     return ax
 
-def draw_gridlines(steps=10, linewidth=1., color='black', ax=None):
+def draw_gridlines(steps=10, ax=None, **kwargs):
     """Plots grid lines excluding boundary. Creates and returns matplotlib axis if none given."""
     if not ax:
         ax = pyplot.subplot()
@@ -89,26 +89,23 @@ def draw_gridlines(steps=10, linewidth=1., color='black', ax=None):
     ## Draw lines
     # Parallel to horizontal axis
     for i in range(1, steps):
-        draw_horizontal_line(ax, i, steps, linewidth=linewidth, color=color)
+        draw_horizontal_line(ax, steps, i, **kwargs)
 
     # Parallel to left and right axes
     for i in range(1, steps+1):
-        draw_left_parallel_line(ax, i, steps, linewidth=linewidth, color=color)
-        draw_right_parallel_line(ax, i, steps, linewidth=linewidth, color=color)
+        draw_left_parallel_line(ax, steps, i, **kwargs)
+        draw_right_parallel_line(ax, steps, i, **kwargs)
 
     return ax
 
 ## Curve Plotting ##
 
-def plot(t, color=None, linewidth=1.0, ax=None):
-    """Plots trajectory points where each point satisfies x + y + z = 1. First argument is a list or numpy array of tuples of length 3."""
+def plot(t, steps=1., ax=None, **kwargs):
+    """Plots trajectory points where each point satisfies x + y + z = steps. First argument is a list or numpy array of tuples of length 3."""
     if not ax:
         ax = pyplot.subplot()
     xs, ys = project(t)
-    if color:
-        ax.plot(xs, ys, c=color, linewidth=linewidth)
-    else:
-        ax.plot(xs, ys, linewidth=linewidth)
+    ax.plot(xs, ys, **kwargs)
     return ax
 
 ## Heatmaps##
