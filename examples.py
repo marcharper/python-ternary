@@ -59,7 +59,7 @@ def plot_shell(steps=10, fill_color='black'):
 
 if __name__ == '__main__':
     pyplot.figure()
-    plot_shell(16)
+    ternary.draw_gridlines(20)
     pyplot.figure()
     heatmap_example(shannon_entropy, steps=100, boundary=True)
     pyplot.figure()
