@@ -39,8 +39,8 @@ def shannon_entropy(p):
 
 ## Examples #
 
-def heatmap_example(func, steps=100, boundary=True):
-    ax = ternary.plot_heatmap(func, steps=steps, boundary=boundary, style="hexagonal")
+def heatmap_example(func, steps=100, boundary=True, style="triangular"):
+    ax = ternary.plot_heatmap(func, steps=steps, boundary=boundary, style=style)
     ternary.draw_boundary(steps, ax=ax, color='black')
     return ax
 
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     ## Heatmap of a function
     pyplot.figure()
     func = dirichlet([6, 10, 13])
-    ax = heatmap_example(func, steps=100, boundary=False)
+    ax = heatmap_example(func, steps=50, boundary=False, style="hexagonal")
     ax.set_title("Ternary heatmap of Dirichlet function evaluated on partition")
 
     ## Sample trajectory plot
