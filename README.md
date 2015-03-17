@@ -120,6 +120,14 @@ ternary.heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=Fal
 You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/colormaps_reference.html) in the cmap_name argument.
 
 
+# Citation
+
+Please cite as follows:
+
+```
+Marc Harper, Python-ternary: A python library for ternary plots, 2011, available at: https://github.com/marcharper/python-ternary
+```
+
 # Contributors
 
 - Marc Harper [marcharper](https://github.com/marcharper)
