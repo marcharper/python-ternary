@@ -48,7 +48,7 @@ ax.set_title("Various Lines")
 pyplot.show()
 ```
 
-The line drawing functions accept the matplotlib keyword arguments of Line2D [http://matplotlib.org/api/lines_api.html]
+The line drawing functions accept the matplotlib keyword arguments of [Line2D](http://matplotlib.org/api/lines_api.html)
 
 ![](https://camo.githubusercontent.com/1723ffcaa3c843b74b802ba0c0e5a9e8535ea8a7/687474703a2f2f692e696d6775722e636f6d2f49426b454646332e6a7067)
 
