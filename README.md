@@ -68,9 +68,11 @@ ternary.plot(points, ax=ax, steps=100, linewidth=2.0)
 
 ![](https://camo.githubusercontent.com/023639b15fbdf421df2462bc5eed646c326be152/687474703a2f2f692e696d6775722e636f6d2f687753524439372e6a7067)
 
+There are many more examples in [this paper](http://arxiv.org/abs/1210.5539).
+
 ## Heatmaps
 
-Ternary can plot heatmaps in two ways and two styles. Given a function, ternary will evaluate the function at the specified number of steps. The simplex can be split up into triangles or hexagons (thanks to contributor btweinstein for the hexagonal heatmap functionality).
+Ternary can plot heatmaps in two ways and two styles. Given a function, ternary will evaluate the function at the specified number of steps. The simplex can be split up into triangles or hexagons (thanks to contributor btweinstein for the hexagonal heatmap functionality). There is a large set of examples [here](http://people.mbi.ucla.edu/marcharper/stationary_stable/3x3/incentive.html).
 
 For example:
 
@@ -86,7 +88,7 @@ def shannon_entropy(p):
     return -1.*s
 ```
 
-Ee can get a heatmap of this function as follows:
+We can get a heatmap of this function as follows:
 
 ```
 from maplotlib import pyplot
