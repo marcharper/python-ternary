@@ -173,7 +173,7 @@ def alt_value_iterator(d):
             value = None
         yield k, value
 
-def heatmap(d, steps, vmin=None, vmax=None, cmap_name=None, ax=None, scientific=False, style='triangular'):
+def heatmap(d, steps, vmin=None, vmax=None, cmap_name=None, ax=None, scientific=False, style='triangular', colorbar=True):
     """Plots values in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = steps = i + j + k. Uses triangles for heatmap and blends surrounding triangles to fill the unspecified triangles or hexagons, as specified by the style argument (must be either 'triangular' or 'hexagonal'."""
     if not ax:
         ax = pyplot.subplot()
@@ -203,7 +203,8 @@ def heatmap(d, steps, vmin=None, vmax=None, cmap_name=None, ax=None, scientific=
                 x, y = unzip(vertices)
                 ax.fill(x, y, facecolor=color, edgecolor=color)
 
-    colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific)
+    if colorbar:
+        colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific)
     return ax
 
 ## User Convenience Functions ##
