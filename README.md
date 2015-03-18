@@ -95,7 +95,7 @@ from maplotlib import pyplot
 
 import ternary
 pyplot.figure()
-ax = ternary.plot_heatmap(func, steps=steps, boundary=True, style="triangular")
+ax = ternary.function_heatmap(func, steps=steps, boundary=True, style="triangular")
 ternary.draw_boundary(steps, ax=ax)
 ax.set_title("Shannon Entropy Heatmap")
 
@@ -106,10 +106,10 @@ In this case the keyword argument *boundary* indicates whether you wish to evalu
 
 ![](https://camo.githubusercontent.com/c8727b30461d45b860cb49bfde4f48e0f76526ff/687474703a2f2f692e696d6775722e636f6d2f6b586d317075462e6a7067)
 
-Ternary can also take a dictionary mapping (x,y) to a float as input for a heatmap, using the function
+Ternary can also take a dictionary mapping `(i,j) for i + j + k = steps` to a float as input for a heatmap, using the function
 
 ```
-ternary.heatmap(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False)
+ternary.heatmap(d, steps, cmap_name=None, ax=None, scientific=False)
 ```
 
 ![](https://camo.githubusercontent.com/30fb63ec53deb0fda2c892c0732a97620699500b/687474703a2f2f692e696d6775722e636f6d2f64555a6b3355302e6a7067)

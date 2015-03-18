@@ -1,7 +1,7 @@
 import math
 import numpy
 
-## Originally Hexagonal heatmap code submitted by https://github.com/btweinstein
+## Original Hexagonal heatmap code submitted by https://github.com/btweinstein
 
 SQRT3 = math.sqrt(3)
 
@@ -17,8 +17,9 @@ _i_vec_down = numpy.array([1. / 2., -SQRT3 / 2.])
 
 _deltaX_vec = numpy.array([_deltadown[0], 0])
 
-def hex_coordinates(i, j, steps):
+def hexagon_coordinates(i, j, k):
     ij = i_j_to_x_y(i, j)
+    steps = i + j + k
     coords = numpy.array([ij + _alpha, ij + _deltaup, ij + _deltadown, ij - _alpha, ij - _deltaup, ij - _deltadown])
     if i == 0:
         # Along the base of the triangle

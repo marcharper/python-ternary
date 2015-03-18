@@ -4,7 +4,7 @@ import matplotlib
 import matplotlib.pyplot as pyplot
 from matplotlib.lines import Line2D
 
-from hexagonal_heatmap import hex_coordinates
+from hexagonal_heatmap import hexagon_coordinates
 
 """Matplotlib Ternary plotting utility."""
 
@@ -13,7 +13,11 @@ from hexagonal_heatmap import hex_coordinates
 SQRT3OVER2 = math.sqrt(3) / 2.
 
 ## Default colormap, other options here: http://www.scipy.org/Cookbook/Matplotlib/Show_colormaps
-DEFAULT_COLOR_MAP = pyplot.get_cmap('jet')
+DEFAULT_COLOR_MAP_NAME = 'jet'
+
+def get_cmap(cmap_name=DEFAULT_COLOR_MAP_NAME):
+    """Loads a matplotlib colormap if specified or supplies the default."""
+    return pyplot.get_cmap(cmap_name)
 
 ## Helpers ##
 
@@ -29,10 +33,7 @@ def normalize(xs):
 
 def project_point(p):
     """Maps (x,y,z) coordinates to planar-simplex."""
-    a = p[0]
-    b = p[1]
-    c = p[2]
-    #x = 0.5 * (2 * b + c)
+    a, b, c = p
     x = b + c/2.
     y = SQRT3OVER2 * c
     return (x, y)
@@ -110,25 +111,14 @@ def plot(t, steps=1., ax=None, **kwargs):
     ax.plot(xs, ys, **kwargs)
     return ax
 
-
 ## Heatmaps##
 
-def simplex_points(steps=100, boundary=True):
-    """Systematically iterate through a lattice of points on the 2 dimensional
-    simplex."""
-    start = 0
-    if not boundary:
-        start = 1
-    for x1 in range(start, steps + (1 - start)):
-        for x2 in range(start, steps + (1 - start) - x1):
-            x3 = steps - x1 - x2
-            yield (x1, x2, x3)
-
+# Matplotlib Colormapping
 
 def colormapper(x, a=0, b=1, cmap=None):
     """Maps color values to [0,1] and obtains rgba from the given color map for triangle coloring."""
     if not cmap:
-        cmap = DEFAULT_COLOR_MAP
+        cmap = get_cmap()
     if b - a == 0:
         rgba = cmap(0)
     else:
@@ -138,46 +128,10 @@ def colormapper(x, a=0, b=1, cmap=None):
     hex_ = matplotlib.colors.rgb2hex(rgba)
     return hex_
 
-
-def triangle_coordinates(i, j, alt=False):
-    """Returns the ordered coordinates of the triangle vertices for i + j + k = N. Alt refers to the averaged triangles;
-    the ordinary triangles are those with base  parallel to the axis on the lower end (rather than the upper end)"""
-    # N = i + j + k
-    if not alt:
-        return [(i / 2. + j, i * SQRT3OVER2), (i / 2. + j + 1, i * SQRT3OVER2),
-                (i / 2. + j + 0.5, (i + 1) * SQRT3OVER2)]
-    else:
-        # Alt refers to the inner triangles not covered by the default case
-        return [(i/2. + j + 1, i * SQRT3OVER2), (i/2. + j + 1.5, (i + 1) * SQRT3OVER2), (i/2. + j + 0.5, (i + 1) * SQRT3OVER2)]
-
-def heatmap_hexagonal(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False, min_max_scale=None):
-    """Plots values in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = steps = i + j + k. Uses hexagonals for heatmap."""
-    if not ax:
-        ax = pyplot.subplot()
-    if not cmap_name:
-        cmap = DEFAULT_COLOR_MAP
-    else:
-        cmap = pyplot.get_cmap(cmap_name)
-    if min_max_scale is None:
-        a = min(d.values())
-        b = max(d.values())
-    else:
-        a = min_max_scale[0]
-        b = min_max_scale[1]
-    # Color data triangles.
-
-    for k, v in d.items():
-        i, j = k
-        vertices = hex_coordinates(i, j, steps)
-        if vertices is not None:
-            x, y = unzip(vertices)
-            color = colormapper(d[i, j], a, b, cmap=cmap)
-            ax.fill(x, y, facecolor=color, edgecolor=color)
-
-    # Colorbar hack
+def colorbar_hack(ax, vmin, vmax, cmap, scientific=False):
+    """Colorbar hack to insert colorbar on ternary plot."""
     # http://stackoverflow.com/questions/8342549/matplotlib-add-colorbar-to-a-sequence-of-line-plots
-    sm = pyplot.cm.ScalarMappable(cmap=cmap, norm=pyplot.Normalize(vmin=a, vmax=b))
-
+    sm = pyplot.cm.ScalarMappable(cmap=cmap, norm=pyplot.Normalize(vmin=vmin, vmax=vmax))
     # Fake up the array of the scalar mappable. Urgh...
     sm._A = []
     cb = pyplot.colorbar(sm, ax=ax, format='%.4f')
@@ -186,73 +140,80 @@ def heatmap_hexagonal(d, steps, cmap_name=None, boundary=True, ax=None, scientif
         cb.formatter = matplotlib.ticker.ScalarFormatter()
         cb.formatter.set_powerlimits((0, 0))
     cb.update_ticks()
-    return ax
 
-def heatmap_triangular(d, steps, cmap_name=None, boundary=True, ax=None, scientific=False):
-    """Plots values in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = steps = i + j + k. Uses triangles for heatmap and blends surrounding triangles to fill the unspecified triangles."""
+## Triangular Coordinates and Vertices
+
+def simplex_points(steps=100, boundary_points=True):
+    """Systematically iterate through a lattice of points on the 2 dimensional
+    simplex."""
+    start = 0
+    if not boundary_points:
+        start = 1
+    for x1 in range(start, steps + (1 - start)):
+        for x2 in range(start, steps + (1 - start) - x1):
+            x3 = steps - x1 - x2
+            yield (x1, x2, x3)
+
+def triangle_coordinates(i, j, k=None):
+    """Returns the ordered coordinates of the triangle vertices for i + j + k = steps, parallel to the horizontal axis on the lower end"""
+    return [(i / 2. + j, i * SQRT3OVER2), (i / 2. + j + 1, i * SQRT3OVER2),
+                (i / 2. + j + 0.5, (i + 1) * SQRT3OVER2)]
+
+def alt_triangle_coordinates(i, j, k=None):
+    """Returns the ordered coordinates of the triangle vertices for i + j + k = stepsparallel to the horizontal axis on the upper end (for color blending)"""
+    return [(i/2. + j + 1, i * SQRT3OVER2), (i/2. + j + 1.5, (i + 1) * SQRT3OVER2), (i/2. + j + 0.5, (i + 1) * SQRT3OVER2)]
+
+def alt_value_iterator(d):
+    """Compute the average of the neighboring triangles for smoothing."""
+    for key in d.keys():
+        i, j = key
+        try:
+            value = (d[i,j] + d[i, j + 1] + d[i + 1, j]) / 3.
+        except KeyError:
+            value = None
+        yield k, value
+
+def heatmap(d, steps, vmin=None, vmax=None, cmap_name=None, ax=None, scientific=False, style='triangular'):
+    """Plots values in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = steps = i + j + k. Uses triangles for heatmap and blends surrounding triangles to fill the unspecified triangles or hexagons, as specified by the style argument (must be either 'triangular' or 'hexagonal'."""
     if not ax:
         ax = pyplot.subplot()
-    if not cmap_name:
-        cmap = DEFAULT_COLOR_MAP
+    cmap = get_cmap(cmap_name)
+    if not vmin:
+        vmin = min(d.values())
+    if not vmax:
+        vmax = max(d.values())
+    style = style.lower()
+    if style not in ["triangular", "hexagonal"]:
+        raise ValueError("Heatmap style must be 'triangular' or 'hexagonal'. Default is triangular.")
+
+    #value_identity_function = lambda d,i,j: d[i,j]
+    if style == "hexagonal":
+        mapping_functions = [(hexagon_coordinates, d.items())]
     else:
-        cmap = pyplot.get_cmap(cmap_name)
-    a = min(d.values())
-    b = max(d.values())
-    # Color data triangles.
-    for k, v in d.items():
-        i, j = k
-        vertices = triangle_coordinates(i,j)
-        x,y = unzip(vertices)
-        color = colormapper(d[i,j],a,b,cmap=cmap)
-        ax.fill(x, y, facecolor=color, edgecolor=color)
-    # Color smoothing triangles.
-    offset = 0
-    if not boundary:
-        offset = 1
-    for i in range(offset, steps+1-offset):
-        for j in range(offset, steps -i -offset):
-            try:
-                alt_color = (d[i,j] + d[i, j + 1] + d[i + 1, j])/3.
-                color = colormapper(alt_color, a, b, cmap=cmap)
-                vertices = triangle_coordinates(i,j, alt=True)
-                x,y = unzip(vertices)
-                pyplot.fill(x, y, facecolor=color, edgecolor=color)
-            except KeyError:
-                # Allow for some portions to have no color, such as the boundary
-                pass
-    # Colorbar hack
-    # http://stackoverflow.com/questions/8342549/matplotlib-add-colorbar-to-a-sequence-of-line-plots
-    sm = pyplot.cm.ScalarMappable(cmap=cmap, norm=pyplot.Normalize(vmin=a, vmax=b))
-    # Fake up the array of the scalar mappable. Urgh...
-    sm._A = []
-    cb = pyplot.colorbar(sm, ax=ax, format='%.3f')
-    if scientific:
-        cb.formatter = matplotlib.ticker.ScalarFormatter()
-        cb.formatter.set_powerlimits((0, 0))
-        cb.update_ticks()
+        mapping_functions = [(triangle_coordinates, d.items()), (alt_triangle_coordinates, alt_value_iterator(d))]
+    
+    # Color data triangles or hexagons
+    for vertex_function, iterator in mapping_functions:
+        for key, value in iterator:
+            if value is not None:
+                i, j = key
+                k = steps - i - j
+                vertices = vertex_function(i, j, k)
+                color = colormapper(value, vmin, vmax, cmap=cmap)
+                x, y = unzip(vertices)
+                ax.fill(x, y, facecolor=color, edgecolor=color)
+
+    colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific)
     return ax
 
-def heatmap(*args, **kwargs):
-    try:
-        style = kwargs['style']
-    except KeyError:
-        style = "triangular"
-    finally:
-        del kwargs['style']
-        if style is None:
-            style = "triangular"
-    style = style.lower()
-    if style.startswith('tri'):
-        return heatmap_triangular(*args, **kwargs)
-    if style.startswith('hex'):
-        return heatmap_hexagonal(*args, **kwargs)
+## User Convenience Functions ##
 
-## Convenience Functions ##
-
-def plot_heatmap(func, steps=40, boundary=True, cmap_name=None, ax=None, style=None):
+def function_heatmap(func, steps=40, boundary_points=True, cmap_name=None, ax=None, style=None):
     """Computes func on heatmap coordinates and plots heatmap. In other words, computes the function on sample points of the simplex (normalized points) and creates a heatmap from the values."""
+    if not style:
+        style = "triangular"
     d = dict()
-    for x1, x2, x3 in simplex_points(steps=steps, boundary=boundary):
+    for x1, x2, x3 in simplex_points(steps=steps, boundary_points=boundary_points):
         d[(x1, x2)] = func(normalize([x1, x2, x3]))
     ax = heatmap(d, steps, cmap_name=cmap_name, ax=ax, style=style)
     return ax

@@ -37,13 +37,6 @@ def shannon_entropy(p):
             continue
     return -1.*s
 
-## Examples #
-
-def heatmap_example(func, steps=100, boundary=True, style="triangular"):
-    ax = ternary.plot_heatmap(func, steps=steps, boundary=boundary, style=style)
-    ternary.draw_boundary(steps, ax=ax, color='black')
-    return ax
-
 if __name__ == '__main__':
     ## Boundary and Gridlines
     pyplot.figure()
@@ -64,15 +57,19 @@ if __name__ == '__main__':
     ternary.draw_line(ax, p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
     ax.set_title("Various Lines")
 
-    ## Heatmap of a function
+    ### Heatmap of a function
     pyplot.figure()
-    ax = heatmap_example(shannon_entropy, steps=100, boundary=True)
+    steps = 50
+    ax = ternary.function_heatmap(shannon_entropy, steps=steps, boundary_points=True)
+    ternary.draw_boundary(steps+1, ax=ax, color='black')
     ax.set_title("Shannon Entropy Heatmap")
 
     ## Heatmap of a function
     pyplot.figure()
+    steps = 50
     func = dirichlet([6, 10, 13])
-    ax = heatmap_example(func, steps=50, boundary=False, style="hexagonal")
+    ax = ternary.function_heatmap(func, steps=steps, boundary_points=False, style="hexagonal")
+    ternary.draw_boundary(steps, ax=ax, color='black')
     ax.set_title("Ternary heatmap of Dirichlet function evaluated on partition")
 
     ## Sample trajectory plot
