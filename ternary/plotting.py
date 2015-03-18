@@ -4,11 +4,11 @@ import matplotlib
 import matplotlib.pyplot as pyplot
 from matplotlib.lines import Line2D
 
-from hexagonal_heatmap import hexagon_coordinates
+from hexagonal import hexagon_coordinates
 
 """Matplotlib Ternary plotting utility."""
 
-# # Constants ##
+## Constants ##
 
 SQRT3OVER2 = math.sqrt(3) / 2.
 
@@ -93,12 +93,10 @@ def draw_gridlines(steps=10, ax=None, **kwargs):
     # Parallel to horizontal axis
     for i in range(1, steps):
         draw_horizontal_line(ax, steps, i, **kwargs)
-
     # Parallel to left and right axes
     for i in range(1, steps+1):
         draw_left_parallel_line(ax, steps, i, **kwargs)
         draw_right_parallel_line(ax, steps, i, **kwargs)
-
     return ax
 
 ## Curve Plotting ##
@@ -141,7 +139,7 @@ def colorbar_hack(ax, vmin, vmax, cmap, scientific=False):
         cb.formatter.set_powerlimits((0, 0))
     cb.update_ticks()
 
-## Triangular Coordinates and Vertices
+# Triangular Coordinates and Vertices
 
 def simplex_points(steps=100, boundary_points=True):
     """Systematically iterate through a lattice of points on the 2 dimensional
@@ -149,10 +147,10 @@ def simplex_points(steps=100, boundary_points=True):
     start = 0
     if not boundary_points:
         start = 1
-    for x1 in range(start, steps + (1 - start)):
-        for x2 in range(start, steps + (1 - start) - x1):
-            x3 = steps - x1 - x2
-            yield (x1, x2, x3)
+    for i in range(start, steps + (1 - start)):
+        for j in range(start, steps + (1 - start) - i):
+            k = steps - j - k
+            yield (i, j, k)
 
 def triangle_coordinates(i, j, k=None):
     """Returns the ordered coordinates of the triangle vertices for i + j + k = steps, parallel to the horizontal axis on the lower end"""
@@ -186,7 +184,6 @@ def heatmap(d, steps, vmin=None, vmax=None, cmap_name=None, ax=None, scientific=
     if style not in ["triangular", "hexagonal"]:
         raise ValueError("Heatmap style must be 'triangular' or 'hexagonal'. Default is triangular.")
 
-    #value_identity_function = lambda d,i,j: d[i,j]
     if style == "hexagonal":
         mapping_functions = [(hexagon_coordinates, d.items())]
     else:
@@ -200,6 +197,7 @@ def heatmap(d, steps, vmin=None, vmax=None, cmap_name=None, ax=None, scientific=
                 k = steps - i - j
                 vertices = vertex_function(i, j, k)
                 color = colormapper(value, vmin, vmax, cmap=cmap)
+                # Matplotlib wants a list of xs and a list of ys
                 x, y = unzip(vertices)
                 ax.fill(x, y, facecolor=color, edgecolor=color)
 
@@ -209,18 +207,16 @@ def heatmap(d, steps, vmin=None, vmax=None, cmap_name=None, ax=None, scientific=
 
 ## User Convenience Functions ##
 
-def function_heatmap(func, steps=40, boundary_points=True, cmap_name=None, ax=None, style=None):
-    """Computes func on heatmap coordinates and plots heatmap. In other words, computes the function on sample points of the simplex (normalized points) and creates a heatmap from the values."""
-    if not style:
-        style = "triangular"
+def function_heatmap(func, steps=40, boundary_points=True, cmap_name=None, ax=None, style="triangular"):
+    """Computes func on heatmap partition coordinates and plots heatmap. In other words, computes the function on sample points of the simplex (normalized points) and creates a heatmap from the values."""
     d = dict()
-    for x1, x2, x3 in simplex_points(steps=steps, boundary_points=boundary_points):
-        d[(x1, x2)] = func(normalize([x1, x2, x3]))
+    for i, j, k in simplex_points(steps=steps, boundary_points=boundary_points):
+        d[(i, j)] = func(normalize([i, j, k]))
     ax = heatmap(d, steps, cmap_name=cmap_name, ax=ax, style=style)
     return ax
 
 def plot_multiple(trajectories, linewidth=2.0, ax=None):
-    """Plots multiple trajectories and the boundary."""
+    """Plots multiple trajectories and the boundary. Trajectory is a list of lists of tuples (x1, x2, x3) where x1+x2+x3=1"""
     if not ax:
         ax = pyplot.subplot()
     for t in trajectories:
