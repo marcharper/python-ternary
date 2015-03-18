@@ -106,6 +106,8 @@ In this case the keyword argument *boundary* indicates whether you wish to evalu
 
 ![](https://camo.githubusercontent.com/c8727b30461d45b860cb49bfde4f48e0f76526ff/687474703a2f2f692e696d6775722e636f6d2f6b586d317075462e6a7067)
 
+![](https://camo.githubusercontent.com/2e969f070b442d92d1158f4e22e39ec64b397f1b/687474703a2f2f692e696d6775722e636f6d2f79345971776e732e6a7067)
+
 Ternary can also take a dictionary mapping `(i,j) for i + j + k = steps` to a float as input for a heatmap, using the function
 
 ```

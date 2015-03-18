@@ -1,6 +1,7 @@
 import math
 
-from matplotlib import pyplot
+import matplotlib
+from matplotlib import pyplot, gridspec
 from scipy import stats
 from scipy.special import gamma, gammaln
 
@@ -41,14 +42,15 @@ if __name__ == '__main__':
     ## Boundary and Gridlines
     pyplot.figure()
     steps = 30
-    ax = ternary.draw_boundary(steps, color='black')
+    gs = gridspec.GridSpec(1,2)
+    ax = pyplot.subplot(gs[0,0])
+    ax = ternary.draw_boundary(steps, color='black', ax=ax)
     ternary.draw_gridlines(steps, ax=ax, color='black')
     ax.set_title("Simplex Boundary and Gridlines")
 
     ## Various lines
-    pyplot.figure()
-    steps = 30
-    ax = ternary.draw_boundary(steps, linewidth=2., color='black')
+    ax = pyplot.subplot(gs[0,1])
+    ternary.draw_boundary(steps, linewidth=2., color='black', ax=ax)
     ternary.draw_horizontal_line(ax, steps, 16)
     ternary.draw_left_parallel_line(ax, steps, 10, linewidth=2., color='red', linestyle="--")
     ternary.draw_right_parallel_line(ax, steps, 20, linewidth=3., color='blue')
@@ -57,20 +59,30 @@ if __name__ == '__main__':
     ternary.draw_line(ax, p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
     ax.set_title("Various Lines")
 
-    ### Heatmap of a function
-    pyplot.figure()
-    steps = 50
-    ax = ternary.function_heatmap(shannon_entropy, steps=steps, boundary_points=True)
-    ternary.draw_boundary(steps+1, ax=ax, color='black')
-    ax.set_title("Shannon Entropy Heatmap")
+    ## Heatmap roundup
+    steps = 60
+    for function in [shannon_entropy, dirichlet([4, 8, 13])]:
+        pyplot.figure()
+        gs = gridspec.GridSpec(2,2)
+        ax = pyplot.subplot(gs[0,0])
+        ternary.function_heatmap(function, steps=steps, boundary_points=True, ax=ax)
+        ternary.draw_boundary(steps+1, ax=ax, color='black')
+        ax.set_title("Triangular with Boundary")
 
-    ## Heatmap of a function
-    pyplot.figure()
-    steps = 50
-    func = dirichlet([6, 10, 13])
-    ax = ternary.function_heatmap(func, steps=steps, boundary_points=False, style="hexagonal")
-    ternary.draw_boundary(steps, ax=ax, color='black')
-    ax.set_title("Ternary heatmap of Dirichlet function evaluated on partition")
+        ax = pyplot.subplot(gs[0,1])
+        ternary.function_heatmap(function, steps=steps, boundary_points=False, ax=ax)
+        ternary.draw_boundary(steps+1, ax=ax, color='black')
+        ax.set_title("Triangular without Boundary")
+
+        ax = pyplot.subplot(gs[1,0])
+        ternary.function_heatmap(function, steps=steps, boundary_points=True, ax=ax, style="hexagonal")
+        ternary.draw_boundary(steps, ax=ax, color='black')
+        ax.set_title("Hexagonal with Boundary")
+
+        ax = pyplot.subplot(gs[1,1])
+        ternary.function_heatmap(function, steps=steps, boundary_points=False, ax=ax, style="hexagonal")
+        ternary.draw_boundary(steps, ax=ax, color='black')
+        ax.set_title("Hexagonal without Boundary")
 
     ## Sample trajectory plot
     pyplot.figure()
