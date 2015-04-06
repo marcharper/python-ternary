@@ -14,7 +14,7 @@ Most ternary functions expect the simplex to be partititioned into some number o
 The following code draws a boundary for the simplex and gridlines.
 
 ```
-from maplotlib import pyplot
+from matplotlib import pyplot
 import ternary
 
 steps = 30
@@ -33,7 +33,7 @@ pyplot.show()
 You can draw individual lines between any two points with draw_line and lines parallel to the axes with draw_horizonal_line, draw_left_parallel_line, and draw_right_parallel_line:
 
 ```
-from maplotlib import pyplot
+from matplotlib import pyplot
 
 import ternary
 steps = 30
@@ -91,7 +91,7 @@ def shannon_entropy(p):
 We can get a heatmap of this function as follows:
 
 ```
-from maplotlib import pyplot
+from matplotlib import pyplot
 
 import ternary
 pyplot.figure()
