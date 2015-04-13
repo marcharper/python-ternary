@@ -14,7 +14,7 @@ Most ternary functions expect the simplex to be partititioned into some number o
 The following code draws a boundary for the simplex and gridlines.
 
 ```
-from maplotlib import pyplot
+from matplotlib import pyplot
 import ternary
 
 steps = 30
