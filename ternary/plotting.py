@@ -149,7 +149,7 @@ def simplex_points(steps=100, boundary_points=True):
         start = 1
     for i in range(start, steps + (1 - start)):
         for j in range(start, steps + (1 - start) - i):
-            k = steps - j - k
+            k = steps - i - j
             yield (i, j, k)
 
 def triangle_coordinates(i, j, k=None):
