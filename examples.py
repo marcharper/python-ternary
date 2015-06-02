@@ -38,15 +38,19 @@ def shannon_entropy(p):
             continue
     return -1.*s
 
+def boundary_and_gridlines(ax=None, steps=30, multiple=5, color="black"):
+    ax = ternary.draw_boundary(steps, color=color, ax=ax)
+    ternary.draw_gridlines(steps, multiple=multiple, ax=ax, color=color)
+    ax.set_title("Simplex Boundary and Gridlines")
+    return ax
+
 if __name__ == '__main__':
     ## Boundary and Gridlines
     pyplot.figure()
     steps = 30
     gs = gridspec.GridSpec(1,2)
     ax = pyplot.subplot(gs[0,0])
-    ax = ternary.draw_boundary(steps, color='black', ax=ax)
-    ternary.draw_gridlines(steps, multiple=5, ax=ax, color='black')
-    ax.set_title("Simplex Boundary and Gridlines")
+    boundary_and_gridlines(ax, steps, multiple=5)
 
     ## Various lines
     ax = pyplot.subplot(gs[0,1])
