@@ -109,7 +109,7 @@ def draw_gridlines(steps=10, multiple=None, ax=None, **kwargs):
 
 ## Curve Plotting ##
 
-def plot(t, steps=1., ax=None, **kwargs):
+def plot(t, ax=None, **kwargs):
     """Plots trajectory points where each point satisfies x + y + z = steps. First argument is a list or numpy array of tuples of length 3."""
     if not ax:
         ax = pyplot.subplot()
@@ -211,6 +211,14 @@ def heatmap(d, steps, vmin=None, vmax=None, cmap_name=None, ax=None, scientific=
 
     if colorbar:
         colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific)
+    return ax
+
+def scatter(points, scale=1., ax=None, **kwargs):
+    """Plots trajectory points where each point satisfies x + y + z = steps. First argument is a list or numpy array of tuples of length 3."""
+    if not ax:
+        ax = pyplot.subplot()
+    xs, ys = project(points)
+    ax.scatter(xs, ys, **kwargs)
     return ax
 
 ## User Convenience Functions ##

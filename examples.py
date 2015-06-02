@@ -1,4 +1,5 @@
 import math
+import random
 
 import matplotlib
 from matplotlib import pyplot, gridspec
@@ -58,6 +59,21 @@ if __name__ == '__main__':
     p2 = ternary.project_point((2, 26, 2))
     ternary.draw_line(ax, p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
     ax.set_title("Various Lines")
+
+    # Scatter Plot
+    scale = 40
+    ax = ternary.draw_boundary(scale, color="black")
+    ternary.draw_gridlines(scale, multiple=5, ax=ax, color="black")
+    points = []
+    for i in range(100):
+        x = random.randint(1, scale)
+        y = random.randint(0, scale - x)
+        z = scale - x - y
+        points.append((x,y,z))
+    ternary.scatter(points, scale=scale)
+
+    pyplot.show()
+    exit()
 
     ## Heatmap roundup
     steps = 60

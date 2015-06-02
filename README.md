@@ -72,6 +72,35 @@ ternary.plot(points, ax=ax, steps=100, linewidth=2.0)
 
 There are many more examples in [this paper](http://arxiv.org/abs/1210.5539).
 
+## Scatter Plots
+
+Similarly, ternary can make scatter plots:
+
+```
+from matplotlib import pyplot
+
+import ternary
+scale = 40
+
+# Generate some points
+points = []
+for i in range(100):
+    x = random.randint(1, scale)
+    y = random.randint(0, scale - x)
+    z = scale - x - y
+    points.append((x,y,z))
+
+# Scatter plot
+ax = ternary.draw_boundary(scale, color="black")
+ternary.draw_gridlines(scale, multiple=5, ax=ax, color="black")
+ternary.scatter(points, scale=scale)
+
+pyplot.show()
+
+```
+
+
+
 ## Heatmaps
 
 Ternary can plot heatmaps in two ways and two styles. Given a function, ternary will evaluate the function at the specified number of steps. The simplex can be split up into triangles or hexagons (thanks to contributor btweinstein for the hexagonal heatmap functionality). There is a large set of examples [here](http://people.mbi.ucla.edu/marcharper/stationary_stable/3x3/incentive.html).
