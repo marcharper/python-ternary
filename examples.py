@@ -45,7 +45,7 @@ if __name__ == '__main__':
     gs = gridspec.GridSpec(1,2)
     ax = pyplot.subplot(gs[0,0])
     ax = ternary.draw_boundary(steps, color='black', ax=ax)
-    ternary.draw_gridlines(steps, ax=ax, color='black')
+    ternary.draw_gridlines(steps, multiple=5, ax=ax, color='black')
     ax.set_title("Simplex Boundary and Gridlines")
 
     ## Various lines

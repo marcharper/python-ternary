@@ -84,17 +84,25 @@ def draw_boundary(scale=1.0, ax=None, **kwargs):
     draw_right_parallel_line(ax, scale, 0, **kwargs)
     return ax
 
-def draw_gridlines(steps=10, ax=None, **kwargs):
+def draw_gridlines(steps=10, multiple=None, ax=None, **kwargs):
     """Plots grid lines excluding boundary. Creates and returns matplotlib axis if none given."""
+    if not multiple:
+        multiple = 1
     if not ax:
         ax = pyplot.subplot()
+    if 'linewidth' not in kwargs:
+        kwargs["linewidth"] = 0.5
+    if 'linestyle' not in kwargs:
+        kwargs["linestyle"] = ':'
+    #del kwargs["multiple"]
+    #print kwargs
     resize_drawing_canvas(ax, steps)
     ## Draw lines
     # Parallel to horizontal axis
-    for i in range(1, steps):
+    for i in range(0, steps, multiple):
         draw_horizontal_line(ax, steps, i, **kwargs)
     # Parallel to left and right axes
-    for i in range(1, steps+1):
+    for i in range(0, steps+1, multiple):
         draw_left_parallel_line(ax, steps, i, **kwargs)
         draw_right_parallel_line(ax, steps, i, **kwargs)
     return ax

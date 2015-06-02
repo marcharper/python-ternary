@@ -9,6 +9,8 @@ The library provides functions for plotting projected lines, curves (trajectorie
 
 Most ternary functions expect the simplex to be partititioned into some number of steps. A few functions will do this partitioning for you, but when working with real data or simulation output, you may have partitioned already.
 
+Most drawing functions can take standard matplotlib keyword arguments such as [linestyle](http://matplotlib.org/api/lines_api.html#matplotlib.lines.Line2D.set_linestyle) and linewidth.
+
 ## Simplex Boundary and Gridlines
 
 The following code draws a boundary for the simplex and gridlines.
@@ -121,6 +123,14 @@ ternary.heatmap(d, steps, cmap_name=None, ax=None, scientific=False)
 
 You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/colormaps_reference.html) in the cmap_name argument.
 
+
+# Test
+
+You can run the test suite as follows:
+
+```
+python -m unittest discover ternary/
+```
 
 # Citation
 
