@@ -142,7 +142,7 @@ In this case the keyword argument *boundary* indicates whether you wish to evalu
 Ternary can also take a dictionary mapping `(i,j) for i + j + k = scale` to a float as input for a heatmap, using the function
 
 ```
-ternary.heatmap(d, scale, cmap_name=None, ax=None, scientific=False)
+ternary.heatmap(d, scale, cmap_name=None, ax=None, scientific=True)
 ```
 
 ![](https://camo.githubusercontent.com/30fb63ec53deb0fda2c892c0732a97620699500b/687474703a2f2f692e696d6775722e636f6d2f64555a6b3355302e6a7067)
@@ -158,7 +158,7 @@ You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/col
 You can run the test suite as follows:
 
 ```
-python -m unittest discover ternary/
+python -m unittest discover ternary
 ```
 
 # Citation
