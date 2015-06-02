@@ -28,7 +28,7 @@ ax.set_title("Simplex Boundary and Gridlines")
 pyplot.show()
 ```
 
-![](https://camo.githubusercontent.com/7892a5bc0c1d4023d02e3d9dfe616b9667a77d65/687474703a2f2f692e696d6775722e636f6d2f647074723655412e6a7067)
+![](https://raw.githubusercontent.com/marcharper/python-ternary/5eac62c24ca7b866aa9095cd92fce929e1d751e2/boundary_and_gridlines.png)
 
 ## Drawing lines
 
