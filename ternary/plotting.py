@@ -16,10 +16,6 @@ SQRT3OVER2 = math.sqrt(3) / 2.
 ## Default colormap, other options here: http://www.scipy.org/Cookbook/Matplotlib/Show_colormaps
 DEFAULT_COLOR_MAP_NAME = 'jet'
 
-def get_cmap(cmap_name=DEFAULT_COLOR_MAP_NAME):
-    """Loads a matplotlib colormap if specified or supplies the default."""
-    return pyplot.get_cmap(cmap_name)
-
 ## Helpers ##
 
 def unzip(l):
@@ -32,6 +28,10 @@ def normalize(xs):
         raise ValueError("Cannot normalize list with sum 0")
     return [x / s for x in xs]
 
+def get_cmap(cmap_name=DEFAULT_COLOR_MAP_NAME):
+    """Loads a matplotlib colormap if specified or supplies the default."""
+    return pyplot.get_cmap(cmap_name)
+
 ## Ternary Projections ##
 
 def project_point(p):
@@ -42,7 +42,7 @@ def project_point(p):
     return (x, y)
 
 def project(s):
-    """Maps (x,y,z) coordinates to planar-simplex."""
+    """Maps (x,y,z) coordinates (or a seqeuence of such points) to the planar-simplex."""
     # Is s an appropriate sequence or just a single point?
     try:
         return unzip(map(project_point, s))
@@ -53,7 +53,7 @@ def project(s):
 
 ## Boundary, Gridlines, Sizing ##
 
-def resize_drawing_canvas(ax, scale):
+def resize_drawing_canvas(ax, scale=1.):
     """Makes sure the drawing surface is large enough to display projected content."""
     ax.set_ylim((-0.05 * scale, .90 * scale))
     ax.set_xlim((-0.05 * scale, 1.05 * scale))
@@ -108,6 +108,7 @@ def draw_gridlines(scale=1., multiple=None, ax=None, **kwargs):
     return ax
 
 def clear_matplotlib_ticks(ax, axis="both"):
+    """Clears the default matplotlib axes."""
     if axis.lower() in ["both", "x", "horizontal"]:
         ax.set_xticks([], [])
     if axis.lower() in ["both", "y", "vertical"]:
@@ -124,7 +125,7 @@ def plot(t, ax=None, **kwargs):
     ax.plot(xs, ys, **kwargs)
     return ax
 
-## Heatmaps##
+## Heatmaps ##
 
 # Matplotlib Colormapping
 
@@ -230,19 +231,10 @@ def scatter(points, scale=1., ax=None, **kwargs):
 
 ## User Convenience Functions ##
 
-def function_heatmap(func, scale=40, boundary=True, cmap_name=None, ax=None, style="triangular"):
+def function_heatmap(func, scale=10, boundary=True, cmap_name=None, ax=None, style="triangular"):
     """Computes func on heatmap partition coordinates and plots heatmap. In other words, computes the function on sample points of the simplex (normalized points) and creates a heatmap from the values."""
     d = dict()
     for i, j, k in simplex_points(scale=scale, boundary=boundary):
         d[(i, j)] = func(normalize([i, j, k]))
     ax = heatmap(d, scale, cmap_name=cmap_name, ax=ax, style=style)
-    return ax
-
-def plot_multiple(trajectories, linewidth=2.0, ax=None):
-    """Plots multiple trajectories and the boundary. Trajectory is a list of lists of tuples (x1, x2, x3) where x1+x2+x3=1"""
-    if not ax:
-        ax = pyplot.subplot()
-    for t in trajectories:
-        plot(t, linewidth=linewidth, ax=ax)
-    draw_boundary(ax=ax)
     return ax
