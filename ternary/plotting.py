@@ -156,11 +156,11 @@ def colorbar_hack(ax, vmin, vmax, cmap, scientific=False):
 
 # Triangular Coordinates and Vertices
 
-def simplex_points(scale=100, boundary_points=True):
+def simplex_points(scale=100, boundary=True):
     """Systematically iterate through a lattice of points on the 2 dimensional
     simplex."""
     start = 0
-    if not boundary_points:
+    if not boundary:
         start = 1
     for i in range(start, scale + (1 - start)):
         for j in range(start, scale + (1 - start) - i):
@@ -230,10 +230,10 @@ def scatter(points, scale=1., ax=None, **kwargs):
 
 ## User Convenience Functions ##
 
-def function_heatmap(func, scale=40, boundary_points=True, cmap_name=None, ax=None, style="triangular"):
+def function_heatmap(func, scale=40, boundary=True, cmap_name=None, ax=None, style="triangular"):
     """Computes func on heatmap partition coordinates and plots heatmap. In other words, computes the function on sample points of the simplex (normalized points) and creates a heatmap from the values."""
     d = dict()
-    for i, j, k in simplex_points(scale=scale, boundary_points=boundary_points):
+    for i, j, k in simplex_points(scale=scale, boundary=boundary):
         d[(i, j)] = func(normalize([i, j, k]))
     ax = heatmap(d, scale, cmap_name=cmap_name, ax=ax, style=style)
     return ax
