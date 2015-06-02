@@ -65,7 +65,7 @@ ternary.plot(points)
 Points is a list of tuples or numpy arrays, e.g. [(0.5, 0.25, 0.25), (1./3, 1./3, 1//3)]. Ternary assumes that the points are probability distributions (e.g. x+y+z=1) unless you specify otherwise. Again you can specify axes and line options:
 
 ```
-ternary.plot(points, ax=ax, scale=100, linewidth=2.0)
+ternary.plot(points, ax=ax, scale=1., linewidth=2.0)
 ```
 
 ![](https://raw.githubusercontent.com/marcharper/python-ternary/images/trajectory.png)
