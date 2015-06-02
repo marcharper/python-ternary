@@ -107,6 +107,13 @@ def draw_gridlines(scale=1., multiple=None, ax=None, **kwargs):
             draw_right_parallel_line(ax, scale, i, **kwargs)
     return ax
 
+def clear_matplotlib_ticks(ax, axis="both"):
+    if axis.lower() in ["both", "x", "horizontal"]:
+        ax.set_xticks([], [])
+    if axis.lower() in ["both", "y", "vertical"]:
+        ax.set_yticks([], [])
+    pass
+
 ## Curve Plotting ##
 
 def plot(t, ax=None, **kwargs):

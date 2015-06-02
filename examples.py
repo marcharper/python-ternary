@@ -65,6 +65,7 @@ if __name__ == '__main__':
     ## Various lines
     ax = pyplot.subplot(gs[0,1])
     various_lines(ax, scale)
+    ternary.clear_matplotlib_ticks(ax)
     ax.set_title("Various Lines")
 
     # Scatter Plot
