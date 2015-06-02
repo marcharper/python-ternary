@@ -13,45 +13,45 @@ class FunctionCases(unittest.TestCase):
         self.assertRaises(ValueError, plotting.normalize, [0,0,0])
 
     def test_simplex_points(self):
-        steps = 0
+        scale = 0
         expected = [(0, 0, 0)]
-        points = list(plotting.simplex_points(steps=steps))
+        points = list(plotting.simplex_points(scale=scale))
         self.assertEqual(points, expected)
 
-        steps = 1
+        scale = 1
         expected = [(0, 0, 1), (0, 1, 0), (1, 0, 0)]
-        points = list(plotting.simplex_points(steps=steps))
+        points = list(plotting.simplex_points(scale=scale))
         self.assertEqual(points, expected)
 
-        steps = 2
+        scale = 2
         expected = [(0, 0, 2), (0, 1, 1), (0, 2, 0), (1, 0, 1), (1, 1, 0), (2, 0, 0)]
-        points = list(plotting.simplex_points(steps=steps))
+        points = list(plotting.simplex_points(scale=scale))
         self.assertEqual(points, expected)
 
-        steps = 3
+        scale = 3
         expected = [(0, 0, 3), (0, 1, 2), (0, 2, 1), (0, 3, 0), (1, 0, 2), (1, 1, 1), (1, 2, 0), (2, 0, 1), (2, 1, 0), (3, 0, 0)]
-        points = list(plotting.simplex_points(steps=steps))
+        points = list(plotting.simplex_points(scale=scale))
         self.assertEqual(points, expected)
 
     def test_simplex_points_without_boundary(self):
-        steps = 0
+        scale = 0
         expected = []
-        points = list(plotting.simplex_points(steps=steps, boundary_points=False))
+        points = list(plotting.simplex_points(scale=scale, boundary_points=False))
         self.assertEqual(points, expected)
 
-        steps = 1
+        scale = 1
         expected = []
-        points = list(plotting.simplex_points(steps=steps, boundary_points=False))
+        points = list(plotting.simplex_points(scale=scale, boundary_points=False))
         self.assertEqual(points, expected)
 
-        steps = 2
+        scale = 2
         expected = []
-        points = list(plotting.simplex_points(steps=steps, boundary_points=False))
+        points = list(plotting.simplex_points(scale=scale, boundary_points=False))
         self.assertEqual(points, expected)
 
-        steps = 3
+        scale = 3
         expected = [(1, 1, 1)]
-        points = list(plotting.simplex_points(steps=steps, boundary_points=False))
+        points = list(plotting.simplex_points(scale=scale, boundary_points=False))
         self.assertEqual(points, expected)
 
     def test_project_point(self):

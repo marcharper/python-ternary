@@ -60,19 +60,19 @@ def resize_drawing_canvas(ax, scale):
 def draw_line(ax, p1, p2, **kwargs):
     ax.add_line(Line2D((p1[0], p2[0]), (p1[1], p2[1]), **kwargs))
 
-def draw_horizontal_line(ax, steps, i,   **kwargs):
-    p1 = project_point((0, steps-i, i))
-    p2 = project_point((steps-i, 0, i))
+def draw_horizontal_line(ax, scale, i,   **kwargs):
+    p1 = project_point((0, scale-i, i))
+    p2 = project_point((scale-i, 0, i))
     draw_line(ax, p1, p2, **kwargs)
 
-def draw_left_parallel_line(ax, steps, i,  **kwargs):
-    p1 = project_point((0, i, steps-i))
-    p2 = project_point((steps-i, i, 0))
+def draw_left_parallel_line(ax, scale, i,  **kwargs):
+    p1 = project_point((0, i, scale-i))
+    p2 = project_point((scale-i, i, 0))
     draw_line(ax, p1, p2, **kwargs)
 
-def draw_right_parallel_line(ax, steps, i, **kwargs):
-    p1 = project_point((i, steps-i, 0))
-    p2 = project_point((i, 0, steps-i))
+def draw_right_parallel_line(ax, scale, i, **kwargs):
+    p1 = project_point((i, scale-i, 0))
+    p2 = project_point((i, 0, scale-i))
     draw_line(ax, p1, p2, **kwargs)
 
 def draw_boundary(scale=1.0, ax=None, **kwargs):
@@ -86,7 +86,7 @@ def draw_boundary(scale=1.0, ax=None, **kwargs):
     draw_right_parallel_line(ax, scale, 0, **kwargs)
     return ax
 
-def draw_gridlines(steps=10, multiple=None, ax=None, **kwargs):
+def draw_gridlines(scale=10, multiple=None, ax=None, **kwargs):
     """Plots grid lines excluding boundary. Creates and returns matplotlib axis if none given."""
     if not multiple:
         multiple = 1
@@ -98,21 +98,21 @@ def draw_gridlines(steps=10, multiple=None, ax=None, **kwargs):
         kwargs["linestyle"] = ':'
     #del kwargs["multiple"]
     #print kwargs
-    resize_drawing_canvas(ax, steps)
+    resize_drawing_canvas(ax, scale)
     ## Draw lines
     # Parallel to horizontal axis
-    for i in range(0, steps, multiple):
-        draw_horizontal_line(ax, steps, i, **kwargs)
+    for i in range(0, scale, multiple):
+        draw_horizontal_line(ax, scale, i, **kwargs)
     # Parallel to left and right axes
-    for i in range(0, steps+1, multiple):
-        draw_left_parallel_line(ax, steps, i, **kwargs)
-        draw_right_parallel_line(ax, steps, i, **kwargs)
+    for i in range(0, scale+1, multiple):
+        draw_left_parallel_line(ax, scale, i, **kwargs)
+        draw_right_parallel_line(ax, scale, i, **kwargs)
     return ax
 
 ## Curve Plotting ##
 
 def plot(t, ax=None, **kwargs):
-    """Plots trajectory points where each point satisfies x + y + z = steps. First argument is a list or numpy array of tuples of length 3."""
+    """Plots trajectory points where each point satisfies x + y + z = scale. First argument is a list or numpy array of tuples of length 3."""
     if not ax:
         ax = pyplot.subplot()
     xs, ys = project(t)
@@ -151,24 +151,24 @@ def colorbar_hack(ax, vmin, vmax, cmap, scientific=False):
 
 # Triangular Coordinates and Vertices
 
-def simplex_points(steps=100, boundary_points=True):
+def simplex_points(scale=100, boundary_points=True):
     """Systematically iterate through a lattice of points on the 2 dimensional
     simplex."""
     start = 0
     if not boundary_points:
         start = 1
-    for i in range(start, steps + (1 - start)):
-        for j in range(start, steps + (1 - start) - i):
-            k = steps - i - j
+    for i in range(start, scale + (1 - start)):
+        for j in range(start, scale + (1 - start) - i):
+            k = scale - i - j
             yield (i, j, k)
 
 def triangle_coordinates(i, j, k=None):
-    """Returns the ordered coordinates of the triangle vertices for i + j + k = steps, parallel to the horizontal axis on the lower end"""
+    """Returns the ordered coordinates of the triangle vertices for i + j + k = scale, parallel to the horizontal axis on the lower end"""
     return [(i / 2. + j, i * SQRT3OVER2), (i / 2. + j + 1, i * SQRT3OVER2),
                 (i / 2. + j + 0.5, (i + 1) * SQRT3OVER2)]
 
 def alt_triangle_coordinates(i, j, k=None):
-    """Returns the ordered coordinates of the triangle vertices for i + j + k = stepsparallel to the horizontal axis on the upper end (for color blending)"""
+    """Returns the ordered coordinates of the triangle vertices for i + j + k = scaleparallel to the horizontal axis on the upper end (for color blending)"""
     return [(i/2. + j + 1, i * SQRT3OVER2), (i/2. + j + 1.5, (i + 1) * SQRT3OVER2), (i/2. + j + 0.5, (i + 1) * SQRT3OVER2)]
 
 def alt_value_iterator(d):
@@ -181,8 +181,8 @@ def alt_value_iterator(d):
             value = None
         yield key, value
 
-def heatmap(d, steps, vmin=None, vmax=None, cmap_name=None, ax=None, scientific=False, style='triangular', colorbar=True):
-    """Plots values in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = steps = i + j + k. Uses triangles for heatmap and blends surrounding triangles to fill the unspecified triangles or hexagons, as specified by the style argument (must be either 'triangular' or 'hexagonal'."""
+def heatmap(d, scale, vmin=None, vmax=None, cmap_name=None, ax=None, scientific=False, style='triangular', colorbar=True):
+    """Plots values in the dictionary d as a heatmap. d is a dictionary of (i,j) --> c pairs where N = scale = i + j + k. Uses triangles for heatmap and blends surrounding triangles to fill the unspecified triangles or hexagons, as specified by the style argument (must be either 'triangular' or 'hexagonal'."""
     if not ax:
         ax = pyplot.subplot()
     cmap = get_cmap(cmap_name)
@@ -204,7 +204,7 @@ def heatmap(d, steps, vmin=None, vmax=None, cmap_name=None, ax=None, scientific=
         for key, value in iterator:
             if value is not None:
                 i, j = key
-                k = steps - i - j
+                k = scale - i - j
                 vertices = vertex_function(i, j, k)
                 color = colormapper(value, vmin, vmax, cmap=cmap)
                 # Matplotlib wants a list of xs and a list of ys
@@ -216,7 +216,7 @@ def heatmap(d, steps, vmin=None, vmax=None, cmap_name=None, ax=None, scientific=
     return ax
 
 def scatter(points, scale=1., ax=None, **kwargs):
-    """Plots trajectory points where each point satisfies x + y + z = steps. First argument is a list or numpy array of tuples of length 3."""
+    """Plots trajectory points where each point satisfies x + y + z = scale. First argument is a list or numpy array of tuples of length 3."""
     if not ax:
         ax = pyplot.subplot()
     xs, ys = project(points)
@@ -225,12 +225,12 @@ def scatter(points, scale=1., ax=None, **kwargs):
 
 ## User Convenience Functions ##
 
-def function_heatmap(func, steps=40, boundary_points=True, cmap_name=None, ax=None, style="triangular"):
+def function_heatmap(func, scale=40, boundary_points=True, cmap_name=None, ax=None, style="triangular"):
     """Computes func on heatmap partition coordinates and plots heatmap. In other words, computes the function on sample points of the simplex (normalized points) and creates a heatmap from the values."""
     d = dict()
-    for i, j, k in simplex_points(steps=steps, boundary_points=boundary_points):
+    for i, j, k in simplex_points(scale=scale, boundary_points=boundary_points):
         d[(i, j)] = func(normalize([i, j, k]))
-    ax = heatmap(d, steps, cmap_name=cmap_name, ax=ax, style=style)
+    ax = heatmap(d, scale, cmap_name=cmap_name, ax=ax, style=style)
     return ax
 
 def plot_multiple(trajectories, linewidth=2.0, ax=None):
