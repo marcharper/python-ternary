@@ -27,6 +27,8 @@ def unzip(l):
 def normalize(xs):
     """Normalize input list."""
     s = float(sum(xs))
+    if s == 0:
+        raise ValueError("Cannot normalize list with sum 0")
     return [x / s for x in xs]
 
 ## Ternary Projections ##

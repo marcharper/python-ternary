@@ -4,6 +4,14 @@ from ternary import plotting
 
 class FunctionCases(unittest.TestCase):
 
+    def test_normalize(self):
+        l = [1,2,3]
+        normalized = plotting.normalize(l)
+        expected = [1./6, 2./6, 3./6]
+        self.assertEqual(normalized, expected)
+        # Test Exception
+        self.assertRaises(ValueError, plotting.normalize, [0,0,0])
+
     def test_simplex_points(self):
         steps = 0
         expected = [(0, 0, 0)]
