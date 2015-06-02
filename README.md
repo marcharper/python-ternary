@@ -166,7 +166,7 @@ python -m unittest discover ternary
 Please cite as follows:
 
 ```
-Marc Harper, Python-ternary: A python library for ternary plots, 2011, available at: https://github.com/marcharper/python-ternary
+Marc Harper, Python-ternary: A python library for ternary plots, 2011-2015, available at: https://github.com/marcharper/python-ternary
 ```
 
 # Contributors
