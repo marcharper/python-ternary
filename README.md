@@ -7,7 +7,7 @@ The library provides functions for plotting projected lines, curves (trajectorie
 
 # Basic Plotting Functions
 
-Most ternary functions expect the simplex to be partititioned into some number of steps. A few functions will do this partitioning for you, but when working with real data or simulation output, you may have partitioned already.
+Most ternary functions expect the simplex to be partititioned into some number of scale. A few functions will do this partitioning for you, but when working with real data or simulation output, you may have partitioned already.
 
 Most drawing functions can take standard matplotlib keyword arguments such as [linestyle](http://matplotlib.org/api/lines_api.html#matplotlib.lines.Line2D.set_linestyle) and linewidth.
 
@@ -19,10 +19,10 @@ The following code draws a boundary for the simplex and gridlines.
 from matplotlib import pyplot
 import ternary
 
-steps = 30
+scale = 30
 
-ax = ternary.draw_boundary(steps)
-ternary.draw_gridlines(steps, ax=ax)
+ax = ternary.draw_boundary(scale)
+ternary.draw_gridlines(scale, ax=ax)
 ax.set_title("Simplex Boundary and Gridlines")
 
 pyplot.show()
@@ -38,12 +38,12 @@ You can draw individual lines between any two points with draw_line and lines pa
 from matplotlib import pyplot
 
 import ternary
-steps = 30
+scale = 30
 
-ax = ternary.draw_boundary(steps)
-ternary.draw_horizontal_line(ax, steps, 10)
-ternary.draw_left_parallel_line(ax, steps, 15, linewidth=2., color='red')
-ternary.draw_right_parallel_line(ax, steps, 15, linewidth=3., color='blue')
+ax = ternary.draw_boundary(scale)
+ternary.draw_horizontal_line(ax, scale, 10)
+ternary.draw_left_parallel_line(ax, scale, 15, linewidth=2., color='red')
+ternary.draw_right_parallel_line(ax, scale, 15, linewidth=3., color='blue')
 
 ax.set_title("Various Lines")
 
@@ -65,7 +65,7 @@ ternary.plot(points)
 Points is a list of tuples or numpy arrays, e.g. [(0.5, 0.25, 0.25), (1./3, 1./3, 1//3)]. Ternary assumes that the points are probability distributions (e.g. x+y+z=1) unless you specify otherwise. Again you can specify axes and line options:
 
 ```
-ternary.plot(points, ax=ax, steps=100, linewidth=2.0)
+ternary.plot(points, ax=ax, scale=100, linewidth=2.0)
 ```
 
 ![](https://camo.githubusercontent.com/023639b15fbdf421df2462bc5eed646c326be152/687474703a2f2f692e696d6775722e636f6d2f687753524439372e6a7067)
@@ -103,7 +103,7 @@ pyplot.show()
 
 ## Heatmaps
 
-Ternary can plot heatmaps in two ways and two styles. Given a function, ternary will evaluate the function at the specified number of steps. The simplex can be split up into triangles or hexagons (thanks to contributor btweinstein for the hexagonal heatmap functionality). There is a large set of examples [here](http://people.mbi.ucla.edu/marcharper/stationary_stable/3x3/incentive.html).
+Ternary can plot heatmaps in two ways and two styles. Given a function, ternary will evaluate the function at the specified number of steps (scale). The simplex can be split up into triangles or hexagons (thanks to contributor btweinstein for the hexagonal heatmap functionality). There is a large set of examples [here](http://people.mbi.ucla.edu/marcharper/stationary_stable/3x3/incentive.html).
 
 For example:
 
@@ -126,8 +126,8 @@ from matplotlib import pyplot
 
 import ternary
 pyplot.figure()
-ax = ternary.function_heatmap(func, steps=steps, boundary=True, style="triangular")
-ternary.draw_boundary(steps, ax=ax)
+ax = ternary.function_heatmap(func, scale=scale, boundary=True, style="triangular")
+ternary.draw_boundary(scale, ax=ax)
 ax.set_title("Shannon Entropy Heatmap")
 
 pyplot.show()
@@ -139,10 +139,10 @@ In this case the keyword argument *boundary* indicates whether you wish to evalu
 
 ![](https://camo.githubusercontent.com/2e969f070b442d92d1158f4e22e39ec64b397f1b/687474703a2f2f692e696d6775722e636f6d2f79345971776e732e6a7067)
 
-Ternary can also take a dictionary mapping `(i,j) for i + j + k = steps` to a float as input for a heatmap, using the function
+Ternary can also take a dictionary mapping `(i,j) for i + j + k = scale` to a float as input for a heatmap, using the function
 
 ```
-ternary.heatmap(d, steps, cmap_name=None, ax=None, scientific=False)
+ternary.heatmap(d, scale, cmap_name=None, ax=None, scientific=False)
 ```
 
 ![](https://camo.githubusercontent.com/30fb63ec53deb0fda2c892c0732a97620699500b/687474703a2f2f692e696d6775722e636f6d2f64555a6b3355302e6a7067)
