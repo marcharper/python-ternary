@@ -68,7 +68,7 @@ Points is a list of tuples or numpy arrays, e.g. [(0.5, 0.25, 0.25), (1./3, 1./3
 ternary.plot(points, ax=ax, scale=100, linewidth=2.0)
 ```
 
-![](https://camo.githubusercontent.com/023639b15fbdf421df2462bc5eed646c326be152/687474703a2f2f692e696d6775722e636f6d2f687753524439372e6a7067)
+![](https://raw.githubusercontent.com/marcharper/python-ternary/images/trajectory.png)
 
 There are many more examples in [this paper](http://arxiv.org/abs/1210.5539).
 
