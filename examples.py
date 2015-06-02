@@ -81,6 +81,17 @@ if __name__ == '__main__':
     ternary.scatter(points, scale=scale)
     ax.set_title("Scatter Plot")
 
+    ## Sample trajectory plot
+    pyplot.figure()
+    ax = ternary.draw_boundary(color='black')
+    ax.set_title("Plotting of sample trajectory data")
+    points = []
+    with open("curve.txt") as handle:
+        for line in handle:
+            points.append(map(float, line.split(' ')))
+    ternary.draw_gridlines(multiple=0.2, ax=ax, color="black")
+    ternary.plot(points, linewidth=2.0, ax=ax)
+
     ## Heatmap roundup
     scale = 60
     for function in [shannon_entropy, dirichlet([4, 8, 13])]:
@@ -106,15 +117,7 @@ if __name__ == '__main__':
         ternary.draw_boundary(scale, ax=ax, color='black')
         ax.set_title("Hexagonal without Boundary")
 
-    ## Sample trajectory plot
-    pyplot.figure()
-    ax = ternary.draw_boundary(color='black')
-    ax.set_title("Plotting of sample trajectory data")
-    points = []
-    with open("curve.txt") as handle:
-        for line in handle:
-            points.append(map(float, line.split(' ')))
-    ternary.plot(points, linewidth=2.0, ax=ax)
+
 
     pyplot.show()
 
