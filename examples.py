@@ -39,18 +39,12 @@ def shannon_entropy(p):
             continue
     return -1.*s
 
-if __name__ == '__main__':
-    ## Boundary and Gridlines
-    pyplot.figure()
-    steps = 30
-    gs = gridspec.GridSpec(1,2)
-    ax = pyplot.subplot(gs[0,0])
-    ax = ternary.draw_boundary(steps, color='black', ax=ax)
-    ternary.draw_gridlines(steps, multiple=5, ax=ax, color='black')
-    ax.set_title("Simplex Boundary and Gridlines")
+def boundary_and_gridlines(ax=None, steps=30, multiple=5, color="black"):
+    ax = ternary.draw_boundary(steps, color=color, ax=ax)
+    ternary.draw_gridlines(steps, multiple=multiple, ax=ax, color=color)
+    return ax
 
-    ## Various lines
-    ax = pyplot.subplot(gs[0,1])
+def various_lines(ax, steps=30):
     ternary.draw_boundary(steps, linewidth=2., color='black', ax=ax)
     ternary.draw_horizontal_line(ax, steps, 16)
     ternary.draw_left_parallel_line(ax, steps, 10, linewidth=2., color='red', linestyle="--")
@@ -58,9 +52,23 @@ if __name__ == '__main__':
     p1 = ternary.project_point((12,8,10))
     p2 = ternary.project_point((2, 26, 2))
     ternary.draw_line(ax, p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
+
+if __name__ == '__main__':
+    ## Boundary and Gridlines
+    pyplot.figure()
+    steps = 30
+    gs = gridspec.GridSpec(1,2)
+    ax = pyplot.subplot(gs[0,0])
+    boundary_and_gridlines(ax, steps, multiple=5)
+    ax.set_title("Simplex Boundary and Gridlines")
+
+    ## Various lines
+    ax = pyplot.subplot(gs[0,1])
+    various_lines(ax, steps)
     ax.set_title("Various Lines")
 
     # Scatter Plot
+    pyplot.figure()
     scale = 40
     ax = ternary.draw_boundary(scale, color="black")
     ternary.draw_gridlines(scale, multiple=5, ax=ax, color="black")
@@ -71,6 +79,7 @@ if __name__ == '__main__':
         z = scale - x - y
         points.append((x,y,z))
     ternary.scatter(points, scale=scale)
+    ax.set_title("Scatter Plot")
 
     pyplot.show()
     exit()
