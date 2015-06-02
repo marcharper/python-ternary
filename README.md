@@ -28,7 +28,7 @@ ax.set_title("Simplex Boundary and Gridlines")
 pyplot.show()
 ```
 
-![](https://raw.githubusercontent.com/marcharper/python-ternary/5eac62c24ca7b866aa9095cd92fce929e1d751e2/boundary_and_gridlines.png)
+![](https://raw.githubusercontent.com/marcharper/python-ternary/images/boundary_and_gridlines.png)
 
 ## Drawing lines
 
@@ -99,7 +99,7 @@ pyplot.show()
 
 ```
 
-
+![Scatter Plot Example](https://raw.githubusercontent.com/marcharper/python-ternary/images/scatter.png)
 
 ## Heatmaps
 
