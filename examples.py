@@ -1,4 +1,5 @@
 import math
+import random
 
 import matplotlib
 from matplotlib import pyplot, gridspec
@@ -38,51 +39,48 @@ def shannon_entropy(p):
             continue
     return -1.*s
 
+def boundary_and_gridlines(ax=None, scale=30, multiple=5, color="black"):
+    ax = ternary.draw_boundary(scale, color=color, ax=ax)
+    ternary.draw_gridlines(scale, multiple=multiple, ax=ax, color=color)
+    return ax
+
+def various_lines(ax, scale=30):
+    ternary.draw_boundary(scale, linewidth=2., color='black', ax=ax)
+    ternary.draw_horizontal_line(ax, scale, 16)
+    ternary.draw_left_parallel_line(ax, scale, 10, linewidth=2., color='red', linestyle="--")
+    ternary.draw_right_parallel_line(ax, scale, 20, linewidth=3., color='blue')
+    p1 = ternary.project_point((12,8,10))
+    p2 = ternary.project_point((2, 26, 2))
+    ternary.draw_line(ax, p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
+
 if __name__ == '__main__':
     ## Boundary and Gridlines
     pyplot.figure()
-    steps = 30
+    scale = 30
     gs = gridspec.GridSpec(1,2)
     ax = pyplot.subplot(gs[0,0])
-    ax = ternary.draw_boundary(steps, color='black', ax=ax)
-    ternary.draw_gridlines(steps, ax=ax, color='black')
+    boundary_and_gridlines(ax, scale, multiple=5)
     ax.set_title("Simplex Boundary and Gridlines")
 
     ## Various lines
     ax = pyplot.subplot(gs[0,1])
-    ternary.draw_boundary(steps, linewidth=2., color='black', ax=ax)
-    ternary.draw_horizontal_line(ax, steps, 16)
-    ternary.draw_left_parallel_line(ax, steps, 10, linewidth=2., color='red', linestyle="--")
-    ternary.draw_right_parallel_line(ax, steps, 20, linewidth=3., color='blue')
-    p1 = ternary.project_point((12,8,10))
-    p2 = ternary.project_point((2, 26, 2))
-    ternary.draw_line(ax, p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
+    various_lines(ax, scale)
+    ternary.clear_matplotlib_ticks(ax)
     ax.set_title("Various Lines")
 
-    ## Heatmap roundup
-    steps = 60
-    for function in [shannon_entropy, dirichlet([4, 8, 13])]:
-        pyplot.figure()
-        gs = gridspec.GridSpec(2,2)
-        ax = pyplot.subplot(gs[0,0])
-        ternary.function_heatmap(function, steps=steps, boundary_points=True, ax=ax)
-        ternary.draw_boundary(steps+1, ax=ax, color='black')
-        ax.set_title("Triangular with Boundary")
-
-        ax = pyplot.subplot(gs[0,1])
-        ternary.function_heatmap(function, steps=steps, boundary_points=False, ax=ax)
-        ternary.draw_boundary(steps+1, ax=ax, color='black')
-        ax.set_title("Triangular without Boundary")
-
-        ax = pyplot.subplot(gs[1,0])
-        ternary.function_heatmap(function, steps=steps, boundary_points=True, ax=ax, style="hexagonal")
-        ternary.draw_boundary(steps, ax=ax, color='black')
-        ax.set_title("Hexagonal with Boundary")
-
-        ax = pyplot.subplot(gs[1,1])
-        ternary.function_heatmap(function, steps=steps, boundary_points=False, ax=ax, style="hexagonal")
-        ternary.draw_boundary(steps, ax=ax, color='black')
-        ax.set_title("Hexagonal without Boundary")
+    # Scatter Plot
+    pyplot.figure()
+    scale = 40
+    ax = ternary.draw_boundary(scale, color="black")
+    ternary.draw_gridlines(scale, multiple=5, ax=ax, color="black")
+    points = []
+    for i in range(100):
+        x = random.randint(1, scale)
+        y = random.randint(0, scale - x)
+        z = scale - x - y
+        points.append((x,y,z))
+    ternary.scatter(points, scale=scale)
+    ax.set_title("Scatter Plot")
 
     ## Sample trajectory plot
     pyplot.figure()
@@ -92,7 +90,35 @@ if __name__ == '__main__':
     with open("curve.txt") as handle:
         for line in handle:
             points.append(map(float, line.split(' ')))
+    ternary.draw_gridlines(multiple=0.2, ax=ax, color="black")
     ternary.plot(points, linewidth=2.0, ax=ax)
+
+    ## Heatmap roundup
+    scale = 60
+    for function in [shannon_entropy, dirichlet([4, 8, 13])]:
+        pyplot.figure()
+        gs = gridspec.GridSpec(2,2)
+        ax = pyplot.subplot(gs[0,0])
+        ternary.function_heatmap(function, scale=scale, boundary_points=True, ax=ax)
+        ternary.draw_boundary(scale+1, ax=ax, color='black')
+        ax.set_title("Triangular with Boundary")
+
+        ax = pyplot.subplot(gs[0,1])
+        ternary.function_heatmap(function, scale=scale, boundary_points=False, ax=ax)
+        ternary.draw_boundary(scale+1, ax=ax, color='black')
+        ax.set_title("Triangular without Boundary")
+
+        ax = pyplot.subplot(gs[1,0])
+        ternary.function_heatmap(function, scale=scale, boundary_points=True, ax=ax, style="hexagonal")
+        ternary.draw_boundary(scale, ax=ax, color='black')
+        ax.set_title("Hexagonal with Boundary")
+
+        ax = pyplot.subplot(gs[1,1])
+        ternary.function_heatmap(function, scale=scale, boundary_points=False, ax=ax, style="hexagonal")
+        ternary.draw_boundary(scale, ax=ax, color='black')
+        ax.set_title("Hexagonal without Boundary")
+
+
 
     pyplot.show()
 
