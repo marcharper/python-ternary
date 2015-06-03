@@ -22,7 +22,7 @@ import ternary
 scale = 30
 
 ax = ternary.draw_boundary(scale)
-ternary.draw_gridlines(scale, ax=ax)
+ternary.draw_gridlines(scale, ax=ax, multiple=5)
 ax.set_title("Simplex Boundary and Gridlines")
 
 pyplot.show()
