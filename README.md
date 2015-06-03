@@ -7,7 +7,7 @@ The library provides functions for plotting projected lines, curves (trajectorie
 
 # Basic Plotting Functions
 
-Most ternary functions expect the simplex to be partititioned into some number of scale. A few functions will do this partitioning for you, but when working with real data or simulation output, you may have partitioned already.
+Most ternary functions expect the simplex to be partititioned into some number of steps. A few functions will do this partitioning for you, but when working with real data or simulation output, you may have partitioned already.
 
 Most drawing functions can take standard matplotlib keyword arguments such as [linestyle](http://matplotlib.org/api/lines_api.html#matplotlib.lines.Line2D.set_linestyle) and linewidth.
 
