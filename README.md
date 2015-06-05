@@ -1,9 +1,9 @@
 # python-ternary
 
-This is a plotting library for use with [matplotlib](http://matplotlib.org/index.html) to make [ternary plots](http://en.wikipedia.org/wiki/Ternary_plot),
+This is a plotting library for use with [matplotlib](http://matplotlib.org/index.html) to make [ternary plots](http://en.wikipedia.org/wiki/Ternary_plot)
 plots in the two dimensional simplex projected onto a two dimensional plane.
 
-The library provides functions for plotting projected lines, curves (trajectories), and heatmaps.
+The library provides functions for plotting projected lines, curves (trajectories), scatter plots, and heatmaps. There are [several examples](https://github.com/marcharper/python-ternary/blob/master/examples.py) and a short tutorial below.
 
 # Basic Plotting Functions
 
@@ -21,9 +21,9 @@ import ternary
 
 scale = 30
 
-ax = ternary.draw_boundary(scale)
-ternary.draw_gridlines(scale, ax=ax, multiple=5)
-ax.set_title("Simplex Boundary and Gridlines")
+axes_subplot = ternary.draw_boundary(scale)
+ternary.gridlines(scale, axes_subplot=axes_subplot, multiple=5)
+axes_subplot.set_title("Simplex Boundary and Gridlines")
 
 pyplot.show()
 ```
@@ -40,10 +40,10 @@ from matplotlib import pyplot
 import ternary
 scale = 30
 
-ax = ternary.draw_boundary(scale)
-ternary.draw_horizontal_line(ax, scale, 10)
-ternary.draw_left_parallel_line(ax, scale, 15, linewidth=2., color='red')
-ternary.draw_right_parallel_line(ax, scale, 15, linewidth=3., color='blue')
+axes_subplot = ternary.boundary(scale)
+ternary.horizontal_line(axes_subplot, scale, 10)
+ternary.left_parallel_line(axes_subplot, scale, 15, linewidth=2., color='red')
+ternary.right_parallel_line(axes_subplot, scale, 15, linewidth=3., color='blue')
 
 ax.set_title("Various Lines")
 
@@ -65,7 +65,7 @@ ternary.plot(points)
 Points is a list of tuples or numpy arrays, e.g. [(0.5, 0.25, 0.25), (1./3, 1./3, 1./3)]. Ternary assumes that the points are probability distributions (e.g. x+y+z=1) unless you specify otherwise. Again you can specify axes and line options:
 
 ```
-ternary.plot(points, ax=ax, scale=1., linewidth=2.0)
+ternary.plot(points, axes_subplot=axes_subplot, scale=1., linewidth=2.0)
 ```
 
 ![](https://raw.githubusercontent.com/marcharper/python-ternary/images/trajectory.png)
@@ -91,9 +91,9 @@ for i in range(100):
     points.append((x,y,z))
 
 # Scatter plot
-ax = ternary.draw_boundary(scale, color="black")
-ternary.draw_gridlines(scale, multiple=5, ax=ax, color="black")
-ternary.scatter(points, scale=scale)
+axes_subplot = ternary.boundary(scale, color="black")
+ternary.gridlines(scale, multiple=5, axes_subplot=axes_subplot, color="black")
+ternary.scatter(points, scale=scale, axes_subplot=axes_subplot)
 
 pyplot.show()
 
@@ -126,9 +126,9 @@ from matplotlib import pyplot
 
 import ternary
 pyplot.figure()
-ax = ternary.function_heatmap(func, scale=scale, boundary=True, style="triangular")
-ternary.draw_boundary(scale, ax=ax)
-ax.set_title("Shannon Entropy Heatmap")
+axes_subplot = ternary.heatmap_of_function(func, scale=scale, boundary=True, style="triangular")
+ternary.draw_boundary(scale, axes_subplot=axes_subplot)
+axes_subplot.set_title("Shannon Entropy Heatmap")
 
 pyplot.show()
 ```
@@ -142,7 +142,7 @@ In this case the keyword argument *boundary* indicates whether you wish to evalu
 Ternary can also take a dictionary mapping `(i,j) for i + j + k = scale` to a float as input for a heatmap, using the function
 
 ```
-ternary.heatmap(d, scale, cmap_name=None, ax=None, scientific=True)
+ternary.heatmap(d, scale, cmap_name=None, axes_subplot=None, scientific=True)
 ```
 
 ![](https://camo.githubusercontent.com/30fb63ec53deb0fda2c892c0732a97620699500b/687474703a2f2f692e696d6775722e636f6d2f64555a6b3355302e6a7067)
