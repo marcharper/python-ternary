@@ -162,11 +162,8 @@ def plot_colored_trajectory(t, cmap, ax=None, **kwargs):
     points = np.array([points]) # A silly hack to make this work straight away
     # Now make the colored lines
     # Add "num" additional segments to each line
-    segments, color_scalar = zip(*[interp(item, num=20) for item in points])
 
-    segments = np.vstack(segments)
-    color_scalar = np.hstack(color_scalar)
-    coll = LineCollection(segments, cmap=cmap)
+    coll = LineCollection(points, cmap=cmap)
     coll.set_array(color_scalar)
     ax.add_collection(coll)
 
