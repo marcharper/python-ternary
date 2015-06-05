@@ -6,6 +6,7 @@ import matplotlib.pyplot as pyplot
 from matplotlib.lines import Line2D
 
 from hexagonal import hexagon_coordinates
+from matplotlib.collections import LineCollection
 
 """Matplotlib Ternary plotting utility."""
 
@@ -123,6 +124,52 @@ def plot(t, ax=None, **kwargs):
         ax = pyplot.subplot()
     xs, ys = project(t)
     ax.plot(xs, ys, **kwargs)
+    return ax
+
+import numpy as np
+def interp(data, num=20):
+    """Add "num" additional points to "data" at evenly spaced intervals and
+    separate into individual segments."""
+    x, y = data.T
+    dist = np.hypot(np.diff(x - x.min()), np.diff(y - y.min())).cumsum()
+    t = np.r_[0, dist] / dist.max()
+
+    ti = np.linspace(0, 1, num, endpoint=True)
+    xi = np.interp(ti, t, x)
+    yi = np.interp(ti, t, y)
+
+    # Insert the original vertices
+    indices = np.searchsorted(ti, t)
+    xi = np.insert(xi, indices, x)
+    yi = np.insert(yi, indices, y)
+
+    return reshuffle(xi, yi), ti
+
+def reshuffle(x, y):
+    """Reshape the line represented by "x" and "y" into an array of individual
+    segments."""
+    points = np.vstack([x, y]).T.reshape(-1,1,2)
+    points = np.concatenate([points[:-1], points[1:]], axis=1)
+    return points
+
+def plot_colored_trajectory(t, cmap, ax=None, **kwargs):
+    """Plots trajectory points where each point satisfies x + y + z = scale. First argument is a list or numpy array of tuples of length 3."""
+    if not ax:
+        ax = pyplot.subplot()
+    xs, ys = project(t)
+
+    points = np.column_stack((xs, ys))
+    points = np.array([points]) # A silly hack to make this work straight away
+    # Now make the colored lines
+    # Add "num" additional segments to each line
+    segments, color_scalar = zip(*[interp(item, num=20) for item in points])
+
+    segments = np.vstack(segments)
+    color_scalar = np.hstack(color_scalar)
+    coll = LineCollection(segments, cmap=cmap)
+    coll.set_array(color_scalar)
+    ax.add_collection(coll)
+
     return ax
 
 ## Heatmaps ##
