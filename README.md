@@ -5,12 +5,15 @@ plots in the two dimensional simplex projected onto a two dimensional plane.
 
 The library provides functions for plotting projected lines, curves (trajectories), scatter plots, and heatmaps. There are [several examples](https://github.com/marcharper/python-ternary/blob/master/examples.py) and a short tutorial below.
 
+Most ternary functions expect the simplex to be partititioned into some number of steps, determined by the scale parameter. A few functions will do this partitioning for you, but when working with real data or simulation output, you may have partitioned already. if you are working with probability distributions, just use `scale=1`. Otherwise the scale parameter effectively controls the resolution of many plot types (e.g. heatmaps).
+
 # Basic Plotting Functions
 
 The easiest way to use python-ternary is with the wrapper class `TernaryAxesSubplot`,
 which mimics Matplotlib's AxesSubplot. Start with
 
 ```
+scale = 20
 figure, ternary_ax = ternary.figure(scale=scale)
 ```
 
@@ -24,10 +27,10 @@ ternary_ax = TernaryAxesSubplot(ax=ax)
 With `ternary_ax` you can use many of the usual matplotlib functions:
 
 ```
-    figure, ternary_ax = ternary.figure(scale=scale)
-    ternary_ax.set_title("Scatter Plot", fontsize=20)
-    ternary_ax.scatter(points, marker='s', color='red', label="Red Squares")
-    ternary_ax.legend()
+figure, ternary_ax = ternary.figure(scale=scale)
+ternary_ax.set_title("Scatter Plot", fontsize=20)
+ternary_ax.scatter(points, marker='s', color='red', label="Red Squares")
+ternary_ax.legend()
 ```
 
 If you need to act directly on the underyling matplotlib axes, you can access them:
@@ -35,8 +38,6 @@ If you need to act directly on the underyling matplotlib axes, you can access th
 ```
 ax = ternary_ax.get_axes()
 ```
-
-Most ternary functions expect the simplex to be partititioned into some number of steps, determined by the scale parameter. A few functions will do this partitioning for you, but when working with real data or simulation output, you may have partitioned already.
 
 Most drawing functions can take standard matplotlib keyword arguments such as [linestyle](http://matplotlib.org/api/lines_api.html#matplotlib.lines.Line2D.set_linestyle) and linewidth.
 
