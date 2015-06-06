@@ -226,10 +226,10 @@ def heatmap(d, scale, vmin=None, vmax=None, cmap_name=None, axes_subplot=None,
         vmin = min(d.values())
     if not vmax:
         vmax = max(d.values())
-    style = style.lower()
-    if style not in ["triangular", "hexagonal"]:
+    style = style.lower()[0]
+    if style not in ["t", "h"]:
         raise ValueError("Heatmap style must be 'triangular' or 'hexagonal'")
-    if style == "hexagonal":
+    if style == "h":
         mapping_functions = [(hexagon_coordinates, d.items())]
     else:
         mapping_functions = [(triangle_coordinates, d.items()), (alt_triangle_coordinates, alt_value_iterator(d))]
@@ -253,7 +253,8 @@ def heatmap(d, scale, vmin=None, vmax=None, cmap_name=None, axes_subplot=None,
 ## User Convenience Functions ##
 
 def heatmap_of_function(func, scale=10, boundary=True, cmap_name=None,
-                        axes_subplot=None, style="triangular"):
+                        axes_subplot=None, scientific=False, style='triangular',
+                        colorbar=True):
     """
     Computes func on heatmap partition coordinates and plots heatmap. In other words, computes the function on lattice points of the simplex (normalized points) and creates a heatmap from the values.
     
@@ -271,6 +272,10 @@ def heatmap_of_function(func, scale=10, boundary=True, cmap_name=None,
         The axis to draw the colormap on
     style: String, "triangular"
         The style of the heatmap, "triangular" or "hexagonal"
+    scientific: Bool, False
+        Whether to use scientific notation for colorbar numbers.
+    colorbar: bool, True
+        Show colorbar.
 
     Returns
     -------
@@ -283,6 +288,7 @@ def heatmap_of_function(func, scale=10, boundary=True, cmap_name=None,
         d[(i, j)] = func(normalize([i, j, k]))
     # Pass everything to the heatmapper
     axes_subplot = heatmap(d, scale, cmap_name=cmap_name,
-                           axes_subplot=axes_subplot, style=style)
+                           axes_subplot=axes_subplot, style=style,
+                           scientific=scientific, colorbar=colorbar)
     return axes_subplot
 

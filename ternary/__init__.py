@@ -21,3 +21,5 @@ from lines import (
 from helpers import project_point
 
 from heatmapping import heatmap, heatmap_of_function
+
+from ternary_axes_subplot import figure, TernaryAxesSubplot

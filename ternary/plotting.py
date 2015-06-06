@@ -95,6 +95,7 @@ def scatter(points, scale=1., axes_subplot=None, **kwargs):
 ## Axes Labels ##
 
 def mpl_callback(event, rotation=60, hash_=None):
+    #http://stackoverflow.com/questions/4018860/text-box-with-line-wrapping-in-matplotlib
     figure = event.canvas.figure
     for ax in figure.axes:
         for artist in ax.get_children():
@@ -116,8 +117,9 @@ def mpl_callback(event, rotation=60, hash_=None):
 
 def set_ternary_axis_label(axes_subplot, label, position, rotation,
                    event_names=text_rotate_events, **kwargs):
+    # http://stackoverflow.com/questions/4018860/text-box-with-line-wrapping-in-matplotlib
     transform = axes_subplot.transAxes
-    x, y = position
+    x, y = project_point(position)
     text = axes_subplot.text(x, y, label, rotation=rotation, transform=transform,
                              #horizontalalignment="center",
                              #verticalalignment="center", 
@@ -131,19 +133,57 @@ def set_ternary_axis_label(axes_subplot, label, position, rotation,
         figure.canvas.mpl_connect(event_name, callback)
 
 def left_axis_label(axes_subplot, label, rotation=60, offset=0.08, **kwargs):
-    
-    position = project_point((1./2, -offset, 1./2))
+    """
+    Sets axis label on the left triangular axis. The label can include
+    LaTeX.
+
+    Parameters
+    ----------
+    label: String
+        The axis label
+    axes_subplot: Matplotlib AxesSubplot, None
+        The subplot to draw on.
+    kwargs:
+        Any kwargs to pass through to matplotlib.
+    """
+
+    position = (1./2, -offset, 1./2)
     set_ternary_axis_label(axes_subplot, label, position, rotation, **kwargs)
 
 def right_axis_label(axes_subplot, label, rotation=-60, offset=0.08, **kwargs):
-    
-    #position = project_point((offset, 1./2 + offset, 1./2))
-    position = project_point((0, 2./5 + offset, 3./5))
+    """
+    Sets axis label on the right triangular axis. The label can include
+    LaTeX.
+
+    Parameters
+    ----------
+    label: String
+        The axis label
+    axes_subplot: Matplotlib AxesSubplot, None
+        The subplot to draw on.
+    kwargs:
+        Any kwargs to pass through to matplotlib.
+    """
+    #position = (offset, 1./2 + offset, 1./2)
+    position = (0, 2./5 + offset, 3./5)
     set_ternary_axis_label(axes_subplot, label, position, rotation,
                            horizontalalignment="center", **kwargs)
 
 def bottom_axis_label(axes_subplot, label, rotation=0, offset=0.04, **kwargs):
-    
-    position = project_point((1./2, 1./2, offset))
+    """
+    Sets axis label on the bottom (lower) triangular axis. The label can include
+    LaTeX.
+
+    Parameters
+    ----------
+    label: String
+        The axis label
+    axes_subplot: Matplotlib AxesSubplot, None
+        The subplot to draw on.
+    kwargs:
+        Any kwargs to pass through to matplotlib.
+    """
+
+    position = (1./2, 1./2, offset)
     set_ternary_axis_label(axes_subplot, label, position, rotation,
                            horizontalalignment="center", **kwargs)
