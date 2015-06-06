@@ -1,3 +1,10 @@
+<style media="screen" type="text/css">
+.thumbnail {
+    width=100;
+    height=100;
+}
+</style>
+
 # python-ternary
 
 This is a plotting library for use with [matplotlib](http://matplotlib.org/index.html) to make [ternary plots](http://en.wikipedia.org/wiki/Ternary_plot)
@@ -6,6 +13,12 @@ plots in the two dimensional simplex projected onto a two dimensional plane.
 The library provides functions for plotting projected lines, curves (trajectories), scatter plots, and heatmaps. There are [several examples](https://github.com/marcharper/python-ternary/blob/master/examples.py) and a short tutorial below.
 
 Most ternary functions expect the simplex to be partititioned into some number of steps, determined by the scale parameter. A few functions will do this partitioning for you, but when working with real data or simulation output, you may have partitioned already. if you are working with probability distributions, just use `scale=1`. Otherwise the scale parameter effectively controls the resolution of many plot types (e.g. heatmaps).
+
+# Gallery
+
+<div style="text-align:center">
+<img class="thumbnail" src ="/../images/readme_images/boundary_and_gridlines.png" width="200" height="200" />
+</div>
 
 # Basic Plotting Functions
 
