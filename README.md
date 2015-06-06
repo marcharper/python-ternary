@@ -45,7 +45,7 @@ Most drawing functions can take standard matplotlib keyword arguments such as [l
 
 The following code draws a boundary for the simplex and gridlines.
 
-![Ternary Plot -- Boundary and Gridlines](https://raw.githubusercontent.com/marcharper/python-ternary/images/readme_images/boundary_and_gridlines.png)
+![Ternary Plot -- Boundary and Gridlines](https://raw.githubusercontent.com/marcharper/python-ternary/../images/readme_images/boundary_and_gridlines.png)
 
 ```
 from matplotlib import pyplot
@@ -204,7 +204,7 @@ In this case the keyword argument *boundary* indicates whether you wish to evalu
 
 You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/colormaps_reference.html) in the cmap_name argument.
 
-![Ternary Heatmap Examples](https://raw.githubusercontent.com/marcharper/python-ternary/images/readme_images/heatmap_shannon.png
+![Ternary Heatmap Examples](https://raw.githubusercontent.com/marcharper/python-ternary/images/readme_images/heatmap_shannon.png)
 
 Ternary can also take a dictionary mapping `(i,j) for i + j + k = scale` to a float as input for a heatmap, using the function
 
