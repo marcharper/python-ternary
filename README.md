@@ -45,7 +45,7 @@ Most drawing functions can take standard matplotlib keyword arguments such as [l
 
 The following code draws a boundary for the simplex and gridlines.
 
-![Ternary Plot -- Boundary and Gridlines](https://raw.githubusercontent.com/marcharper/python-ternary/../images/readme_images/boundary_and_gridlines.png)
+![Ternary Plot -- Boundary and Gridlines](/../images/readme_images/boundary_and_gridlines.png)
 
 ```
 from matplotlib import pyplot
@@ -107,7 +107,7 @@ ternary.show()
 
 The line drawing functions accept the matplotlib keyword arguments of [Line2D](http://matplotlib.org/api/lines_api.html)
 
-![Ternary Plot -- Various Lines](https://raw.githubusercontent.com/marcharper/python-ternary/images/readme_images/various_lines.png)
+![Ternary Plot -- Various Lines](/../images/readme_images/various_lines.png)
 
 ## Curves
 
@@ -136,7 +136,7 @@ tax.legend()
 tax.show()
 ```
 
-![Ternary Curve Plot](https://raw.githubusercontent.com/marcharper/python-ternary/images/readme_images/trajectory.png)
+![Ternary Curve Plot](/../images/readme_images/trajectory.png)
 
 There are many more examples in [this paper](http://arxiv.org/abs/1210.5539).
 
@@ -164,7 +164,7 @@ ternary_ax.show()
 
 ```
 
-![Ternary Scatter Plot Example](https://raw.githubusercontent.com/marcharper/python-ternary/images/readme_images/scatter.png)
+![Ternary Scatter Plot Example](/../images/readme_images/scatter.png)
 
 ## Heatmaps
 
@@ -204,7 +204,7 @@ In this case the keyword argument *boundary* indicates whether you wish to evalu
 
 You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/colormaps_reference.html) in the cmap_name argument.
 
-![Ternary Heatmap Examples](https://raw.githubusercontent.com/marcharper/python-ternary/images/readme_images/heatmap_shannon.png)
+![Ternary Heatmap Examples](/../images/readme_images/heatmap_shannon.png)
 
 Ternary can also take a dictionary mapping `(i,j) for i + j + k = scale` to a float as input for a heatmap, using the function
 
