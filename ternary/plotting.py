@@ -1,7 +1,13 @@
 
-import matplotlib.pyplot as pyplot
+from functools import partial
 
-from helpers import project_sequence
+import matplotlib
+import matplotlib.pyplot as pyplot
+import numpy
+
+from helpers import project_sequence, project_point
+
+text_rotate_events = ('resize_event', 'draw_event')
 
 ### Drawing Helpers ###
 
@@ -21,7 +27,7 @@ def resize_drawing_canvas(axes_subplot, scale=1.):
     scale: float, 1.0
         Simplex scale size.
     """
-    axes_subplot.set_ylim((-0.05 * scale, .90 * scale))
+    axes_subplot.set_ylim((-0.10 * scale, .90 * scale))
     axes_subplot.set_xlim((-0.05 * scale, 1.05 * scale))
 
 def clear_matplotlib_ticks(axes_subplot=None, axis="both"):
@@ -85,3 +91,50 @@ def scatter(points, scale=1., axes_subplot=None, **kwargs):
     xs, ys = project_sequence(points)
     axes_subplot.scatter(xs, ys, **kwargs)
     return axes_subplot
+
+## Axes Labels ##
+
+def mpl_callback(event, rotation=60, hash_=None):
+    figure = event.canvas.figure
+    for ax in figure.axes:
+        for artist in ax.get_children():
+            if not (artist.__hash__() == hash_):
+                continue
+            x, y = artist.get_transform().transform(artist.get_position())
+            position = numpy.array([x,y])
+            new_rotation = ax.transData.transform_angles(numpy.array((rotation,)), position.reshape((1,2)))[0]
+            artist.set_rotation(new_rotation)
+
+def set_ternary_axis_label(axes_subplot, label, position, rotation,
+                   event_names=text_rotate_events, **kwargs):
+    transform = axes_subplot.transAxes
+    x, y = position
+    text = axes_subplot.text(x, y, label, rotation=rotation, transform=transform,
+                             #horizontalalignment="center",
+                             #verticalalignment="center", 
+                             **kwargs)
+    text.set_rotation_mode("anchor")
+    # Set Callback
+    hash_ = text.__hash__()
+    callback = partial(mpl_callback, rotation=rotation, hash_=hash_)
+    figure = axes_subplot.get_figure()
+    for event_name in event_names:
+        figure.canvas.mpl_connect(event_name, callback)
+
+def left_axis_label(axes_subplot, label, rotation=60, offset=0.08, **kwargs):
+    
+    position = project_point((1./2, -offset, 1./2))
+    set_ternary_axis_label(axes_subplot, label, position, rotation, **kwargs)
+
+def right_axis_label(axes_subplot, label, rotation=-60, offset=0.08, **kwargs):
+    
+    #position = project_point((offset, 1./2 + offset, 1./2))
+    position = project_point((0, 2./5 + offset, 3./5))
+    set_ternary_axis_label(axes_subplot, label, position, rotation,
+                           horizontalalignment="center", **kwargs)
+
+def bottom_axis_label(axes_subplot, label, rotation=0, offset=0.04, **kwargs):
+    
+    position = project_point((1./2, 1./2, offset))
+    set_ternary_axis_label(axes_subplot, label, position, rotation,
+                           horizontalalignment="center", **kwargs)

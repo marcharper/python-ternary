@@ -4,6 +4,9 @@ from plotting import (
     resize_drawing_canvas,
     scatter,
     new_axes_subplot,
+    left_axis_label,
+    right_axis_label,
+    bottom_axis_label
 )
 
 from lines import (

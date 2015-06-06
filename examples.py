@@ -56,11 +56,20 @@ def various_lines(axes_subplot, scale=30):
 if __name__ == '__main__':
     ## Boundary and Gridlines
     pyplot.figure()
-    scale = 30
-    gs = gridspec.GridSpec(1,2)
+    scale = 10
+    gs = gridspec.GridSpec(1,1)
     axes_subplot = pyplot.subplot(gs[0,0])
     boundary_and_gridlines(axes_subplot, scale, multiple=5)
     axes_subplot.set_title("Simplex Boundary and Gridlines")
+    ternary.resize_drawing_canvas(axes_subplot, scale=scale)
+    ternary.clear_matplotlib_ticks(axes_subplot)
+    ternary.left_axis_label(axes_subplot, "Left label $\\alpha^2$", fontsize=20)
+    ternary.right_axis_label(axes_subplot, "Right label $\\beta^2$", fontsize=20)
+    ternary.bottom_axis_label(axes_subplot, "Bottom label $\\Gamma - \\Omega$", fontsize=20)
+
+
+    pyplot.show()
+    exit()
 
     ## Various lines
     axes_subplot = pyplot.subplot(gs[0,1])
