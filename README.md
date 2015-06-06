@@ -30,13 +30,6 @@ scale = 20
 figure, ternary_ax = ternary.figure(scale=scale)
 ```
 
-You can also wrap a matplotlib AxesSubplot object:
-
-```
-figure, ax = pyplot.subplots()
-ternary_ax = TernaryAxesSubplot(ax=ax)
-```
-
 With `ternary_ax` you can use many of the usual matplotlib functions:
 
 ```
@@ -53,6 +46,24 @@ If you need to act directly on the underyling matplotlib axes, you can access th
 ```
 ax = ternary_ax.get_axes()
 ```
+
+You can also wrap a Matplotlib AxesSubplot object:
+
+```
+figure, ax = pyplot.subplots()
+ternary_ax = TernaryAxesSubplot(ax=ax)
+```
+
+This is useful if you want to use ternary as part of another figure, such as
+
+```
+    pyplot.figure()
+    gs = gridspec.GridSpec(2,2)
+    ax = pyplot.subplot(gs[0,0])
+    scale = 60
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    ...
+````
 
 ## Simplex Boundary and Gridlines
 
