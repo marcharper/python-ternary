@@ -1,12 +1,15 @@
+"""
+Plotting functions: scatter, plot (curves), axis labelling.
+"""
 
 from functools import partial
 
 import matplotlib
-import matplotlib.pyplot as pyplot
 import numpy
 
 from helpers import project_sequence, project_point
 import ternary_axes_subplot
+
 
 def figure(ax=None, scale=None):
     """
