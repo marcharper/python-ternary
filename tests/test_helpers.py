@@ -1,6 +1,7 @@
+
 import unittest
 
-from helpers import normalize, project_point, simplex_iterator, SQRT3OVER2
+from ternary.helpers import normalize, project_point, simplex_iterator, SQRT3OVER2
 
 class FunctionCases(unittest.TestCase):
 

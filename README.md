@@ -242,7 +242,7 @@ It is not necessary to include `k` in the dictionary keys since it can be determ
 You can run the test suite as follows:
 
 ```
-python -m unittest discover ternary
+python -m unittest discover tests
 ```
 
 # Citation
