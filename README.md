@@ -10,11 +10,13 @@ Most ternary functions expect the simplex to be partititioned into some number o
 # Gallery
 
 <div style="text-align:center">
-<img src ="/../images/readme_images/various_lines.png" width="100" height="100"/>
-<img src ="/../images/readme_images/trajectory.png" width="100" height="100"/>
-<img src ="/../images/readme_images/scatter.png" width="100" height="100"/>
-<img src ="/../images/readme_images/heatmap_shannon.png" width="100" height="100"/>
-<img src ="/../images/readme_images/heatmap_rsp.png" width="100" height="100"/>
+<img src ="/../images/readme_images/various_lines.png" width="150" height="150"/>
+<img src ="/../images/readme_images/trajectory.png" width="150" height="150"/>
+<img src ="/../images/readme_images/scatter.png" width="150" height="150"/>
+<img src ="/../images/readme_images/heatmap_rsp.png" width="150" height="150"/>
+<br/>
+<img src ="/../images/readme_images/heatmap_shannon.png" width="300" height="300"/>
+
 </div>
 
 # Basic Plotting Functions
