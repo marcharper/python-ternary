@@ -3,31 +3,8 @@ import random
 
 import matplotlib
 from matplotlib import pyplot, gridspec
-from scipy import stats
-from scipy.special import gamma, gammaln
 
 import ternary
-
-## Functions to plot #
-
-def beta(alphas):
-    """Multivariate beta function"""
-    #return math.exp(sum(map(gammaln, alphas)) - gammaln(sum(alphas)))
-    return sum(map(gammaln, alphas)) - gammaln(sum(alphas))
-
-def dirichlet(alphas):
-    """Computes Dirichlet probability distribution assuming all parameters alphas > 1."""
-    B = beta(alphas)
-    def f(x):
-        s = 0.
-        for i in range(len(alphas)):
-            try:
-                t = (alphas[i]-1.) * math.log(x[i])
-                s += t
-            except ValueError:
-                return 0.
-        return math.exp(s - B)
-    return f
 
 def shannon_entropy(p):
     """Computes the Shannon Entropy at a distribution in the simplex."""
@@ -68,7 +45,6 @@ if __name__ == '__main__':
     ternary_ax.clear_matplotlib_ticks()
 
     ### Plot Various lines
-
     scale = 40
     figure, ternary_ax = ternary.figure(scale=scale)
 
@@ -92,7 +68,7 @@ if __name__ == '__main__':
     p2 = ternary.project_point((2, 26, 2))
     ternary_ax.line(p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
 
-    # Scatter Plot
+    ### Scatter Plot
     scale = 40
     figure, ternary_ax = ternary.figure(scale=scale)
     ternary_ax.set_title("Scatter Plot", fontsize=20)
@@ -118,34 +94,34 @@ if __name__ == '__main__':
     tax.legend()
 
     ## Heatmap roundup
-    scale = 50
-    for function in [shannon_entropy, dirichlet([4, 8, 13])]:
-    #for function in [shannon_entropy]:
-        pyplot.figure()
-        gs = gridspec.GridSpec(2,2)
-        ax = pyplot.subplot(gs[0,0])
-        figure, tax = ternary.figure(ax=ax, scale=scale)
-        tax.heatmap_of_function(function, boundary=True, style="triangular")
-        tax.boundary(scale=scale+1, color='black')
-        tax.set_title("Triangular with Boundary")
+    # Careful -- these can use a lot of RAM!
+    scale = 60
+    function = shannon_entropy
+    pyplot.figure()
+    gs = gridspec.GridSpec(2,2)
+    ax = pyplot.subplot(gs[0,0])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmap_of_function(function, boundary=True, style="triangular")
+    tax.boundary(scale=scale+1, color='black')
+    tax.set_title("Triangular with Boundary")
 
-        ax = pyplot.subplot(gs[0,1])
-        figure, tax = ternary.figure(ax=ax, scale=scale)
-        tax.heatmap_of_function(function, boundary=False, style="t")
-        tax.boundary(scale=scale+1, color='black')
-        tax.set_title("Triangular without Boundary")
+    ax = pyplot.subplot(gs[0,1])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmap_of_function(function, boundary=False, style="t")
+    tax.boundary(scale=scale+1, color='black')
+    tax.set_title("Triangular without Boundary")
 
-        ax = pyplot.subplot(gs[1,0])
-        figure, tax = ternary.figure(ax=ax, scale=scale)
-        tax.heatmap_of_function(function, boundary=True, style="hexagonal")
-        tax.boundary(scale=scale, color='black')
-        tax.set_title("Hexagonal with Boundary")
+    ax = pyplot.subplot(gs[1,0])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmap_of_function(function, boundary=True, style="hexagonal")
+    tax.boundary(scale=scale, color='black')
+    tax.set_title("Hexagonal with Boundary")
 
-        ax = pyplot.subplot(gs[1,1])
-        figure, tax = ternary.figure(ax=ax, scale=scale)
-        tax.heatmap_of_function(function, boundary=False, style="h")
-        tax.boundary(scale=scale, color='black')
-        tax.set_title("Hexagonal without Boundary")
+    ax = pyplot.subplot(gs[1,1])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmap_of_function(function, boundary=False, style="h")
+    tax.boundary(scale=scale, color='black')
+    tax.set_title("Hexagonal without Boundary")
 
     pyplot.show()
 
