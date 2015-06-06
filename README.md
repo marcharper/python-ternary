@@ -1,10 +1,3 @@
-<style media="screen" type="text/css">
-.thumbnail {
-    width=100;
-    height=100;
-}
-</style>
-
 # python-ternary
 
 This is a plotting library for use with [matplotlib](http://matplotlib.org/index.html) to make [ternary plots](http://en.wikipedia.org/wiki/Ternary_plot)
@@ -17,8 +10,11 @@ Most ternary functions expect the simplex to be partititioned into some number o
 # Gallery
 
 <div style="text-align:center">
-<img class="thumbnail" src ="/../images/readme_images/boundary_and_gridlines.png" width="200" height="200" />
+<img class="thumbnail" src ="/../images/readme_images/boundary_and_gridlines.png"/>
+<img class="thumbnail" src ="/../images/readme_images/various_lines.png"/>
 </div>
+
+
 
 # Basic Plotting Functions
 
@@ -250,3 +246,9 @@ Marc Harper, Python-ternary: A python library for ternary plots, 2011-2015, avai
 - Marc Harper [marcharper](https://github.com/marcharper)
 - Bryan Weinstein [btweinstein](https://github.com/btweinstein): Hexagonal heatmaps
 
+<style type="text/css">
+.thumbnail {
+    width=100;
+    height=100;
+}
+</style>
