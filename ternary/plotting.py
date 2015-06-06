@@ -105,6 +105,15 @@ def mpl_callback(event, rotation=60, hash_=None):
             new_rotation = ax.transData.transform_angles(numpy.array((rotation,)), position.reshape((1,2)))[0]
             artist.set_rotation(new_rotation)
 
+    # Temporarily disconnect any callbacks to the draw event...
+    # (To avoid recursion)
+    func_handles = figure.canvas.callbacks.callbacks[event.name]
+    figure.canvas.callbacks.callbacks[event.name] = {}
+    # Re-draw the figure..
+    figure.canvas.draw()
+    # Reset the draw event callbacks
+    figure.canvas.callbacks.callbacks[event.name] = func_handles
+
 def set_ternary_axis_label(axes_subplot, label, position, rotation,
                    event_names=text_rotate_events, **kwargs):
     transform = axes_subplot.transAxes
