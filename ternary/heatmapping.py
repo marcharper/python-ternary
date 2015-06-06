@@ -255,7 +255,7 @@ def heatmap(d, scale, vmin=None, vmax=None, cmap_name=None, ax=None,
 
 ## User Convenience Functions ##
 
-def heatmap_of_function(func, scale=10, boundary=True, cmap_name=None,
+def heatmapf(func, scale=10, boundary=True, cmap_name=None,
                         ax=None, scientific=False, style='triangular',
                         colorbar=True):
     """

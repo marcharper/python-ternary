@@ -206,7 +206,7 @@ scale = 60
 figure, ternary_ax = ternary.figure(scale=scale)
 ternary_ax.set_title("Scatter Plot", fontsize=20)
 
-ternary_ax.heatmap_of_function(shannon_entropy, boundary=True, style="triangular")
+ternary_ax.heatmapf(shannon_entropy, boundary=True, style="triangular")
 ternary_ax.boundary(linewidth=2.0)
 ternary_ax.set_title("Shannon Entropy Heatmap")
 
