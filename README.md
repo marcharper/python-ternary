@@ -212,13 +212,11 @@ Ternary can also take a dictionary mapping `(i,j) for i + j + k = scale` to a fl
 ternary.heatmap(d, scale, cmap_name=None, axes_subplot=None, scientific=True)
 ```
 
-![](https://camo.githubusercontent.com/30fb63ec53deb0fda2c892c0732a97620699500b/687474703a2f2f692e696d6775722e636f6d2f64555a6b3355302e6a7067)
+This can produces images such as:
 
-[](https://camo.githubusercontent.com/b66c280914cb4a38130b83a3eb4311f94274aefb/687474703a2f2f692e696d6775722e636f6d2f6935516a5147542e6a7067)
+![Ternary Heatmap Examples](/../images/readme_images/heatmap_rsp.png)
 
-
-
-# Test
+# Unittests
 
 You can run the test suite as follows:
 
