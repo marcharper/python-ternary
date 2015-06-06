@@ -46,13 +46,13 @@ ternary_ax.scatter(points, marker='s', color='red', label="Red Squares")
 ternary_ax.legend()
 ```
 
+Most drawing functions can take standard matplotlib keyword arguments such as [linestyle](http://matplotlib.org/api/lines_api.html#matplotlib.lines.Line2D.set_linestyle) and linewidth. You can use LaTeX in titles and labels.
+
 If you need to act directly on the underyling matplotlib axes, you can access them:
 
 ```
 ax = ternary_ax.get_axes()
 ```
-
-Most drawing functions can take standard matplotlib keyword arguments such as [linestyle](http://matplotlib.org/api/lines_api.html#matplotlib.lines.Line2D.set_linestyle) and linewidth.
 
 ## Simplex Boundary and Gridlines
 
@@ -70,7 +70,7 @@ figure, ternary_ax = ternary.figure(scale=scale)
 
 # Draw Boundary and Gridlines
 ternary_ax.boundary(color="black", linewidth=2.0)
-ternary_ax.gridlines(color="blue", multiple=5)
+ternary_ax.gridlines(color="blue", multiple=5) # Every 5th gridline
 
 # Set Axis labels and Title
 fontsize = 20
@@ -115,10 +115,10 @@ p1 = ternary.project_point((12,8,10))
 p2 = ternary.project_point((2, 26, 2))
 ternary_ax.line(p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
 
-ternary.show()
+ternary_ax.show()
 ```
 
-The line drawing functions accept the matplotlib keyword arguments of [Line2D](http://matplotlib.org/api/lines_api.html)
+The line drawing functions accept the matplotlib keyword arguments of [Line2D](http://matplotlib.org/api/lines_api.html).
 
 ![Ternary Plot -- Various Lines](/../images/readme_images/various_lines.png)
 
@@ -130,7 +130,7 @@ Curves can be plotted by specifying the points of the curve, just like matplotli
 ternary.plot(points)
 ```
 
-Points is a list of tuples or numpy arrays, e.g. [(0.5, 0.25, 0.25), (1./3, 1./3, 1./3)]. Ternary assumes that the points are probability distributions (e.g. x+y+z=1) unless you specify otherwise. Again you can specify axes and line options:
+Points is a list of tuples or numpy arrays, e.g. [(0.5, 0.25, 0.25), (1./3, 1./3, 1./3)], e.g. as in the [sample data](/curve.txt).
 
 ```
 import ternary
@@ -181,9 +181,9 @@ ternary_ax.show()
 
 ## Heatmaps
 
-Ternary can plot heatmaps in two ways and two styles. Given a function, ternary will evaluate the function at the specified number of steps (scale). The simplex can be split up into triangles or hexagons (thanks to contributor btweinstein for the hexagonal heatmap functionality). There is a large set of examples [here](http://people.mbi.ucla.edu/marcharper/stationary_stable/3x3/incentive.html).
+Ternary can plot heatmaps in two ways and two styles. Given a function, ternary will evaluate the function at the specified number of steps (determined by the scale, expected to be an integer in this case). The simplex can be split up into triangles or hexagons (thanks to [btweinstein](https://github.com/btweinstein) for the hexagonal heatmap functionality). There is a large set of examples [here](http://people.mbi.ucla.edu/marcharper/stationary_stable/3x3/incentive.html).
 
-For example:
+Let's define a function on the simplex for illustration, the [Shannon entropy](http://en.wikipedia.org/wiki/Entropy_%28information_theory%29) of a probability distribution:
 
 ```
 def shannon_entropy(p):
@@ -213,21 +213,29 @@ ternary_ax.set_title("Shannon Entropy Heatmap")
 ternary_ax.show()
 ```
 
-In this case the keyword argument *boundary* indicates whether you wish to evaluate points on the boundary of the partition (which is sometimes undesirable). Specify `style="hexagonal"` for hexagons. Large scalings can use a lot of RAM.
+In this case the keyword argument *boundary* indicates whether you wish to evaluate points on the boundary of the partition (which is sometimes undesirable). Specify `style="hexagonal"` for hexagons. Large scalings can use a lot of RAM (the number of polygons rendered is O(n^2) ).
 
 You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/colormaps_reference.html) in the cmap_name argument.
 
 ![Ternary Heatmap Examples](/../images/readme_images/heatmap_shannon.png)
 
-Ternary can also take a dictionary mapping `(i,j) for i + j + k = scale` to a float as input for a heatmap, using the function
+Ternary can also make heatmaps from data. In this case you need to supply a dictionary mapping `(i,j) for i + j + k = scale` to a float as input for a heatmap, using the function
 
 ```
-ternary.heatmap(d, scale, cmap_name=None, axes_subplot=None, scientific=True)
+ternary.heatmap(d, scale, axes_subplot=None, cmap_name=None)
+```
+
+or 
+
+```
+ternary_ax.heatmap(d, cmap_name=None)
 ```
 
 This can produces images such as:
 
 ![Ternary Heatmap Examples](/../images/readme_images/heatmap_rsp.png)
+
+It is not necessary to include `k` in the dictionary keys since it can be determined from `scale`, `i`, and `j`. This reduces the memory requirements when the partition is very fine (significant when scale >= 500).
 
 # Unittests
 
