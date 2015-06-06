@@ -1,3 +1,6 @@
+"""
+Various Heatmaps.
+"""
 
 import matplotlib
 import matplotlib.pyplot as pyplot
@@ -6,6 +9,7 @@ import numpy
 
 from helpers import SQRT3, SQRT3OVER2, unzip, normalize, simplex_iterator
 import plotting
+
 
 ## Default colormap, other options here: http://www.scipy.org/Cookbook/Matplotlib/Show_colormaps
 DEFAULT_COLOR_MAP_NAME = 'jet'

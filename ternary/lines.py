@@ -1,8 +1,13 @@
+"""
+Line plotting functions, draw boundary and gridlines.
+"""
+
 from numpy import arange
 from matplotlib.lines import Line2D
 
 from helpers import project_point
 import plotting
+
 
 ## Lines ##
 

@@ -1,5 +1,9 @@
+"""
+Helper functions and utilities for projecting to the simplex and various tasks.
+"""
 
 import numpy
+
 
 ### Constants ###
 
