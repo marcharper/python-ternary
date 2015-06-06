@@ -98,6 +98,7 @@ def mpl_callback(event, rotation=60, hash_=None):
     """
 
     #http://stackoverflow.com/questions/4018860/text-box-with-line-wrapping-in-matplotlib
+
     # Find the Text objects we want to update.
     figure = event.canvas.figure
     for ax in figure.axes:
@@ -119,12 +120,27 @@ def mpl_callback(event, rotation=60, hash_=None):
     # Reset the draw event callbacks
     figure.canvas.callbacks.callbacks[event.name] = func_handles
 
-def set_ternary_axis_label(ax, label, position, rotation,
-                           event_names=None, **kwargs):
+def set_ternary_axis_label(ax, label, position, rotation, event_names=None,
+                           **kwargs):
     """
     Sets axis labels and registers a callback to adjust text angle when the
     user resizes or triggers a redraw in interactive mode. Not intended to
     be called directly by the user.
+
+    Parameters
+    ----------
+    ax: Matplotlib AxesSubplot, None
+        The subplot to draw on.
+    label: String
+        The axis label.
+    position: 3-tuple
+        The coordinates to place the label at.
+    rotation: float
+        The angle of rotation of the label.
+    event_names: sequence of strings
+        The Matplotlib events to callback on.
+    kwargs:
+        Any kwargs to pass through to matplotlib.
     """
 
     # http://stackoverflow.com/questions/4018860/text-box-with-line-wrapping-in-matplotlib
@@ -151,10 +167,10 @@ def left_axis_label(ax, label, rotation=60, offset=0.08, **kwargs):
 
     Parameters
     ----------
-    label: String
-        The axis label
     ax: Matplotlib AxesSubplot, None
         The subplot to draw on.
+    label: String
+        The axis label
     kwargs:
         Any kwargs to pass through to matplotlib.
     """
@@ -169,10 +185,10 @@ def right_axis_label(ax, label, rotation=-60, offset=0.08, **kwargs):
 
     Parameters
     ----------
-    label: String
-        The axis label
     ax: Matplotlib AxesSubplot, None
         The subplot to draw on.
+    label: String
+        The axis label
     kwargs:
         Any kwargs to pass through to matplotlib.
     """
@@ -188,10 +204,10 @@ def bottom_axis_label(ax, label, rotation=0, offset=0.04, **kwargs):
 
     Parameters
     ----------
-    label: String
-        The axis label
     ax: Matplotlib AxesSubplot, None
         The subplot to draw on.
+    label: String
+        The axis label
     kwargs:
         Any kwargs to pass through to matplotlib.
     """

@@ -58,7 +58,7 @@ def left_parallel_line(ax, scale, i,  **kwargs):
     ----------
     ax: Matplotlib AxesSubplot
         The subplot to draw on.
-    scale: float, 1.0
+    scale: float
         Simplex scale size.
     i: float
         The index of the line to draw
@@ -78,7 +78,7 @@ def right_parallel_line(ax, scale, i, **kwargs):
     ----------
     ax: Matplotlib AxesSubplot
         The subplot to draw on.
-    scale: float, 1.0
+    scale: float
         Simplex scale size.
     i: float
         The index of the line to draw
@@ -99,10 +99,10 @@ def boundary(ax, scale, **kwargs):
 
     Parameters
     ----------
-    scale: float, 1.0
-        Simplex scale size.
     ax: Matplotlib AxesSubplot, None
         The subplot to draw on.
+    scale: float
+        Simplex scale size.
     kwargs:
         Any kwargs to pass through to matplotlib.
     """
@@ -120,10 +120,10 @@ def gridlines(ax, scale, multiple=None, **kwargs):
 
     Parameters
     ----------
-    scale: float, 1.0
-        Simplex scale size.
     ax: Matplotlib AxesSubplot, None
         The subplot to draw on.
+    scale: float
+        Simplex scale size.
     multiple: float, None
         Specifies which inner gridelines to draw. For example, if scale=30 and
         multiple=6, only 5 inner gridlines will be drawn.
