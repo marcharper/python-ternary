@@ -87,7 +87,7 @@ pyplot.show()
 
 ## Drawing lines
 
-You can draw individual lines between any two points with draw_line and lines parallel to the axes with draw_horizonal_line, draw_left_parallel_line, and draw_right_parallel_line:
+You can draw individual lines between any two points with `line` and lines parallel to the axes with `horizonal_line`, `left_parallel_line`, and `right_parallel_line`:
 
 ```
 import ternary
