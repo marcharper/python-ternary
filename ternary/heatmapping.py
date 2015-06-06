@@ -5,7 +5,7 @@ from matplotlib.colors import rgb2hex
 import numpy
 
 from helpers import SQRT3, SQRT3OVER2, unzip, normalize, simplex_iterator
-from plotting import new_axes_subplot
+import plotting
 
 ## Default colormap, other options here: http://www.scipy.org/Cookbook/Matplotlib/Show_colormaps
 DEFAULT_COLOR_MAP_NAME = 'jet'
@@ -65,7 +65,7 @@ def colormapper(value, lower=0, upper=1, cmap=None):
     hex_ = rgb2hex(rgba)
     return hex_
 
-def colorbar_hack(axes_subplot, vmin, vmax, cmap, scientific=False):
+def colorbar_hack(ax, vmin, vmax, cmap, scientific=False):
     """Colorbar hack to insert colorbar on ternary plot. Called by heatmap, 
     not intended for direct usage."""
     # http://stackoverflow.com/questions/8342549/matplotlib-add-colorbar-to-a-sequence-of-line-plots
@@ -73,7 +73,7 @@ def colorbar_hack(axes_subplot, vmin, vmax, cmap, scientific=False):
     sm = pyplot.cm.ScalarMappable(cmap=cmap, norm=norm)
     # Fake up the array of the scalar mappable. Urgh...
     sm._A = []
-    cb = pyplot.colorbar(sm, ax=axes_subplot, format='%.4f')
+    cb = pyplot.colorbar(sm, ax=ax, format='%.4f')
     cb.locator = matplotlib.ticker.LinearLocator(numticks=7)
     if scientific:
         cb.formatter = matplotlib.ticker.ScalarFormatter()
@@ -137,7 +137,6 @@ def alt_value_iterator(d):
 ## Original Hexagonal heatmap code submitted by https://github.com/btweinstein
 # Hexagonal heatmaps do no smooth the colors as in the triangular case.
 
-
 _alpha = numpy.array([0, 1. / SQRT3])
 _deltaup = numpy.array([1. / 2., 1. / (2. * SQRT3)])
 _deltadown = numpy.array([1. / 2., - 1. / (2. * SQRT3)])
@@ -187,7 +186,7 @@ def hexagon_coordinates(i, j, k):
 
 ## Heatmaps ##
 
-def heatmap(d, scale, vmin=None, vmax=None, cmap_name=None, axes_subplot=None,
+def heatmap(d, scale, vmin=None, vmax=None, cmap_name=None, ax=None,
             scientific=False, style='triangular', colorbar=True):
     """
     Plots heatmap of given color values.
@@ -205,7 +204,7 @@ def heatmap(d, scale, vmin=None, vmax=None, cmap_name=None, axes_subplot=None,
         The maximum color value, used to normalize colors. Computed if absent.
     cmap_name: String, None
         The name of the Matplotlib colormap to use.
-    axes_subplot: Matplotlib AxesSubplot, None
+    ax: Matplotlib AxesSubplot, None
         The subplot to draw on.
     scientific: Bool, False
         Whether to use scientific notation for colorbar numbers.
@@ -216,11 +215,11 @@ def heatmap(d, scale, vmin=None, vmax=None, cmap_name=None, axes_subplot=None,
 
     Returns
     -------
-    axes_subplot, The matplotlib axis
+    ax, The matplotlib axis
     """
     
-    if not axes_subplot:
-        axes_subplot = new_axes_subplot()
+    if not ax:
+        fig, ax = plotting.figure()
     cmap = get_cmap(cmap_name)
     if not vmin:
         vmin = min(d.values())
@@ -244,16 +243,16 @@ def heatmap(d, scale, vmin=None, vmax=None, cmap_name=None, axes_subplot=None,
                 color = colormapper(value, vmin, vmax, cmap=cmap)
                 # Matplotlib wants a list of xs and a list of ys
                 xs, ys = unzip(vertices)
-                axes_subplot.fill(xs, ys, facecolor=color, edgecolor=color)
+                ax.fill(xs, ys, facecolor=color, edgecolor=color)
 
     if colorbar:
-        colorbar_hack(axes_subplot, vmin, vmax, cmap, scientific=scientific)
-    return axes_subplot
+        colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific)
+    return ax
 
 ## User Convenience Functions ##
 
 def heatmap_of_function(func, scale=10, boundary=True, cmap_name=None,
-                        axes_subplot=None, scientific=False, style='triangular',
+                        ax=None, scientific=False, style='triangular',
                         colorbar=True):
     """
     Computes func on heatmap partition coordinates and plots heatmap. In other words, computes the function on lattice points of the simplex (normalized points) and creates a heatmap from the values.
@@ -287,8 +286,7 @@ def heatmap_of_function(func, scale=10, boundary=True, cmap_name=None,
     for i, j, k in simplex_iterator(scale=scale, boundary=boundary):
         d[(i, j)] = func(normalize([i, j, k]))
     # Pass everything to the heatmapper
-    axes_subplot = heatmap(d, scale, cmap_name=cmap_name,
-                           axes_subplot=axes_subplot, style=style,
+    ax = heatmap(d, scale, cmap_name=cmap_name, ax=ax, style=style,
                            scientific=scientific, colorbar=colorbar)
-    return axes_subplot
+    return ax
 

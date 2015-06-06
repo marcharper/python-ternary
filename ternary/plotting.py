@@ -6,52 +6,63 @@ import matplotlib.pyplot as pyplot
 import numpy
 
 from helpers import project_sequence, project_point
+import ternary_axes_subplot
 
-text_rotate_events = ('resize_event', 'draw_event')
+def figure(ax=None, scale=None):
+    """
+    Wraps a Matplotlib AxesSubplot or generates a new one. Emulates matplotlib's
+    > figure, ax = pyplot.subplot()
+
+    Parameters
+    ----------
+    ax: AxesSubplot, None
+        The AxesSubplot to wrap
+    scale: float, None
+        The scale factor of the ternary plot
+    """
+
+    ternary_ax = ternary_axes_subplot.TernaryAxesSubplot(ax=ax, scale=scale)
+    return ternary_ax.get_figure(), ternary_ax
 
 ### Drawing Helpers ###
 
-def new_axes_subplot():
-    """Returns a new Matplotlib AxesSubplot object."""
-    return pyplot.subplot()
-
-def resize_drawing_canvas(axes_subplot, scale=1.):
+def resize_drawing_canvas(ax, scale=1.):
     """
     Makes sure the drawing surface is large enough to display projected
     content.
 
     Parameters
     ----------
-    axes_subplot: Matplotlib AxesSubplot, None
+    ax: Matplotlib AxesSubplot, None
         The subplot to draw on.
     scale: float, 1.0
         Simplex scale size.
     """
-    axes_subplot.set_ylim((-0.10 * scale, .90 * scale))
-    axes_subplot.set_xlim((-0.05 * scale, 1.05 * scale))
+    ax.set_ylim((-0.10 * scale, .90 * scale))
+    ax.set_xlim((-0.05 * scale, 1.05 * scale))
 
-def clear_matplotlib_ticks(axes_subplot=None, axis="both"):
+def clear_matplotlib_ticks(ax=None, axis="both"):
     """
     Clears the default matplotlib axes, or the one specified by the axis
     argument.
 
     Parameters
     ----------
-    axes_subplot: Matplotlib AxesSubplot, None
+    ax: Matplotlib AxesSubplot, None
         The subplot to draw on.
     axis: string, "both"
         The axis to clear: "x" or "horizontal", "y" or "vertical", or "both"
     """
-    if not axes_subplot:
+    if not ax:
         return
     if axis.lower() in ["both", "x", "horizontal"]:
-        axes_subplot.set_xticks([], [])
+        ax.set_xticks([], [])
     if axis.lower() in ["both", "y", "vertical"]:
-        axes_subplot.set_yticks([], [])
+        ax.set_yticks([], [])
 
 ## Curve Plotting ##
 
-def plot(points, axes_subplot=None, **kwargs):
+def plot(points, ax=None, **kwargs):
     """
     Analogous to maplotlib.plot. Plots trajectory points where each point is a
     tuple (x,y,z) satisfying x + y + z = scale (not checked). The tuples are
@@ -61,18 +72,18 @@ def plot(points, axes_subplot=None, **kwargs):
     ----------
     points: List of 3-tuples
         The list of tuples to be plotted as a connected curve.
-    axes_subplot: Matplotlib AxesSubplot, None
+    ax: Matplotlib AxesSubplot, None
         The subplot to draw on.
     kwargs:
         Any kwargs to pass through to matplotlib.
     """
-    if not axes_subplot:
-        axes_subplot = new_axes_subplot()
+    if not ax:
+        fig, ax = figure()
     xs, ys = project_sequence(points)
-    axes_subplot.plot(xs, ys, **kwargs)
-    return axes_subplot
+    ax.plot(xs, ys, **kwargs)
+    return ax
 
-def scatter(points, scale=1., axes_subplot=None, **kwargs):
+def scatter(points, scale=1., ax=None, **kwargs):
     """Plots trajectory points where each point satisfies x + y + z = scale. First argument is a list or numpy array of tuples of length 3.
 
     Parameters
@@ -81,26 +92,32 @@ def scatter(points, scale=1., axes_subplot=None, **kwargs):
         The list of tuples to be scatter-plotted.
     scale: float, 1.0
         Simplex scale size.
-    axes_subplot: Matplotlib AxesSubplot, None
+    ax: Matplotlib AxesSubplot, None
         The subplot to draw on.
     kwargs:
         Any kwargs to pass through to matplotlib.
     """
-    if not axes_subplot:
-        axes_subplot = new_axes_subplot()
+    if not ax:
+        fig, ax = figure()
     xs, ys = project_sequence(points)
-    axes_subplot.scatter(xs, ys, **kwargs)
-    return axes_subplot
+    ax.scatter(xs, ys, **kwargs)
+    return ax
 
 ## Axes Labels ##
 
 def mpl_callback(event, rotation=60, hash_=None):
+    """
+    Callback to properly rotate side text labels when the plot is resized.
+    """
+
     #http://stackoverflow.com/questions/4018860/text-box-with-line-wrapping-in-matplotlib
+    # Find the Text objects we want to update.
     figure = event.canvas.figure
     for ax in figure.axes:
         for artist in ax.get_children():
             if not (artist.__hash__() == hash_):
                 continue
+            # Calculate the new angle.
             x, y = artist.get_transform().transform(artist.get_position())
             position = numpy.array([x,y])
             new_rotation = ax.transData.transform_angles(numpy.array((rotation,)), position.reshape((1,2)))[0]
@@ -115,24 +132,32 @@ def mpl_callback(event, rotation=60, hash_=None):
     # Reset the draw event callbacks
     figure.canvas.callbacks.callbacks[event.name] = func_handles
 
-def set_ternary_axis_label(axes_subplot, label, position, rotation,
-                   event_names=text_rotate_events, **kwargs):
+def set_ternary_axis_label(ax, label, position, rotation,
+                           event_names=None, **kwargs):
+    """
+    Sets axis labels and registers a callback to adjust text angle when the
+    user resizes or triggers a redraw in interactive mode. Not intended to
+    be called directly by the user.
+    """
+
     # http://stackoverflow.com/questions/4018860/text-box-with-line-wrapping-in-matplotlib
-    transform = axes_subplot.transAxes
+
+    if not event_names:
+        event_names = ('resize_event', 'draw_event')
+    transform = ax.transAxes
     x, y = project_point(position)
-    text = axes_subplot.text(x, y, label, rotation=rotation, transform=transform,
-                             #horizontalalignment="center",
-                             #verticalalignment="center", 
-                             **kwargs)
+    text = ax.text(x, y, label, rotation=rotation, transform=transform,
+                   **kwargs)
     text.set_rotation_mode("anchor")
-    # Set Callback
+    # Set callback. Make sure that we don't rotate other text fields, like the
+    # title.
     hash_ = text.__hash__()
     callback = partial(mpl_callback, rotation=rotation, hash_=hash_)
-    figure = axes_subplot.get_figure()
+    figure = ax.get_figure()
     for event_name in event_names:
         figure.canvas.mpl_connect(event_name, callback)
 
-def left_axis_label(axes_subplot, label, rotation=60, offset=0.08, **kwargs):
+def left_axis_label(ax, label, rotation=60, offset=0.08, **kwargs):
     """
     Sets axis label on the left triangular axis. The label can include
     LaTeX.
@@ -141,16 +166,16 @@ def left_axis_label(axes_subplot, label, rotation=60, offset=0.08, **kwargs):
     ----------
     label: String
         The axis label
-    axes_subplot: Matplotlib AxesSubplot, None
+    ax: Matplotlib AxesSubplot, None
         The subplot to draw on.
     kwargs:
         Any kwargs to pass through to matplotlib.
     """
 
     position = (1./2, -offset, 1./2)
-    set_ternary_axis_label(axes_subplot, label, position, rotation, **kwargs)
+    set_ternary_axis_label(ax, label, position, rotation, **kwargs)
 
-def right_axis_label(axes_subplot, label, rotation=-60, offset=0.08, **kwargs):
+def right_axis_label(ax, label, rotation=-60, offset=0.08, **kwargs):
     """
     Sets axis label on the right triangular axis. The label can include
     LaTeX.
@@ -159,17 +184,17 @@ def right_axis_label(axes_subplot, label, rotation=-60, offset=0.08, **kwargs):
     ----------
     label: String
         The axis label
-    axes_subplot: Matplotlib AxesSubplot, None
+    ax: Matplotlib AxesSubplot, None
         The subplot to draw on.
     kwargs:
         Any kwargs to pass through to matplotlib.
     """
     #position = (offset, 1./2 + offset, 1./2)
     position = (0, 2./5 + offset, 3./5)
-    set_ternary_axis_label(axes_subplot, label, position, rotation,
+    set_ternary_axis_label(ax, label, position, rotation,
                            horizontalalignment="center", **kwargs)
 
-def bottom_axis_label(axes_subplot, label, rotation=0, offset=0.04, **kwargs):
+def bottom_axis_label(ax, label, rotation=0, offset=0.04, **kwargs):
     """
     Sets axis label on the bottom (lower) triangular axis. The label can include
     LaTeX.
@@ -178,12 +203,12 @@ def bottom_axis_label(axes_subplot, label, rotation=0, offset=0.04, **kwargs):
     ----------
     label: String
         The axis label
-    axes_subplot: Matplotlib AxesSubplot, None
+    ax: Matplotlib AxesSubplot, None
         The subplot to draw on.
     kwargs:
         Any kwargs to pass through to matplotlib.
     """
 
     position = (1./2, 1./2, offset)
-    set_ternary_axis_label(axes_subplot, label, position, rotation,
+    set_ternary_axis_label(ax, label, position, rotation,
                            horizontalalignment="center", **kwargs)
