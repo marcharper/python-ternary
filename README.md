@@ -222,7 +222,7 @@ You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/col
 Ternary can also make heatmaps from data. In this case you need to supply a dictionary mapping `(i,j) for i + j + k = scale` to a float as input for a heatmap, using the function
 
 ```
-ternary.heatmap(d, scale, axes_subplot=None, cmap_name=None)
+ternary.heatmap(d, scale, ax=None, cmap_name=None)
 ```
 
 or 
