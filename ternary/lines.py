@@ -4,6 +4,7 @@ Line plotting functions, draw boundary and gridlines.
 
 from numpy import arange
 from matplotlib.lines import Line2D
+from matplotlib import pyplot
 
 from helpers import project_point
 import plotting
@@ -91,7 +92,7 @@ def right_parallel_line(ax, scale, i, **kwargs):
 
 ## Boundary, Gridlines ##
 
-def boundary(ax=None, scale=None, **kwargs):
+def boundary(ax, scale, **kwargs):
     """
     Plots the boundary of the simplex. Creates and returns matplotlib axis if
     none given.
@@ -106,9 +107,6 @@ def boundary(ax=None, scale=None, **kwargs):
         Any kwargs to pass through to matplotlib.
     """
 
-    if not ax:
-        fig, ax = plotting.figure()
-        scale = ax.get_scale()
     horizontal_line(ax, scale, 0, **kwargs)
     left_parallel_line(ax, scale, 0, **kwargs)
     right_parallel_line(ax, scale, 0, **kwargs)
@@ -116,7 +114,7 @@ def boundary(ax=None, scale=None, **kwargs):
 
 ## TODO: left_kwargs, right_kwargs
 
-def gridlines(ax=None, scale=None, multiple=None, **kwargs):
+def gridlines(ax, scale, multiple=None, **kwargs):
     """
     Plots grid lines excluding boundary.
 
@@ -133,9 +131,6 @@ def gridlines(ax=None, scale=None, multiple=None, **kwargs):
         Any kwargs to pass through to matplotlib.
     """
 
-    if not ax:
-        fig, ax = plotting.figure()
-        scale = ax.get_scale()
     if 'linewidth' not in kwargs:
         kwargs["linewidth"] = 0.5
     if 'linestyle' not in kwargs:

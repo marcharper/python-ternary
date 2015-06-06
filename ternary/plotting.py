@@ -5,27 +5,11 @@ Plotting functions: scatter, plot (curves), axis labelling.
 from functools import partial
 
 import matplotlib
+from matplotlib import pyplot
 import numpy
 
 from helpers import project_sequence, project_point
-import ternary_axes_subplot
 
-
-def figure(ax=None, scale=None):
-    """
-    Wraps a Matplotlib AxesSubplot or generates a new one. Emulates matplotlib's
-    > figure, ax = pyplot.subplot()
-
-    Parameters
-    ----------
-    ax: AxesSubplot, None
-        The AxesSubplot to wrap
-    scale: float, None
-        The scale factor of the ternary plot
-    """
-
-    ternary_ax = ternary_axes_subplot.TernaryAxesSubplot(ax=ax, scale=scale)
-    return ternary_ax.get_figure(), ternary_ax
 
 ### Drawing Helpers ###
 
@@ -81,12 +65,12 @@ def plot(points, ax=None, **kwargs):
         Any kwargs to pass through to matplotlib.
     """
     if not ax:
-        fig, ax = figure()
+        fig, ax = pyplot.subplots()
     xs, ys = project_sequence(points)
     ax.plot(xs, ys, **kwargs)
     return ax
 
-def scatter(points, scale=1., ax=None, **kwargs):
+def scatter(points, ax=None, **kwargs):
     """Plots trajectory points where each point satisfies x + y + z = scale. First argument is a list or numpy array of tuples of length 3.
 
     Parameters
@@ -101,7 +85,7 @@ def scatter(points, scale=1., ax=None, **kwargs):
         Any kwargs to pass through to matplotlib.
     """
     if not ax:
-        fig, ax = figure()
+        fig, ax = pyplot.subplots()
     xs, ys = project_sequence(points)
     ax.scatter(xs, ys, **kwargs)
     return ax

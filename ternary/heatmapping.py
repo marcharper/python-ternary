@@ -3,7 +3,7 @@ Various Heatmaps.
 """
 
 import matplotlib
-import matplotlib.pyplot as pyplot
+from matplotlib import pyplot
 from matplotlib.colors import rgb2hex
 import numpy
 
@@ -219,11 +219,11 @@ def heatmap(d, scale, vmin=None, vmax=None, cmap_name=None, ax=None,
 
     Returns
     -------
-    ax, The matplotlib axis
+    ax: The matplotlib axis
     """
     
     if not ax:
-        fig, ax = plotting.figure()
+        fig, ax = pyplot.subplots()
     cmap = get_cmap(cmap_name)
     if not vmin:
         vmin = min(d.values())
