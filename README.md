@@ -19,16 +19,20 @@ The following code draws a boundary for the simplex and gridlines.
 from matplotlib import pyplot
 import ternary
 
-scale = 30
+scale = 40
 
 axes_subplot = ternary.draw_boundary(scale)
 ternary.gridlines(scale, axes_subplot=axes_subplot, multiple=5)
 axes_subplot.set_title("Simplex Boundary and Gridlines")
+ternary.clear_matplotlib_ticks(axes_subplot)
+ternary.left_axis_label(axes_subplot, "Left label $\\alpha^2$", fontsize=20)
+ternary.right_axis_label(axes_subplot, "Right label $\\beta^2$", fontsize=20)
+ternary.bottom_axis_label(axes_subplot, "Bottom label $\\Gamma - \\Omega$", fontsize=20)
 
 pyplot.show()
 ```
 
-![](https://raw.githubusercontent.com/marcharper/python-ternary/images/boundary_and_gridlines.png)
+![](https://raw.githubusercontent.com/marcharper/python-ternary/images/readme_images/boundary_and_gridlines.png)
 
 ## Drawing lines
 
@@ -68,7 +72,7 @@ Points is a list of tuples or numpy arrays, e.g. [(0.5, 0.25, 0.25), (1./3, 1./3
 ternary.plot(points, axes_subplot=axes_subplot, scale=1., linewidth=2.0)
 ```
 
-![](https://raw.githubusercontent.com/marcharper/python-ternary/images/trajectory.png)
+![](https://raw.githubusercontent.com/marcharper/python-ternary/images/readme_images/trajectory.png)
 
 There are many more examples in [this paper](http://arxiv.org/abs/1210.5539).
 
@@ -99,7 +103,7 @@ pyplot.show()
 
 ```
 
-![Scatter Plot Example](https://raw.githubusercontent.com/marcharper/python-ternary/images/scatter.png)
+![Scatter Plot Example](https://raw.githubusercontent.com/marcharper/python-ternary/images/readme_images/scatter.png)
 
 ## Heatmaps
 
