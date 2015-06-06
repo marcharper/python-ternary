@@ -9,12 +9,12 @@ from plotting import (
 )
 
 from lines import (
+    boundary,
+    gridlines,
     line,
     horizontal_line,
     left_parallel_line,
     right_parallel_line,
-    boundary,
-    gridlines,
 )
 
 from helpers import project_point
