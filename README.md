@@ -20,6 +20,17 @@ Most ternary functions expect the simplex to be partititioned into some number o
 <img src ="/../images/readme_images/24_80_1.png" width="150" height="150"/>
 </div>
 
+# Installation
+
+New features are still being added to python-ternary. Just clone the repository
+and run `setup.py` in the usual manner:
+
+```
+get clone git@github.com:marcharper/python-ternary.git
+cd python-ternary
+sudo python setup.py install
+```
+
 # Basic Plotting Functions
 
 The easiest way to use python-ternary is with the wrapper class `TernaryAxesSubplot`,
@@ -255,6 +266,11 @@ You can run the test suite as follows:
 ```
 python -m unittest discover tests
 ```
+
+# Contributing
+
+Contributions are welcome! Please share any nice example plots, contribute 
+features, and add unit tests!
 
 # Citation
 
