@@ -158,14 +158,24 @@ def plot_colored_trajectory(t, cmap, ax=None, **kwargs):
         ax = pyplot.subplot()
     xs, ys = project(t)
 
-    points = np.column_stack((xs, ys))
-    points = np.array([points]) # A silly hack to make this work straight away
-    # Now make the colored lines
-    # Add "num" additional segments to each line
+    # We want to color each segment independently...which is annoying.
+    segments = []
+    for i in range(len(xs) - 1):
+        cur_line = []
+        x_before = xs[i]
+        y_before = ys[i]
+        x_after = xs[i+1]
+        y_after = ys[i+1]
 
-    coll = LineCollection(points, cmap=cmap)
-    coll.set_array(color_scalar)
-    ax.add_collection(coll)
+        cur_line.append([x_before, y_before])
+        cur_line.append([x_after, y_after])
+        segments.append(cur_line)
+
+    segments = np.array(segments)
+
+    line_segments = LineCollection(segments, cmap=cmap, alpha=0.1)
+    line_segments.set_array(np.arange(len(segments)))
+    ax.add_collection(line_segments)
 
     return ax
 
