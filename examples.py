@@ -3,31 +3,8 @@ import random
 
 import matplotlib
 from matplotlib import pyplot, gridspec
-from scipy import stats
-from scipy.special import gamma, gammaln
 
 import ternary
-
-## Functions to plot #
-
-def beta(alphas):
-    """Multivariate beta function"""
-    #return math.exp(sum(map(gammaln, alphas)) - gammaln(sum(alphas)))
-    return sum(map(gammaln, alphas)) - gammaln(sum(alphas))
-
-def dirichlet(alphas):
-    """Computes Dirichlet probability distribution assuming all parameters alphas > 1."""
-    B = beta(alphas)
-    def f(x):
-        s = 0.
-        for i in range(len(alphas)):
-            try:
-                t = (alphas[i]-1.) * math.log(x[i])
-                s += t
-            except ValueError:
-                return 0.
-        return math.exp(s - B)
-    return f
 
 def shannon_entropy(p):
     """Computes the Shannon Entropy at a distribution in the simplex."""
@@ -39,86 +16,112 @@ def shannon_entropy(p):
             continue
     return -1.*s
 
-def boundary_and_gridlines(ax=None, scale=30, multiple=5, color="black"):
-    ax = ternary.draw_boundary(scale, color=color, ax=ax)
-    ternary.draw_gridlines(scale, multiple=multiple, ax=ax, color=color)
-    return ax
-
-def various_lines(ax, scale=30):
-    ternary.draw_boundary(scale, linewidth=2., color='black', ax=ax)
-    ternary.draw_horizontal_line(ax, scale, 16)
-    ternary.draw_left_parallel_line(ax, scale, 10, linewidth=2., color='red', linestyle="--")
-    ternary.draw_right_parallel_line(ax, scale, 20, linewidth=3., color='blue')
-    p1 = ternary.project_point((12,8,10))
-    p2 = ternary.project_point((2, 26, 2))
-    ternary.draw_line(ax, p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
-
-if __name__ == '__main__':
-    ## Boundary and Gridlines
-    pyplot.figure()
-    scale = 30
-    gs = gridspec.GridSpec(1,2)
-    ax = pyplot.subplot(gs[0,0])
-    boundary_and_gridlines(ax, scale, multiple=5)
-    ax.set_title("Simplex Boundary and Gridlines")
-
-    ## Various lines
-    ax = pyplot.subplot(gs[0,1])
-    various_lines(ax, scale)
-    ternary.clear_matplotlib_ticks(ax)
-    ax.set_title("Various Lines")
-
-    # Scatter Plot
-    pyplot.figure()
-    scale = 40
-    ax = ternary.draw_boundary(scale, color="black")
-    ternary.draw_gridlines(scale, multiple=5, ax=ax, color="black")
+def random_points(num_points=25, scale=40):
     points = []
-    for i in range(100):
+    for i in range(num_points):
         x = random.randint(1, scale)
         y = random.randint(0, scale - x)
         z = scale - x - y
         points.append((x,y,z))
-    ternary.scatter(points, scale=scale)
-    ax.set_title("Scatter Plot")
+    return points
+
+if __name__ == '__main__':
+    ## Boundary and Gridlines
+    scale = 40
+    figure, ternary_ax = ternary.figure(scale=scale)
+
+    # Draw Boundary and Gridlines
+    ternary_ax.boundary(color="black", linewidth=2.0)
+    ternary_ax.gridlines(color="blue", multiple=5)
+
+    # Set Axis labels and Title
+    fontsize = 20
+    ternary_ax.set_title("Simplex Boundary and Gridlines", fontsize=fontsize)
+    ternary_ax.left_axis_label("Left label $\\alpha^2$", fontsize=fontsize)
+    ternary_ax.right_axis_label("Right label $\\beta^2$", fontsize=fontsize)
+    ternary_ax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$", fontsize=fontsize)
+
+    # Remove default Matplotlib Axes
+    ternary_ax.clear_matplotlib_ticks()
+
+    ### Plot Various lines
+    scale = 40
+    figure, ternary_ax = ternary.figure(scale=scale)
+
+    # Draw Boundary and Gridlines
+    ternary_ax.boundary(color="black", linewidth=2.0)
+    ternary_ax.gridlines(color="blue", multiple=5)
+
+    # Set Axis labels and Title
+    fontsize = 20
+    ternary_ax.set_title("Various Lines", fontsize=20)
+    ternary_ax.left_axis_label("Left label $\\alpha^2$", fontsize=fontsize)
+    ternary_ax.right_axis_label("Right label $\\beta^2$", fontsize=fontsize)
+    ternary_ax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$", fontsize=fontsize)
+
+    # Draw lines parallel to the axes
+    ternary_ax.horizontal_line(16)
+    ternary_ax.left_parallel_line(10, linewidth=2., color='red', linestyle="--")
+    ternary_ax.right_parallel_line(20, linewidth=3., color='blue')
+    # Draw an arbitrary line
+    p1 = ternary.project_point((12,8,10))
+    p2 = ternary.project_point((2, 26, 2))
+    ternary_ax.line(p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
+
+    ### Scatter Plot
+    scale = 40
+    figure, ternary_ax = ternary.figure(scale=scale)
+    ternary_ax.set_title("Scatter Plot", fontsize=20)
+    ternary_ax.boundary(color="black", linewidth=2.0)
+    ternary_ax.gridlines(multiple=5, color="blue")
+    # Plot a few different styles with a legend
+    points = random_points(30, scale=scale)
+    ternary_ax.scatter(points, marker='s', color='red', label="Red Squares")
+    points = random_points(30, scale=scale)
+    ternary_ax.scatter(points, marker='D', color='green', label="Green Diamonds")
+    ternary_ax.legend()
 
     ## Sample trajectory plot
-    pyplot.figure()
-    ax = ternary.draw_boundary(color='black')
-    ax.set_title("Plotting of sample trajectory data")
+    figure, tax = ternary.figure(scale=1.0)
+    tax.boundary(color='black')
+    tax.set_title("Plotting of sample trajectory data", fontsize=20)
     points = []
     with open("curve.txt") as handle:
         for line in handle:
             points.append(map(float, line.split(' ')))
-    ternary.draw_gridlines(multiple=0.2, ax=ax, color="black")
-    ternary.plot(points, linewidth=2.0, ax=ax)
+    tax.gridlines(multiple=0.2, color="black")
+    tax.plot(points, linewidth=2.0, label="Curve")
+    tax.legend()
 
     ## Heatmap roundup
+    # Careful -- these can use a lot of RAM!
     scale = 60
-    for function in [shannon_entropy, dirichlet([4, 8, 13])]:
-        pyplot.figure()
-        gs = gridspec.GridSpec(2,2)
-        ax = pyplot.subplot(gs[0,0])
-        ternary.function_heatmap(function, scale=scale, boundary_points=True, ax=ax)
-        ternary.draw_boundary(scale+1, ax=ax, color='black')
-        ax.set_title("Triangular with Boundary")
+    function = shannon_entropy
+    pyplot.figure()
+    gs = gridspec.GridSpec(2,2)
+    ax = pyplot.subplot(gs[0,0])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmapf(function, boundary=True, style="triangular")
+    tax.boundary(scale=scale+1, color='black')
+    tax.set_title("Triangular with Boundary")
 
-        ax = pyplot.subplot(gs[0,1])
-        ternary.function_heatmap(function, scale=scale, boundary_points=False, ax=ax)
-        ternary.draw_boundary(scale+1, ax=ax, color='black')
-        ax.set_title("Triangular without Boundary")
+    ax = pyplot.subplot(gs[0,1])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmapf(function, boundary=False, style="t")
+    tax.boundary(scale=scale+1, color='black')
+    tax.set_title("Triangular without Boundary")
 
-        ax = pyplot.subplot(gs[1,0])
-        ternary.function_heatmap(function, scale=scale, boundary_points=True, ax=ax, style="hexagonal")
-        ternary.draw_boundary(scale, ax=ax, color='black')
-        ax.set_title("Hexagonal with Boundary")
+    ax = pyplot.subplot(gs[1,0])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmapf(function, boundary=True, style="hexagonal")
+    tax.boundary(scale=scale, color='black')
+    tax.set_title("Hexagonal with Boundary")
 
-        ax = pyplot.subplot(gs[1,1])
-        ternary.function_heatmap(function, scale=scale, boundary_points=False, ax=ax, style="hexagonal")
-        ternary.draw_boundary(scale, ax=ax, color='black')
-        ax.set_title("Hexagonal without Boundary")
-
-
+    ax = pyplot.subplot(gs[1,1])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmapf(function, boundary=False, style="h")
+    tax.boundary(scale=scale, color='black')
+    tax.set_title("Hexagonal without Boundary")
 
     pyplot.show()
 
