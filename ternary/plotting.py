@@ -173,7 +173,7 @@ def plot_colored_trajectory(t, cmap, ax=None, **kwargs):
 
     segments = np.array(segments)
 
-    line_segments = LineCollection(segments, cmap=cmap, alpha=0.1)
+    line_segments = LineCollection(segments, cmap=cmap, **kwargs)
     line_segments.set_array(np.arange(len(segments)))
     ax.add_collection(line_segments)
 
