@@ -62,7 +62,7 @@ You can also wrap a Matplotlib AxesSubplot object:
 
 ```
 figure, ax = pyplot.subplots()
-ternary_ax = TernaryAxesSubplot(ax=ax)
+ternary_ax = ternary.TernaryAxesSubplot(ax=ax)
 ```
 
 This is useful if you want to use ternary as part of another figure, such as
