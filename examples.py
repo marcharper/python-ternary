@@ -107,7 +107,6 @@ if __name__ == '__main__':
     tax.plot_colored_trajectory(points, cmap="hsv", linewidth=2.0)
     tax.legend()
 
-
     ## Heatmap roundup
     # Careful -- these can use a lot of RAM!
     scale = 60

@@ -175,6 +175,13 @@ tax.show()
 
 There are many more examples in [this paper](http://arxiv.org/abs/1210.5539).
 
+You can also color the curves with a Matplotlib heatmap using:
+```
+plot_colored_trajectory(points, cmap="hsv", linewidth=2.0)
+```
+
+![Ternary Curve Plot](/../images/readme_images/colored_trajectory.png)
+
 ## Scatter Plots
 
 Similarly, ternary can make scatter plots:
@@ -283,4 +290,4 @@ Marc Harper, Python-ternary: A python library for ternary plots, 2011-2015, avai
 # Contributors
 
 - Marc Harper [marcharper](https://github.com/marcharper)
-- Bryan Weinstein [btweinstein](https://github.com/btweinstein): Hexagonal heatmaps
+- Bryan Weinstein [btweinstein](https://github.com/btweinstein): Hexagonal heatmaps, Colored Trajectory plots
