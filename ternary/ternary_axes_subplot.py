@@ -81,20 +81,20 @@ class TernaryAxesSubplot(object):
     def bottom_axis_label(self, label, **kwargs):
         plotting.bottom_axis_label(self.ax, label, **kwargs)
 
-    def heatmap(self, data, scale=None, cmap_name=None, scientific=False,
+    def heatmap(self, data, scale=None, cmap=None, scientific=False,
                 style='triangular', colorbar=True):
         if not scale:
             scale = self._scale
-        heatmapping.heatmap(data, scale, cmap_name=cmap_name, style=style,
+        heatmapping.heatmap(data, scale, cmap=cmap, style=style,
                             ax=self.ax, scientific=scientific,
                             colorbar=colorbar)
 
-    def heatmapf(self, func, scale=None, cmap_name=None,
+    def heatmapf(self, func, scale=None, cmap=None,
                             boundary=True, style='triangular', colorbar=True,
                             scientific=True):
         if not scale:
             scale = self._scale
-        heatmapping.heatmapf(func, scale, cmap_name=cmap_name,
+        heatmapping.heatmapf(func, scale, cmap=cmap,
                                         style=style, boundary=boundary, 
                                         ax=self.ax, scientific=scientific,
                                         colorbar=colorbar)

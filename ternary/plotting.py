@@ -9,7 +9,7 @@ from matplotlib import pyplot
 import numpy as np
 
 from helpers import project_sequence, project_point
-
+from colormapping import get_cmap
 
 ### Drawing Helpers ###
 
@@ -72,6 +72,7 @@ def plot(points, ax=None, **kwargs):
 
 def plot_colored_trajectory(t, cmap, ax=None, **kwargs):
     """Plots trajectory points where each point satisfies x + y + z = scale. First argument is a list or numpy array of tuples of length 3."""
+    cmap = get_cmap(cmap)
     if not ax:
         ax = pyplot.subplot()
     xs, ys = project_sequence(t)
