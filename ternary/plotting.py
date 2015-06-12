@@ -70,12 +70,27 @@ def plot(points, ax=None, **kwargs):
     ax.plot(xs, ys, **kwargs)
     return ax
 
-def plot_colored_trajectory(t, cmap, ax=None, **kwargs):
-    """Plots trajectory points where each point satisfies x + y + z = scale. First argument is a list or numpy array of tuples of length 3."""
+def plot_colored_trajectory(points, cmap, ax=None, **kwargs):
+    """
+    Plots trajectories with changing color, simlar to `plot`. Trajectory points 
+    are tuples (x,y,z) satisfying x + y + z = scale (not checked). The tuples are
+    projected and plotted as a curve.
+
+    Parameters
+    ----------
+    points: List of 3-tuples
+        The list of tuples to be plotted as a connected curve.
+    ax: Matplotlib AxesSubplot, None
+        The subplot to draw on.
+    cmap: String or matplotlib.colors.Colormap, None
+        The name of the Matplotlib colormap to use.
+    kwargs:
+        Any kwargs to pass through to matplotlib.
+    """
     if not ax:
         fig, ax = pyplot.subplots()
     cmap = get_cmap(cmap)
-    xs, ys = project_sequence(t)
+    xs, ys = project_sequence(points)
 
     # We want to color each segment independently...which is annoying.
     segments = []
