@@ -72,9 +72,9 @@ def plot(points, ax=None, **kwargs):
 
 def plot_colored_trajectory(t, cmap, ax=None, **kwargs):
     """Plots trajectory points where each point satisfies x + y + z = scale. First argument is a list or numpy array of tuples of length 3."""
-    cmap = get_cmap(cmap)
     if not ax:
-        ax = pyplot.subplot()
+        fig, ax = pyplot.subplots()
+    cmap = get_cmap(cmap)
     xs, ys = project_sequence(t)
 
     # We want to color each segment independently...which is annoying.
