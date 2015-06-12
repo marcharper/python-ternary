@@ -237,20 +237,20 @@ ternary_ax.show()
 
 In this case the keyword argument *boundary* indicates whether you wish to evaluate points on the boundary of the partition (which is sometimes undesirable). Specify `style="hexagonal"` for hexagons. Large scalings can use a lot of RAM (the number of polygons rendered is O(n^2) ).
 
-You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/colormaps_reference.html) in the cmap_name argument.
+You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/colormaps_reference.html) (an instance or the colormap name) in the cmap argument.
 
 ![Ternary Heatmap Examples](/../images/readme_images/heatmap_shannon.png)
 
 Ternary can also make heatmaps from data. In this case you need to supply a dictionary mapping `(i,j) for i + j + k = scale` to a float as input for a heatmap, using the function
 
 ```
-ternary.heatmap(d, scale, ax=None, cmap_name=None)
+ternary.heatmap(d, scale, ax=None, cmap=None)
 ```
 
 or 
 
 ```
-ternary_ax.heatmap(d, cmap_name=None)
+ternary_ax.heatmap(d, cmap=None)
 ```
 
 This can produces images such as:
