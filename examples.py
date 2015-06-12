@@ -93,6 +93,21 @@ if __name__ == '__main__':
     tax.plot(points, linewidth=2.0, label="Curve")
     tax.legend()
 
+    ## Sample colored trajectory plot
+    figure, tax = ternary.figure(scale=1.0)
+    tax.boundary(color='black')
+    tax.set_title("Plotting of sample trajectory data", fontsize=20)
+    points = []
+    with open("curve.txt") as handle:
+        for line in handle:
+            points.append(map(float, line.split(' ')))
+    tax.gridlines(multiple=0.2, color="black")
+    tax.plot_colored_trajectory(points, linewidth=2.0)
+    points = [(y,z,x) for (x,y,z) in points]
+    tax.plot_colored_trajectory(points, cmap="hsv", linewidth=2.0)
+    tax.legend()
+
+
     ## Heatmap roundup
     # Careful -- these can use a lot of RAM!
     scale = 60

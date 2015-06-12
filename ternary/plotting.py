@@ -70,7 +70,7 @@ def plot(points, ax=None, **kwargs):
     ax.plot(xs, ys, **kwargs)
     return ax
 
-def plot_colored_trajectory(points, cmap, ax=None, **kwargs):
+def plot_colored_trajectory(points, cmap=None, ax=None, **kwargs):
     """
     Plots trajectories with changing color, simlar to `plot`. Trajectory points 
     are tuples (x,y,z) satisfying x + y + z = scale (not checked). The tuples are
