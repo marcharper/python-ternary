@@ -65,6 +65,9 @@ class TernaryAxesSubplot(object):
     def plot(self, points, **kwargs):
         plotting.plot(points, ax=self.ax, **kwargs)
 
+    def plot_colored_trajectory(self, points, cmap, **kwargs):
+        plotting.plot_colored_trajectory(points, cmap, ax=self.ax, **kwargs)
+
     def clear_matplotlib_ticks(self, axis="both"):
         plotting.clear_matplotlib_ticks(ax=self.ax,
                                         axis=axis)

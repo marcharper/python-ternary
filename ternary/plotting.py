@@ -6,7 +6,7 @@ from functools import partial
 
 import matplotlib
 from matplotlib import pyplot
-import numpy
+import numpy as np
 
 from helpers import project_sequence, project_point
 
@@ -70,6 +70,32 @@ def plot(points, ax=None, **kwargs):
     ax.plot(xs, ys, **kwargs)
     return ax
 
+def plot_colored_trajectory(t, cmap, ax=None, **kwargs):
+    """Plots trajectory points where each point satisfies x + y + z = scale. First argument is a list or numpy array of tuples of length 3."""
+    if not ax:
+        ax = pyplot.subplot()
+    xs, ys = project_sequence(t)
+
+    # We want to color each segment independently...which is annoying.
+    segments = []
+    for i in range(len(xs) - 1):
+        cur_line = []
+        x_before = xs[i]
+        y_before = ys[i]
+        x_after = xs[i+1]
+        y_after = ys[i+1]
+
+        cur_line.append([x_before, y_before])
+        cur_line.append([x_after, y_after])
+        segments.append(cur_line)
+    segments = np.array(segments)
+
+    line_segments = matplotlib.collections.LineCollection(segments, cmap=cmap, **kwargs)
+    line_segments.set_array(np.arange(len(segments)))
+    ax.add_collection(line_segments)
+
+    return ax
+
 def scatter(points, ax=None, **kwargs):
     """Plots trajectory points where each point satisfies x + y + z = scale. First argument is a list or numpy array of tuples of length 3.
 
@@ -107,8 +133,8 @@ def mpl_callback(event, rotation=60, hash_=None):
                 continue
             # Calculate the new angle.
             x, y = artist.get_transform().transform(artist.get_position())
-            position = numpy.array([x,y])
-            new_rotation = ax.transData.transform_angles(numpy.array((rotation,)), position.reshape((1,2)))[0]
+            position = np.array([x,y])
+            new_rotation = ax.transData.transform_angles(np.array((rotation,)), position.reshape((1,2)))[0]
             artist.set_rotation(new_rotation)
 
     # Temporarily disconnect any callbacks to the draw event...
