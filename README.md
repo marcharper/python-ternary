@@ -71,8 +71,7 @@ This is useful if you want to use ternary as part of another figure, such as
     pyplot.figure()
     gs = gridspec.GridSpec(2,2)
     ax = pyplot.subplot(gs[0,0])
-    scale = 60
-    figure, tax = ternary.figure(ax=ax, scale=scale)
+    figure, tax = ternary.figure(ax=ax)
     ...
 ````
 
@@ -92,7 +91,7 @@ figure, tax = ternary.figure(scale=scale)
 
 # Draw Boundary and Gridlines
 tax.boundary(color="black", linewidth=2.0)
-tax.gridlines(color="blue", multiple=5) # Every 5th gridline
+tax.gridlines(color="blue", multiple=5) # Every 5th gridline, can be fractional
 
 # Set Axis labels and Title
 fontsize = 20
