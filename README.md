@@ -5,13 +5,13 @@ plots in the two dimensional simplex projected onto a two dimensional plane.
 
 The library provides functions for plotting projected lines, curves (trajectories), scatter plots, and heatmaps. There are [several examples](https://github.com/marcharper/python-ternary/blob/master/examples.py) and a short tutorial below.
 
-Most ternary functions expect the simplex to be partititioned into some number of steps, determined by the scale parameter. A few functions will do this partitioning for you, but when working with real data or simulation output, you may have partitioned already. if you are working with probability distributions, just use `scale=1`. Otherwise the scale parameter effectively controls the resolution of many plot types (e.g. heatmaps).
+Most ternary functions expect the simplex to be partititioned into some number of steps, determined by the scale parameter. A few functions will do this partitioning for you, but when working with real data or simulation output, you may have partitioned already. if you are working with probability distributions, just use `scale=1` (the default). Otherwise the scale parameter effectively controls the resolution of many plot types (e.g. heatmaps).
 
 # Gallery
 
 <div style="text-align:center">
 <img src ="/../images/readme_images/various_lines.png" width="150" height="150"/>
-<img src ="/../images/readme_images/trajectory.png" width="150" height="150"/>
+<img src ="/../images/readme_images/colored_trajectory.png" width="150" height="150"/>
 <img src ="/../images/readme_images/scatter.png" width="150" height="150"/>
 <img src ="/../images/readme_images/heatmap_rsp.png" width="150" height="150"/>
 <img src ="/../images/readme_images/16_80_1.png" width="150" height="150"/>
@@ -22,14 +22,15 @@ Most ternary functions expect the simplex to be partititioned into some number o
 
 # Installation
 
-New features are still being added to python-ternary. Just clone the repository
-and run `setup.py` in the usual manner:
+To install clone the repository and run `setup.py` in the usual manner:
 
 ```
 get clone git@github.com:marcharper/python-ternary.git
 cd python-ternary
 sudo python setup.py install
 ```
+
+New features are still being added to python-ternary. A stable release is upcoming.
 
 # Basic Plotting Functions
 
@@ -38,16 +39,16 @@ which mimics Matplotlib's AxesSubplot. Start with
 
 ```
 scale = 20
-figure, ternary_ax = ternary.figure(scale=scale)
+figure, tax = ternary.figure(scale=scale)
 ```
 
-With `ternary_ax` you can use many of the usual matplotlib functions:
+With a ternary axes object `tax` you can use many of the usual matplotlib 
+axes object functions:
 
 ```
-figure, ternary_ax = ternary.figure(scale=scale)
-ternary_ax.set_title("Scatter Plot", fontsize=20)
-ternary_ax.scatter(points, marker='s', color='red', label="Red Squares")
-ternary_ax.legend()
+tax.set_title("Scatter Plot", fontsize=20)
+tax.scatter(points, marker='s', color='red', label="Red Squares")
+tax.legend()
 ```
 
 Most drawing functions can take standard matplotlib keyword arguments such as [linestyle](http://matplotlib.org/api/lines_api.html#matplotlib.lines.Line2D.set_linestyle) and linewidth. You can use LaTeX in titles and labels.
@@ -55,14 +56,14 @@ Most drawing functions can take standard matplotlib keyword arguments such as [l
 If you need to act directly on the underyling matplotlib axes, you can access them:
 
 ```
-ax = ternary_ax.get_axes()
+ax = tax.get_axes()
 ```
 
 You can also wrap a Matplotlib AxesSubplot object:
 
 ```
 figure, ax = pyplot.subplots()
-ternary_ax = ternary.TernaryAxesSubplot(ax=ax)
+tax = ternary.TernaryAxesSubplot(ax=ax)
 ```
 
 This is useful if you want to use ternary as part of another figure, such as
@@ -88,21 +89,21 @@ import ternary
 
 ## Boundary and Gridlines
 scale = 40
-figure, ternary_ax = ternary.figure(scale=scale)
+figure, tax = ternary.figure(scale=scale)
 
 # Draw Boundary and Gridlines
-ternary_ax.boundary(color="black", linewidth=2.0)
-ternary_ax.gridlines(color="blue", multiple=5) # Every 5th gridline
+tax.boundary(color="black", linewidth=2.0)
+tax.gridlines(color="blue", multiple=5) # Every 5th gridline
 
 # Set Axis labels and Title
 fontsize = 20
-ternary_ax.set_title("Simplex Boundary and Gridlines", fontsize=fontsize)
-ternary_ax.left_axis_label("Left label $\\alpha^2$", fontsize=fontsize)
-ternary_ax.right_axis_label("Right label $\\beta^2$", fontsize=fontsize)
-ternary_ax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$", fontsize=fontsize)
+tax.set_title("Simplex Boundary and Gridlines", fontsize=fontsize)
+tax.left_axis_label("Left label $\\alpha^2$", fontsize=fontsize)
+tax.right_axis_label("Right label $\\beta^2$", fontsize=fontsize)
+tax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$", fontsize=fontsize)
 
 # Remove default Matplotlib Axes
-ternary_ax.clear_matplotlib_ticks()
+tax.clear_matplotlib_ticks()
 
 pyplot.show()
 ```
@@ -115,29 +116,29 @@ You can draw individual lines between any two points with `line` and lines paral
 import ternary
 
 scale = 40
-figure, ternary_ax = ternary.figure(scale=scale)
+figure, tax = ternary.figure(scale=scale)
 
 # Draw Boundary and Gridlines
-ternary_ax.boundary(color="black", linewidth=2.0)
-ternary_ax.gridlines(color="blue", multiple=5)
+tax.boundary(color="black", linewidth=2.0)
+tax.gridlines(color="blue", multiple=5)
 
 # Set Axis labels and Title
 fontsize = 20
-ternary_ax.set_title("Various Lines", fontsize=20)
-ternary_ax.left_axis_label("Left label $\\alpha^2$", fontsize=fontsize)
-ternary_ax.right_axis_label("Right label $\\beta^2$", fontsize=fontsize)
-ternary_ax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$", fontsize=fontsize)
+tax.set_title("Various Lines", fontsize=20)
+tax.left_axis_label("Left label $\\alpha^2$", fontsize=fontsize)
+tax.right_axis_label("Right label $\\beta^2$", fontsize=fontsize)
+tax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$", fontsize=fontsize)
 
 # Draw lines parallel to the axes
-ternary_ax.horizontal_line(16)
-ternary_ax.left_parallel_line(10, linewidth=2., color='red', linestyle="--")
-ternary_ax.right_parallel_line(20, linewidth=3., color='blue')
+tax.horizontal_line(16)
+tax.left_parallel_line(10, linewidth=2., color='red', linestyle="--")
+tax.right_parallel_line(20, linewidth=3., color='blue')
 # Draw an arbitrary line
 p1 = ternary.project_point((12,8,10))
 p2 = ternary.project_point((2, 26, 2))
-ternary_ax.line(p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
+tax.line(p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
 
-ternary_ax.show()
+tax.show()
 ```
 
 The line drawing functions accept the matplotlib keyword arguments of [Line2D](http://matplotlib.org/api/lines_api.html).
@@ -191,18 +192,18 @@ import ternary
 
 ### Scatter Plot
 scale = 40
-figure, ternary_ax = ternary.figure(scale=scale)
-ternary_ax.set_title("Scatter Plot", fontsize=20)
-ternary_ax.boundary(color="black", linewidth=2.0)
-ternary_ax.gridlines(multiple=5, color="blue")
+figure, tax = ternary.figure(scale=scale)
+tax.set_title("Scatter Plot", fontsize=20)
+tax.boundary(color="black", linewidth=2.0)
+tax.gridlines(multiple=5, color="blue")
 # Plot a few different styles with a legend
 points = random_points(30, scale=scale)
-ternary_ax.scatter(points, marker='s', color='red', label="Red Squares")
+tax.scatter(points, marker='s', color='red', label="Red Squares")
 points = random_points(30, scale=scale)
-ternary_ax.scatter(points, marker='D', color='green', label="Green Diamonds")
-ternary_ax.legend()
+tax.scatter(points, marker='D', color='green', label="Green Diamonds")
+tax.legend()
 
-ternary_ax.show()
+tax.show()
 
 ```
 
@@ -232,14 +233,14 @@ We can get a heatmap of this function as follows:
 import ternary
 scale = 60
 
-figure, ternary_ax = ternary.figure(scale=scale)
-ternary_ax.set_title("Scatter Plot", fontsize=20)
+figure, tax = ternary.figure(scale=scale)
+tax.set_title("Scatter Plot", fontsize=20)
 
-ternary_ax.heatmapf(shannon_entropy, boundary=True, style="triangular")
-ternary_ax.boundary(linewidth=2.0)
-ternary_ax.set_title("Shannon Entropy Heatmap")
+tax.heatmapf(shannon_entropy, boundary=True, style="triangular")
+tax.boundary(linewidth=2.0)
+tax.set_title("Shannon Entropy Heatmap")
 
-ternary_ax.show()
+tax.show()
 ```
 
 In this case the keyword argument *boundary* indicates whether you wish to evaluate points on the boundary of the partition (which is sometimes undesirable). Specify `style="hexagonal"` for hexagons. Large scalings can use a lot of RAM (the number of polygons rendered is O(n^2) ).
@@ -257,7 +258,7 @@ ternary.heatmap(d, scale, ax=None, cmap=None)
 or 
 
 ```
-ternary_ax.heatmap(d, cmap=None)
+tax.heatmap(d, cmap=None)
 ```
 
 This can produces images such as:
@@ -277,7 +278,7 @@ python -m unittest discover tests
 # Contributing
 
 Contributions are welcome! Please share any nice example plots, contribute 
-features, and add unit tests!
+features, and add unit tests! Use the pull request and issue systems to contribute.
 
 # Citation
 
@@ -290,4 +291,4 @@ Marc Harper, Python-ternary: A python library for ternary plots, 2011-2015, avai
 # Contributors
 
 - Marc Harper [marcharper](https://github.com/marcharper)
-- Bryan Weinstein [btweinstein](https://github.com/btweinstein): Hexagonal heatmaps, Colored Trajectory plots
+- Bryan Weinstein [btweinstein](https://github.com/btweinstein): Hexagonal heatmaps, colored trajectory plots
