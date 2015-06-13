@@ -68,11 +68,11 @@ tax = ternary.TernaryAxesSubplot(ax=ax)
 This is useful if you want to use ternary as part of another figure, such as
 
 ```
-    pyplot.figure()
-    gs = gridspec.GridSpec(2,2)
-    ax = pyplot.subplot(gs[0,0])
-    figure, tax = ternary.figure(ax=ax)
-    ...
+pyplot.figure()
+gs = gridspec.GridSpec(2,2)
+ax = pyplot.subplot(gs[0,0])
+figure, tax = ternary.figure(ax=ax)
+...
 ````
 
 ## Simplex Boundary and Gridlines
@@ -159,12 +159,14 @@ import ternary
 ## Sample trajectory plot
 figure, tax = ternary.figure(scale=1.0)
 tax.boundary(color='black')
+tax.gridlines(multiple=0.2, color="black")
 tax.set_title("Plotting of sample trajectory data", fontsize=20)
 points = []
+# Load some data, tuples (x,y,z)
 with open("curve.txt") as handle:
     for line in handle:
         points.append(map(float, line.split(' ')))
-tax.gridlines(multiple=0.2, color="black")
+# Plot the data
 tax.plot(points, linewidth=2.0, label="Curve")
 tax.legend()
 tax.show()
