@@ -38,8 +38,7 @@ The easiest way to use python-ternary is with the wrapper class `TernaryAxesSubp
 which mimics Matplotlib's AxesSubplot. Start with
 
 ```
-scale = 20
-figure, tax = ternary.figure(scale=scale)
+figure, tax = ternary.figure()
 ```
 
 With a ternary axes object `tax` you can use many of the usual matplotlib 
