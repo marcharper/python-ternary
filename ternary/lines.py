@@ -112,9 +112,26 @@ def boundary(ax, scale, **kwargs):
     right_parallel_line(ax, scale, 0, **kwargs)
     return ax
 
-## TODO: left_kwargs, right_kwargs
+def merge_dicts(base, updates):
+    '''
+    Given two dicts, merge them into a new dict as a shallow copy.
+    
+    Parameters
+    ----------
+    base: dict
+        The base dictionary
+    updates: dict
+        Secondary dictionary whose values override the base
+    '''
+    if not base:
+        base = dict()
+    if not updates:
+        updates = dict()
+    z = base.copy()
+    z.update(updates)
+    return z
 
-def gridlines(ax, scale, multiple=None, **kwargs):
+def gridlines(ax, scale, multiple=None, horizontal_kwargs=None, left_kwargs=None, right_kwargs=None, **kwargs):
     """
     Plots grid lines excluding boundary.
 
@@ -127,21 +144,31 @@ def gridlines(ax, scale, multiple=None, **kwargs):
     multiple: float, None
         Specifies which inner gridelines to draw. For example, if scale=30 and
         multiple=6, only 5 inner gridlines will be drawn.
+    horizontal_kwargs: dict, None
+        Any kwargs to pass through to matplotlib for horizontal gridlines
+    left_kwargs: dict, None
+        Any kwargs to pass through to matplotlib for left parallel gridlines
+    right_kwargs: dict, None
+        Any kwargs to pass through to matplotlib for right parallel gridlines
     kwargs:
-        Any kwargs to pass through to matplotlib.
+        Any kwargs to pass through to matplotlib, if not using
+        horizontal_kwargs, left_kwargs, or right_kwargs
     """
 
     if 'linewidth' not in kwargs:
         kwargs["linewidth"] = 0.5
     if 'linestyle' not in kwargs:
         kwargs["linestyle"] = ':'
+    horizontal_kwargs = merge_dicts(kwargs, horizontal_kwargs)
+    left_kwargs = merge_dicts(kwargs, left_kwargs)
+    right_kwargs = merge_dicts(kwargs, right_kwargs)
     ## Draw grid-lines
     if multiple:
         # Parallel to horizontal axis
         for i in arange(0, scale, multiple):
-            horizontal_line(ax, scale, i, **kwargs)
+            horizontal_line(ax, scale, i, **horizontal_kwargs)
         # Parallel to left and right axes
         for i in arange(0, scale + multiple, multiple):
-            left_parallel_line(ax, scale, i, **kwargs)
-            right_parallel_line(ax, scale, i, **kwargs)
+            left_parallel_line(ax, scale, i, **left_kwargs)
+            right_parallel_line(ax, scale, i, **right_kwargs)
     return ax

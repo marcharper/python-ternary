@@ -30,6 +30,14 @@ if __name__ == '__main__':
     scale = 40
     figure, ternary_ax = ternary.figure(scale=scale)
 
+    left_kwargs = {'color': 'blue'}
+    right_kwargs = {'color': 'red'}
+    
+    # Draw Boundary and Gridlines
+    ternary_ax.boundary(color="black", linewidth=2.0)
+    ternary_ax.gridlines(color="blue", multiple=5, left_kwargs=left_kwargs,
+                         right_kwargs=right_kwargs)
+
     # Draw Boundary and Gridlines
     ternary_ax.boundary(color="black", linewidth=2.0)
     ternary_ax.gridlines(color="blue", multiple=5)
