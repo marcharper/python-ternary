@@ -28,7 +28,9 @@ def line(ax, p1, p2, **kwargs):
         Any kwargs to pass through to Matplotlib.
     """
 
-    ax.add_line(Line2D((p1[0], p2[0]), (p1[1], p2[1]), **kwargs))
+    pp1 = project_point(p1)
+    pp2 = project_point(p2)
+    ax.add_line(Line2D((pp1[0], pp2[0]), (pp1[1], pp2[1]), **kwargs))
 
 def horizontal_line(ax, scale, i, **kwargs):
     """
@@ -46,8 +48,8 @@ def horizontal_line(ax, scale, i, **kwargs):
         Any kwargs to pass through to Matplotlib.
     """
 
-    p1 = project_point((0, scale-i, i))
-    p2 = project_point((scale-i, 0, i))
+    p1 = (0, scale-i, i)
+    p2 = (scale-i, 0, i)
     line(ax, p1, p2, **kwargs)
 
 def left_parallel_line(ax, scale, i,  **kwargs):
@@ -66,8 +68,8 @@ def left_parallel_line(ax, scale, i,  **kwargs):
         Any kwargs to pass through to Matplotlib.
     """
 
-    p1 = project_point((0, i, scale-i))
-    p2 = project_point((scale-i, i, 0))
+    p1 = (0, i, scale-i)
+    p2 = (scale-i, i, 0)
     line(ax, p1, p2, **kwargs)
 
 def right_parallel_line(ax, scale, i, **kwargs):
@@ -86,8 +88,8 @@ def right_parallel_line(ax, scale, i, **kwargs):
         Any kwargs to pass through to Matplotlib.
     """
 
-    p1 = project_point((i, scale-i, 0))
-    p2 = project_point((i, 0, scale-i))
+    p1 = (i, scale-i, 0)
+    p2 = (i, 0, scale-i)
     line(ax, p1, p2, **kwargs)
 
 ## Boundary, Gridlines ##

@@ -72,8 +72,8 @@ if __name__ == '__main__':
     ternary_ax.left_parallel_line(10, linewidth=2., color='red', linestyle="--")
     ternary_ax.right_parallel_line(20, linewidth=3., color='blue')
     # Draw an arbitrary line
-    p1 = ternary.project_point((12,8,10))
-    p2 = ternary.project_point((2, 26, 2))
+    p1 = (12,8,10)
+    p2 = (2, 26, 2)
     ternary_ax.line(p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
 
     ### Scatter Plot

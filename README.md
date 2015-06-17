@@ -133,9 +133,9 @@ tax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$", fontsize=fontsize)
 tax.horizontal_line(16)
 tax.left_parallel_line(10, linewidth=2., color='red', linestyle="--")
 tax.right_parallel_line(20, linewidth=3., color='blue')
-# Draw an arbitrary line
-p1 = ternary.project_point((12,8,10))
-p2 = ternary.project_point((2, 26, 2))
+# Draw an arbitrary line, ternary will project the points for you
+p1 = (12,8,10)
+p2 = (2, 26, 2)
 tax.line(p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
 
 tax.show()
