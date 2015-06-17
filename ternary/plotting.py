@@ -220,8 +220,9 @@ def left_axis_label(ax, label, position=None, rotation=60, offset=0.08, **kwargs
     """
 
     if not position:
-        position = (1./2, -offset, 1./2)
-    set_ternary_axis_label(ax, label, position, rotation, **kwargs)
+        position = (2./5 , -offset, 3./5)
+    set_ternary_axis_label(ax, label, position, rotation,
+                           horizontalalignment="center", **kwargs)
 
 def right_axis_label(ax, label, position=None, rotation=-60, offset=0.08, **kwargs):
     """

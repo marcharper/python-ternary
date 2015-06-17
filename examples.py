@@ -52,6 +52,9 @@ if __name__ == '__main__':
     # Remove default Matplotlib Axes
     ternary_ax.clear_matplotlib_ticks()
 
+    pyplot.show()
+    exit()
+
     ### Plot Various lines
     scale = 40
     figure, ternary_ax = ternary.figure(scale=scale)
