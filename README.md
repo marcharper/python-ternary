@@ -75,6 +75,8 @@ figure, tax = ternary.figure(ax=ax)
 ...
 ````
 
+`TernaryAxesSubplot` objects keep track of the scale and supply this parameter to other functions as needed.
+
 ## Simplex Boundary and Gridlines
 
 The following code draws a boundary for the simplex and gridlines.

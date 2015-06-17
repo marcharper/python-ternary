@@ -72,14 +72,17 @@ class TernaryAxesSubplot(object):
         plotting.clear_matplotlib_ticks(ax=self.get_axes(),
                                         axis=axis)
 
-    def left_axis_label(self, label, **kwargs):
-        plotting.left_axis_label(self.get_axes(), label, **kwargs)
+    def left_axis_label(self, label, position=None, **kwargs):
+        plotting.left_axis_label(self.get_axes(), label, position=position,
+                                 **kwargs)
 
-    def right_axis_label(self, label, **kwargs):
-        plotting.right_axis_label(self.get_axes(), label, **kwargs)
+    def right_axis_label(self, label, position=None, **kwargs):
+        plotting.right_axis_label(self.get_axes(), label, position=position,
+                                  **kwargs)
 
-    def bottom_axis_label(self, label, **kwargs):
-        plotting.bottom_axis_label(self.get_axes(), label, **kwargs)
+    def bottom_axis_label(self, label, position=None, **kwargs):
+        plotting.bottom_axis_label(self.get_axes(), label, position=position,
+                                   **kwargs)
 
     def heatmap(self, data, scale=None, cmap=None, scientific=False,
                 style='triangular', colorbar=True):
@@ -117,9 +120,12 @@ class TernaryAxesSubplot(object):
             scale = self.get_scale()
         lines.boundary(scale=scale, ax=self.get_axes(), **kwargs)
 
-    def gridlines(self, multiple=None, **kwargs):
+    def gridlines(self, multiple=None, horizontal_kwargs=None, left_kwargs=None,
+                  right_kwargs=None, **kwargs):
         lines.gridlines(scale=self.get_scale(), multiple=multiple,
-                        ax=self.get_axes(), **kwargs)
+                        ax=self.get_axes(), horizontal_kwargs=horizontal_kwargs,
+                        left_kwargs=left_kwargs, right_kwargs=right_kwargs,
+                        **kwargs)
 
     def set_title(self, title, **kwargs):
         self.ax.set_title(title, **kwargs)
