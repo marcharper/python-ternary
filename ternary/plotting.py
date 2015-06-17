@@ -202,7 +202,7 @@ def set_ternary_axis_label(ax, label, position, rotation, event_names=None,
     for event_name in event_names:
         figure.canvas.mpl_connect(event_name, callback)
 
-def left_axis_label(ax, label, rotation=60, offset=0.08, **kwargs):
+def left_axis_label(ax, label, position=None, rotation=60, offset=0.08, **kwargs):
     """
     Sets axis label on the left triangular axis. The label can include
     LaTeX.
@@ -213,14 +213,17 @@ def left_axis_label(ax, label, rotation=60, offset=0.08, **kwargs):
         The subplot to draw on.
     label: String
         The axis label
+    position: 3-Tuple of floats, None
+        The position of the text label
     kwargs:
         Any kwargs to pass through to matplotlib.
     """
 
-    position = (1./2, -offset, 1./2)
+    if not position:
+        position = (1./2, -offset, 1./2)
     set_ternary_axis_label(ax, label, position, rotation, **kwargs)
 
-def right_axis_label(ax, label, rotation=-60, offset=0.08, **kwargs):
+def right_axis_label(ax, label, position=None, rotation=-60, offset=0.08, **kwargs):
     """
     Sets axis label on the right triangular axis. The label can include
     LaTeX.
@@ -231,15 +234,18 @@ def right_axis_label(ax, label, rotation=-60, offset=0.08, **kwargs):
         The subplot to draw on.
     label: String
         The axis label
+    position: 3-Tuple of floats, None
+        The position of the text label
     kwargs:
         Any kwargs to pass through to matplotlib.
     """
-    #position = (offset, 1./2 + offset, 1./2)
-    position = (0, 2./5 + offset, 3./5)
+
+    if not position:
+        position = (0, 2./5 + offset, 3./5)
     set_ternary_axis_label(ax, label, position, rotation,
                            horizontalalignment="center", **kwargs)
 
-def bottom_axis_label(ax, label, rotation=0, offset=0.04, **kwargs):
+def bottom_axis_label(ax, label, position=None, rotation=0, offset=0.04, **kwargs):
     """
     Sets axis label on the bottom (lower) triangular axis. The label can include
     LaTeX.
@@ -250,10 +256,13 @@ def bottom_axis_label(ax, label, rotation=0, offset=0.04, **kwargs):
         The subplot to draw on.
     label: String
         The axis label
+    position: 3-Tuple of floats, None
+        The position of the text label
     kwargs:
         Any kwargs to pass through to matplotlib.
     """
 
-    position = (1./2, 1./2, offset)
+    if not position:
+        position = (1./2, 1./2, offset)
     set_ternary_axis_label(ax, label, position, rotation,
                            horizontalalignment="center", **kwargs)
