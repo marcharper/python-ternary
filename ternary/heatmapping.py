@@ -13,12 +13,12 @@ from colormapping import get_cmap, colormapper, colorbar_hack
 
 ## Triangular Heatmaps ##
 
-def blend_value(d, i, j, k=None, keys=None):
+def blend_value(data, i, j, k=None, keys=None):
     """Computes the average value of the three vertices of a triangule in the
     simplex triangulation, where two of the vertices are on the lower
     horizontal."""
 
-    key_size = len(d.keys()[0])
+    key_size = len(data.keys()[0])
     if not keys:
         keys = [(i, j, k), (i, j + 1, k - 1), (i + 1, j, k - 1)]
     # Reduce key from (i, j, k) to (i, j) if necessary
@@ -26,19 +26,19 @@ def blend_value(d, i, j, k=None, keys=None):
 
     # Sum over the values of the points to blend
     try:
-        s = sum(d[key] for key in keys)
+        s = sum(data[key] for key in keys)
         value = s / 3.
     except KeyError:
         value = None
     return value
 
-def alt_blend_value(d, i, j, k=None):
+def alt_blend_value(data, i, j, k=None):
     """Computes the average value of the three vertices of a triangule in the
     simplex triangulation, where two of the vertices are on the upper
     horizontal."""
 
     keys = [(i, j, k), (i, j + 1, k - 1), (i + 1, j - 1, k)]
-    return blend_value(d, i, j, k, keys=keys)
+    return blend_value(data, i, j, k, keys=keys)
 
 def triangle_coordinates(i, j, k=None):
     """
@@ -255,9 +255,9 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
     """
 
     # Apply the function to a simplex partition
-    d = dict()
+    data = dict()
     for i, j, k in simplex_iterator(scale=scale, boundary=boundary):
-        d[(i, j)] = func(normalize([i, j, k]))
+        data[(i, j)] = func(normalize([i, j, k]))
     # Pass everything to the heatmapper
     ax = heatmap(d, scale, cmap=cmap, ax=ax, style=style,
                            scientific=scientific, colorbar=colorbar)
