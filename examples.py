@@ -165,25 +165,25 @@ if __name__ == '__main__':
     ax = pyplot.subplot(gs[0,0])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmapf(function, boundary=True, style="triangular")
-    tax.boundary(scale=scale+1, color='black')
+    tax.boundary(color='black')
     tax.set_title("Triangular with Boundary")
 
     ax = pyplot.subplot(gs[0,1])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmapf(function, boundary=False, style="t")
-    tax.boundary(scale=scale+1, color='black')
+    tax.boundary(color='black')
     tax.set_title("Triangular without Boundary")
 
     ax = pyplot.subplot(gs[1,0])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmapf(function, boundary=True, style="hexagonal")
-    tax.boundary(scale=scale, color='black')
+    tax.boundary(color='black')
     tax.set_title("Hexagonal with Boundary")
 
     ax = pyplot.subplot(gs[1,1])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmapf(function, boundary=False, style="h")
-    tax.boundary(scale=scale, color='black')
+    tax.boundary(color='black')
     tax.set_title("Hexagonal without Boundary")
 
     ## Heatmaps from data

@@ -78,10 +78,6 @@ def alt_value_iterator(d):
     for key in d.keys():
         i, j = key
         value = blend_value(d, i, j)
-        #try:
-            #value = (d[i,j] + d[i, j + 1] + d[i + 1, j]) / 3.
-        #except KeyError:
-            #value = None
         yield key, value
 
 ## Hexagonal Heatmaps ##
@@ -137,25 +133,14 @@ def hexagon_coordinates(i, j, k):
 
 ## Heatmaps ##
 
-def generate_vertices_values(d, coordinates_function, value_function=None):
-    for vertex_function, iterator in mapping_functions:
-        
-        for key, value in iterator:
-            if value is not None:
-                i, j = key
-                k = scale - i - j
-                vertices = coordinates_function(i, j, k)
-                
-                color = colormapper(value, vmin, vmax, cmap=cmap)
-
-def heatmap(d, scale, vmin=None, vmax=None, cmap=None, ax=None,
+def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
             scientific=False, style='triangular', colorbar=True):
     """
     Plots heatmap of given color values.
 
     Parameters
     ----------
-    d: dictionary
+    data: dictionary
         A dictionary mapping the i, j polygon to the heatmap color, where
         i + j + k = scale.
     scale: Integer
@@ -171,7 +156,7 @@ def heatmap(d, scale, vmin=None, vmax=None, cmap=None, ax=None,
     scientific: Bool, False
         Whether to use scientific notation for colorbar numbers.
     style: String, "triangular"
-        The style of the heatmap, "triangular" or "hexagonal".
+        The style of the heatmap, "triangular", "dual-triangular" or "hexagonal"
     colorbar: bool, True
         Show colorbar.
 
@@ -184,9 +169,9 @@ def heatmap(d, scale, vmin=None, vmax=None, cmap=None, ax=None,
         fig, ax = pyplot.subplots()
     cmap = get_cmap(cmap)
     if not vmin:
-        vmin = min(d.values())
+        vmin = min(data.values())
     if not vmax:
-        vmax = max(d.values())
+        vmax = max(data.values())
     style = style.lower()[0]
     if style not in ["t", "h", 'd']:
         raise ValueError("Heatmap style must be 'triangular', 'dual-triangular', or 'hexagonal'")
@@ -197,18 +182,18 @@ def heatmap(d, scale, vmin=None, vmax=None, cmap=None, ax=None,
         for i, j, k in simplex_iterator(scale-1):
             # Upright triangles
             vertices = triangle_coordinates(i, j)
-            value = blend_value(d, i, j)
+            value = blend_value(data, i, j)
             vertices_values.append((vertices, value))
-            # If not on the boundary add the upside triangle
+            # If not on the boundary add the upside-down triangle
             if (j > 0) and (j < scale):
                 vertices = alt_triangle_coordinates(i, j - 1)
-                value = alt_blend_value(d, i, j)
+                value = alt_blend_value(data, i, j)
                 vertices_values.append((vertices, value))
     else:
         if style == 'h':
-            mapping_functions = [(hexagon_coordinates, d.items())]
+            mapping_functions = [(hexagon_coordinates, data.items())]
         elif style == 'd':
-            mapping_functions = [(triangle_coordinates, d.items()), (alt_triangle_coordinates, alt_value_iterator(d))]
+            mapping_functions = [(triangle_coordinates, data.items()), (alt_triangle_coordinates, alt_value_iterator(data))]
 
         # Color data triangles or hexagons
         for vertex_function, iterator in mapping_functions:
@@ -221,6 +206,8 @@ def heatmap(d, scale, vmin=None, vmax=None, cmap=None, ax=None,
 
     # Draw the polygons and color them
     for vertices, value in vertices_values:
+        if not value:
+            continue
         color = colormapper(value, vmin, vmax, cmap=cmap)
         # Matplotlib wants a list of xs and a list of ys
         xs, ys = unzip(vertices)
@@ -253,7 +240,7 @@ def heatmapf(func, scale=10, boundary=True, cmap=None,
     ax: Matplotlib axis object, None
         The axis to draw the colormap on
     style: String, "triangular"
-        The style of the heatmap, "triangular" or "hexagonal"
+        The style of the heatmap, "triangular", "dual-triangular" or "hexagonal"
     scientific: Bool, False
         Whether to use scientific notation for colorbar numbers.
     colorbar: bool, True
