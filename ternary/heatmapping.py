@@ -92,7 +92,7 @@ def hexagon_coordinates(i, j, k):
 
     Parameters
     ----------
-    i,j,k: enumeration of the desired hexagon
+    i, j, k: enumeration of the desired hexagon
 
     Returns
     -------
@@ -140,6 +140,8 @@ def polygon_iterator(data, scale, style="d"):
         k = scale - i - j
         if style == 'h':
             vertices = hexagon_coordinates(i, j, k)
+            if i == 0 and j == 0:
+                print i,j,k, vertices, value
             yield (vertices, value)
         elif style == 'd':
             # Upright triangles
@@ -208,7 +210,7 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
 
     # Draw the polygons and color them
     for vertices, value in vertices_values:
-        if not value:
+        if value is None:
             continue
         color = colormapper(value, vmin, vmax, cmap=cmap)
         # Matplotlib wants a list of xs and a list of ys
@@ -255,7 +257,7 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
     # Apply the function to a simplex partition
     d = dict()
     for i, j, k in simplex_iterator(scale=scale, boundary=boundary):
-        d[(i, j, k)] = func(normalize([i, j, k]))
+        d[(i, j)] = func(normalize([i, j, k]))
     # Pass everything to the heatmapper
     ax = heatmap(d, scale, cmap=cmap, ax=ax, style=style,
                            scientific=scientific, colorbar=colorbar)
