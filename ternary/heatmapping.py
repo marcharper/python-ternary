@@ -49,6 +49,10 @@ def alt_triangle_coordinates(i, j, k=None):
             (i/2. + j + 0.5, (i + 1) * SQRT3OVER2)]
 
 def blend_value(d, i, j):
+    """Computes the average value of the three vertices of a triangule in the
+    simplex triangulation, where two of the vertices are on the lower
+    horizontal."""
+
     try:
         value = (d[i, j] + d[i, j + 1] + d[i + 1, j]) / 3.
     except KeyError:
@@ -56,6 +60,9 @@ def blend_value(d, i, j):
     return value
 
 def alt_blend_value(d, i, j):
+    """Computes the average value of the three vertices of a triangule in the
+    simplex triangulation, where two of the vertices are on the upper
+    horizontal."""
     try:
         value = (d[i, j] + d[i, j + 1] + d[i + 1, j - 1]) / 3.
     except KeyError:
@@ -130,6 +137,17 @@ def hexagon_coordinates(i, j, k):
 
 ## Heatmaps ##
 
+def generate_vertices_values(d, coordinates_function, value_function=None):
+    for vertex_function, iterator in mapping_functions:
+        
+        for key, value in iterator:
+            if value is not None:
+                i, j = key
+                k = scale - i - j
+                vertices = coordinates_function(i, j, k)
+                
+                color = colormapper(value, vmin, vmax, cmap=cmap)
+
 def heatmap(d, scale, vmin=None, vmax=None, cmap=None, ax=None,
             scientific=False, style='triangular', colorbar=True):
     """
@@ -161,7 +179,7 @@ def heatmap(d, scale, vmin=None, vmax=None, cmap=None, ax=None,
     -------
     ax: The matplotlib axis
     """
-    
+
     if not ax:
         fig, ax = pyplot.subplots()
     cmap = get_cmap(cmap)
@@ -170,29 +188,28 @@ def heatmap(d, scale, vmin=None, vmax=None, cmap=None, ax=None,
     if not vmax:
         vmax = max(d.values())
     style = style.lower()[0]
-    if style not in ["t", "h", 'x']:
-        raise ValueError("Heatmap style must be 'triangular' or 'hexagonal'")
-    if style == 'h':
-        mapping_functions = [(hexagon_coordinates, d.items())]
-    elif style == 't':
-        mapping_functions = [(triangle_coordinates, d.items()), (alt_triangle_coordinates, alt_value_iterator(d))]
+    if style not in ["t", "h", 'd']:
+        raise ValueError("Heatmap style must be 'triangular', 'dual-triangular', or 'hexagonal'")
 
-    skip_condition = lambda i, j: False
-    if style == "x":
+    vertices_values = []
+
+    if style == "t":
         for i, j, k in simplex_iterator(scale-1):
-            vertices_values = []
-            vertices_values.append((triangle_coordinates(i, j),
-                                    blend_value(d, i, j)))
+            # Upright triangles
+            vertices = triangle_coordinates(i, j)
+            value = blend_value(d, i, j)
+            vertices_values.append((vertices, value))
+            # If not on the boundary add the upside triangle
             if (j > 0) and (j < scale):
-                vertices_values.append((alt_triangle_coordinates(i, j -1 ),
-                                        alt_blend_value(d, i, j)))
-            for vertices, value in vertices_values:
-                color = colormapper(value, vmin, vmax, cmap=cmap)
-                # Matplotlib wants a list of xs and a list of ys
-                xs, ys = unzip(vertices)
-                ax.fill(xs, ys, facecolor=color, edgecolor=color)
-
+                vertices = alt_triangle_coordinates(i, j - 1)
+                value = alt_blend_value(d, i, j)
+                vertices_values.append((vertices, value))
     else:
+        if style == 'h':
+            mapping_functions = [(hexagon_coordinates, d.items())]
+        elif style == 'd':
+            mapping_functions = [(triangle_coordinates, d.items()), (alt_triangle_coordinates, alt_value_iterator(d))]
+
         # Color data triangles or hexagons
         for vertex_function, iterator in mapping_functions:
             for key, value in iterator:
@@ -200,10 +217,14 @@ def heatmap(d, scale, vmin=None, vmax=None, cmap=None, ax=None,
                     i, j = key
                     k = scale - i - j
                     vertices = vertex_function(i, j, k)
-                    color = colormapper(value, vmin, vmax, cmap=cmap)
-                    # Matplotlib wants a list of xs and a list of ys
-                    xs, ys = unzip(vertices)
-                    ax.fill(xs, ys, facecolor=color, edgecolor=color)
+                    vertices_values.append((vertices, value))
+
+    # Draw the polygons and color them
+    for vertices, value in vertices_values:
+        color = colormapper(value, vmin, vmax, cmap=cmap)
+        # Matplotlib wants a list of xs and a list of ys
+        xs, ys = unzip(vertices)
+        ax.fill(xs, ys, facecolor=color, edgecolor=color)
 
     if colorbar:
         colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific)
@@ -215,8 +236,10 @@ def heatmapf(func, scale=10, boundary=True, cmap=None,
                         ax=None, scientific=False, style='triangular',
                         colorbar=True):
     """
-    Computes func on heatmap partition coordinates and plots heatmap. In other words, computes the function on lattice points of the simplex (normalized points) and creates a heatmap from the values.
-    
+    Computes func on heatmap partition coordinates and plots heatmap. In other
+    words, computes the function on lattice points of the simplex (normalized
+    points) and creates a heatmap from the values.
+
     Parameters
     ----------
     func: Function

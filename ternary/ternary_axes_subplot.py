@@ -37,12 +37,10 @@ class TernaryAxesSubplot(object):
         else:
             _, self.ax = pyplot.subplots()
         self.set_scale(scale=scale)
+        self._boundary_scale = scale
 
     def __repr__(self):
         return "TernaryAxesSubplot: %s" % self.ax.__hash__()
-
-    def resize_drawing_canvas(self):
-        plotting.resize_drawing_canvas(self.ax, scale=self.get_scale())
 
     def get_figure(self):
         ax = self.get_axes()
@@ -87,19 +85,25 @@ class TernaryAxesSubplot(object):
     def heatmap(self, data, scale=None, cmap=None, scientific=False,
                 style='triangular', colorbar=True):
         if not scale:
-            scale = self._scale
+            scale = self.get_scale()
+        if style.lower()[0] == 'd':
+            self._boundary_scale = scale + 1
+        ax = self.get_axes()
         heatmapping.heatmap(data, scale, cmap=cmap, style=style,
-                            ax=self.get_axes(), scientific=scientific,
+                            ax=ax, scientific=scientific,
                             colorbar=colorbar)
 
     def heatmapf(self, func, scale=None, cmap=None,
                             boundary=True, style='triangular', colorbar=True,
                             scientific=True):
         if not scale:
-            scale = self._scale
+            scale = self.get_scale()
+        if style.lower()[0] == 'd':
+            self._boundary_scale = scale + 1
+        ax = self.get_axes()
         heatmapping.heatmapf(func, scale, cmap=cmap,
                                         style=style, boundary=boundary, 
-                                        ax=self.get_axes(), scientific=scientific,
+                                        ax=ax, scientific=scientific,
                                         colorbar=colorbar)
 
     def line(self, p1, p2, **kwargs):
@@ -117,8 +121,10 @@ class TernaryAxesSubplot(object):
     def boundary(self, scale=None, **kwargs):
         # Sometimes you want to draw a bigger boundary
         if not scale:
-            scale = self.get_scale()
-        lines.boundary(scale=scale, ax=self.get_axes(), **kwargs)
+            scale = self._boundary_scale
+        self.resize_drawing_canvas(scale)
+        ax = self.get_axes()
+        lines.boundary(scale=scale, ax=ax, **kwargs)
 
     def gridlines(self, multiple=None, horizontal_kwargs=None, left_kwargs=None,
                   right_kwargs=None, **kwargs):
@@ -128,7 +134,8 @@ class TernaryAxesSubplot(object):
                         **kwargs)
 
     def set_title(self, title, **kwargs):
-        self.ax.set_title(title, **kwargs)
+        ax = self.get_axes()
+        ax.set_title(title, **kwargs)
 
     def save_fig(self, filename, dpi=200, format=None):
         figure = self.get_figure()
@@ -137,6 +144,11 @@ class TernaryAxesSubplot(object):
     def legend(self, *args, **kwargs):
         ax = self.get_axes()
         ax.legend(*args, **kwargs)
-    
+
+    def resize_drawing_canvas(self, scale=None):
+        if not scale:
+            scale = self.get_scale()
+        plotting.resize_drawing_canvas(self.ax, scale=scale)
+
     def show(self):
         pyplot.show()
