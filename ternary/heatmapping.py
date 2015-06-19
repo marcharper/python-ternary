@@ -3,6 +3,7 @@ Various Heatmaps.
 """
 
 import numpy
+from matplotlib import pyplot
 
 from helpers import SQRT3, SQRT3OVER2, unzip, normalize, simplex_iterator
 import plotting
@@ -47,6 +48,20 @@ def alt_triangle_coordinates(i, j, k=None):
             (i/2. + j + 1.5, (i + 1) * SQRT3OVER2),
             (i/2. + j + 0.5, (i + 1) * SQRT3OVER2)]
 
+def blend_value(d, i, j):
+    try:
+        value = (d[i, j] + d[i, j + 1] + d[i + 1, j]) / 3.
+    except KeyError:
+        value = None
+    return value
+
+def alt_blend_value(d, i, j):
+    try:
+        value = (d[i, j] + d[i, j + 1] + d[i + 1, j - 1]) / 3.
+    except KeyError:
+        value = None
+    return value
+
 def alt_value_iterator(d):
     """
     Compute the average of the neighboring triangles for smoothing. These are
@@ -55,10 +70,11 @@ def alt_value_iterator(d):
     """
     for key in d.keys():
         i, j = key
-        try:
-            value = (d[i,j] + d[i, j + 1] + d[i + 1, j]) / 3.
-        except KeyError:
-            value = None
+        value = blend_value(d, i, j)
+        #try:
+            #value = (d[i,j] + d[i, j + 1] + d[i + 1, j]) / 3.
+        #except KeyError:
+            #value = None
         yield key, value
 
 ## Hexagonal Heatmaps ##
@@ -154,24 +170,40 @@ def heatmap(d, scale, vmin=None, vmax=None, cmap=None, ax=None,
     if not vmax:
         vmax = max(d.values())
     style = style.lower()[0]
-    if style not in ["t", "h"]:
+    if style not in ["t", "h", 'x']:
         raise ValueError("Heatmap style must be 'triangular' or 'hexagonal'")
-    if style == "h":
+    if style == 'h':
         mapping_functions = [(hexagon_coordinates, d.items())]
-    else:
+    elif style == 't':
         mapping_functions = [(triangle_coordinates, d.items()), (alt_triangle_coordinates, alt_value_iterator(d))]
 
-    # Color data triangles or hexagons
-    for vertex_function, iterator in mapping_functions:
-        for key, value in iterator:
-            if value is not None:
-                i, j = key
-                k = scale - i - j
-                vertices = vertex_function(i, j, k)
+    skip_condition = lambda i, j: False
+    if style == "x":
+        for i, j, k in simplex_iterator(scale-1):
+            vertices_values = []
+            vertices_values.append((triangle_coordinates(i, j),
+                                    blend_value(d, i, j)))
+            if (j > 0) and (j < scale):
+                vertices_values.append((alt_triangle_coordinates(i, j -1 ),
+                                        alt_blend_value(d, i, j)))
+            for vertices, value in vertices_values:
                 color = colormapper(value, vmin, vmax, cmap=cmap)
                 # Matplotlib wants a list of xs and a list of ys
                 xs, ys = unzip(vertices)
                 ax.fill(xs, ys, facecolor=color, edgecolor=color)
+
+    else:
+        # Color data triangles or hexagons
+        for vertex_function, iterator in mapping_functions:
+            for key, value in iterator:
+                if value is not None:
+                    i, j = key
+                    k = scale - i - j
+                    vertices = vertex_function(i, j, k)
+                    color = colormapper(value, vmin, vmax, cmap=cmap)
+                    # Matplotlib wants a list of xs and a list of ys
+                    xs, ys = unzip(vertices)
+                    ax.fill(xs, ys, facecolor=color, edgecolor=color)
 
     if colorbar:
         colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific)
