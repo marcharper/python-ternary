@@ -13,6 +13,33 @@ from colormapping import get_cmap, colormapper, colorbar_hack
 
 ## Triangular Heatmaps ##
 
+def blend_value(d, i, j, k=None, keys=None):
+    """Computes the average value of the three vertices of a triangule in the
+    simplex triangulation, where two of the vertices are on the lower
+    horizontal."""
+
+    key_size = len(d.keys()[0])
+    if not keys:
+        keys = [(i, j, k), (i, j + 1, k - 1), (i + 1, j, k - 1)]
+    # Reduce key from (i, j, k) to (i, j) if necessary
+    keys = [tuple(key[:key_size]) for key in keys]
+
+    # Sum over the values of the points to blend
+    try:
+        s = sum(d[key] for key in keys)
+        value = s / 3.
+    except KeyError:
+        value = None
+    return value
+
+def alt_blend_value(d, i, j, k=None):
+    """Computes the average value of the three vertices of a triangule in the
+    simplex triangulation, where two of the vertices are on the upper
+    horizontal."""
+
+    keys = [(i, j, k), (i, j + 1, k - 1), (i + 1, j - 1, k)]
+    return blend_value(d, i, j, k, keys=keys)
+
 def triangle_coordinates(i, j, k=None):
     """
     Computes coordinates of the constituent triangles of a triangulation for the
@@ -47,38 +74,6 @@ def alt_triangle_coordinates(i, j, k=None):
     return [(i/2. + j + 1, i * SQRT3OVER2),
             (i/2. + j + 1.5, (i + 1) * SQRT3OVER2),
             (i/2. + j + 0.5, (i + 1) * SQRT3OVER2)]
-
-def blend_value(d, i, j):
-    """Computes the average value of the three vertices of a triangule in the
-    simplex triangulation, where two of the vertices are on the lower
-    horizontal."""
-
-    try:
-        value = (d[i, j] + d[i, j + 1] + d[i + 1, j]) / 3.
-    except KeyError:
-        value = None
-    return value
-
-def alt_blend_value(d, i, j):
-    """Computes the average value of the three vertices of a triangule in the
-    simplex triangulation, where two of the vertices are on the upper
-    horizontal."""
-    try:
-        value = (d[i, j] + d[i, j + 1] + d[i + 1, j - 1]) / 3.
-    except KeyError:
-        value = None
-    return value
-
-def alt_value_iterator(d):
-    """
-    Compute the average of the neighboring triangles for smoothing. These are
-    the colors of the alternative triangles. Called by heatmap, not intended
-    for direct usage.
-    """
-    for key in d.keys():
-        i, j = key
-        value = blend_value(d, i, j)
-        yield key, value
 
 ## Hexagonal Heatmaps ##
 ## Original Hexagonal heatmap code submitted by https://github.com/btweinstein
@@ -133,6 +128,39 @@ def hexagon_coordinates(i, j, k):
 
 ## Heatmaps ##
 
+def polygon_iterator(data, scale, style="d"):
+    """Iterator for the vertices of the polygon to be colored and its color,
+    depending on style. Called by heatmap."""
+
+    for key, value in data.items():
+        if value is None:
+            continue
+        i = key[0]
+        j = key[1]
+        k = scale - i - j
+        if style == 'h':
+            vertices = hexagon_coordinates(i, j, k)
+            yield (vertices, value)
+        elif style == 'd':
+            # Upright triangles
+            vertices = triangle_coordinates(i, j, k)
+            yield (vertices, value)
+            # Upside-down triangles
+            vertices = alt_triangle_coordinates(i, j, k)
+            value = blend_value(data, i, j, k)
+            yield (vertices, value)
+        elif style == 't':
+            # Upright triangles
+            vertices = triangle_coordinates(i, j, k)
+            value = blend_value(data, i, j, k)
+            yield (vertices, value)
+            # If not on the boundary add the upside-down triangle
+            if (j == 0) or (j == scale):
+                continue
+            vertices = alt_triangle_coordinates(i, j - 1, k + 1)
+            value = alt_blend_value(data, i, j, k)
+            yield (vertices, value)
+
 def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
             scientific=False, style='triangular', colorbar=True):
     """
@@ -176,33 +204,7 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
     if style not in ["t", "h", 'd']:
         raise ValueError("Heatmap style must be 'triangular', 'dual-triangular', or 'hexagonal'")
 
-    vertices_values = []
-
-    if style == "t":
-        for i, j, k in simplex_iterator(scale-1):
-            # Upright triangles
-            vertices = triangle_coordinates(i, j)
-            value = blend_value(data, i, j)
-            vertices_values.append((vertices, value))
-            # If not on the boundary add the upside-down triangle
-            if (j > 0) and (j < scale):
-                vertices = alt_triangle_coordinates(i, j - 1)
-                value = alt_blend_value(data, i, j)
-                vertices_values.append((vertices, value))
-    else:
-        if style == 'h':
-            mapping_functions = [(hexagon_coordinates, data.items())]
-        elif style == 'd':
-            mapping_functions = [(triangle_coordinates, data.items()), (alt_triangle_coordinates, alt_value_iterator(data))]
-
-        # Color data triangles or hexagons
-        for vertex_function, iterator in mapping_functions:
-            for key, value in iterator:
-                if value is not None:
-                    i, j = key
-                    k = scale - i - j
-                    vertices = vertex_function(i, j, k)
-                    vertices_values.append((vertices, value))
+    vertices_values = polygon_iterator(data, scale, style=style)
 
     # Draw the polygons and color them
     for vertices, value in vertices_values:
@@ -219,9 +221,8 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
 
 ## User Convenience Functions ##
 
-def heatmapf(func, scale=10, boundary=True, cmap=None,
-                        ax=None, scientific=False, style='triangular',
-                        colorbar=True):
+def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
+             scientific=False, style='triangular', colorbar=True):
     """
     Computes func on heatmap partition coordinates and plots heatmap. In other
     words, computes the function on lattice points of the simplex (normalized
@@ -254,9 +255,8 @@ def heatmapf(func, scale=10, boundary=True, cmap=None,
     # Apply the function to a simplex partition
     d = dict()
     for i, j, k in simplex_iterator(scale=scale, boundary=boundary):
-        d[(i, j)] = func(normalize([i, j, k]))
+        d[(i, j, k)] = func(normalize([i, j, k]))
     # Pass everything to the heatmapper
     ax = heatmap(d, scale, cmap=cmap, ax=ax, style=style,
                            scientific=scientific, colorbar=colorbar)
     return ax
-
