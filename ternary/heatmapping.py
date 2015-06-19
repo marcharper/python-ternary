@@ -128,11 +128,11 @@ def hexagon_coordinates(i, j, k):
 
 ## Heatmaps ##
 
-def polygon_iterator(data, scale, style="d"):
+def polygon_iterator(data, scale, style):
     """Iterator for the vertices of the polygon to be colored and its color,
     depending on style. Called by heatmap."""
 
-    for key, value in data.items():
+    for key, value in sorted(data.items()):
         if value is None:
             continue
         i = key[0]
@@ -140,8 +140,6 @@ def polygon_iterator(data, scale, style="d"):
         k = scale - i - j
         if style == 'h':
             vertices = hexagon_coordinates(i, j, k)
-            if i == 0 and j == 0:
-                print i,j,k, vertices, value
             yield (vertices, value)
         elif style == 'd':
             # Upright triangles
@@ -259,6 +257,6 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
     for i, j, k in simplex_iterator(scale=scale, boundary=boundary):
         data[(i, j)] = func(normalize([i, j, k]))
     # Pass everything to the heatmapper
-    ax = heatmap(d, scale, cmap=cmap, ax=ax, style=style,
+    ax = heatmap(data, scale, cmap=cmap, ax=ax, style=style,
                            scientific=scientific, colorbar=colorbar)
     return ax

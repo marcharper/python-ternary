@@ -24,7 +24,6 @@ def load_sample_heatmap_data(filename="sample_heatmap_data.txt"):
     return data
 
 def generate_random_heatmap_data(scale=5):
-    import random
     from ternary.helpers import simplex_iterator
     d = dict()
     for (i,j,k) in simplex_iterator(scale):
@@ -50,33 +49,32 @@ def random_points(num_points=25, scale=40):
         points.append((x,y,z))
     return points
 
+def random_heatmap(scale=4):
+    pyplot.figure()
+    gs = gridspec.GridSpec(1,2)
+    ax = pyplot.subplot(gs[0,0])
+
+    d = generate_random_heatmap_data(scale)
+    figure, tax = ternary.figure(scale=scale, ax=ax)
+    tax.heatmap(d, style="t")
+    tax.boundary(color='black')
+    tax.set_title("Heatmap Test: Triangular")
+
+    ax = pyplot.subplot(gs[0,1])
+    figure, tax = ternary.figure(scale=scale, ax=ax)
+    tax.heatmap(d, style="d")
+    tax.boundary(color='black')
+    tax.set_title("Heatmap Test Dual")
+    pyplot.show()
+
 if __name__ == '__main__':
-    
-    #pyplot.figure()
-    #gs = gridspec.GridSpec(1,2)
-    #ax = pyplot.subplot(gs[0,0])
-    #scale = 4
-    #d = generate_random_heatmap_data(scale)
-    #figure, tax = ternary.figure(scale=scale, ax=ax)
-    #tax.heatmap(d, style="t")
-    #tax.boundary(color='black')
-    #tax.set_title("Heatmap Test: Triangular")
-    
-    #ax = pyplot.subplot(gs[0,1])
-    #figure, tax = ternary.figure(scale=scale, ax=ax)
-    #tax.heatmap(d, style="d")
-    #tax.boundary(color='black')
-    #tax.set_title("Heatmap Test Dual")
-    #pyplot.show()
-    #exit()
-    
     ## Boundary and Gridlines
     scale = 40
     figure, ternary_ax = ternary.figure(scale=scale)
 
     left_kwargs = {'color': 'blue'}
     right_kwargs = {'color': 'red'}
-    
+
     # Draw Boundary and Gridlines
     ternary_ax.boundary(color="black", linewidth=2.0)
     ternary_ax.gridlines(color="blue", multiple=5, left_kwargs=left_kwargs,

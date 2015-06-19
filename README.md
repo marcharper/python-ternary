@@ -213,7 +213,18 @@ tax.show()
 
 ## Heatmaps
 
-Ternary can plot heatmaps in two ways and two styles. Given a function, ternary will evaluate the function at the specified number of steps (determined by the scale, expected to be an integer in this case). The simplex can be split up into triangles or hexagons (thanks to [btweinstein](https://github.com/btweinstein) for the hexagonal heatmap functionality). There is a large set of examples [here](http://people.mbi.ucla.edu/marcharper/stationary_stable/3x3/incentive.html).
+Ternary can plot heatmaps in two ways and two styles. Given a function, ternary
+will evaluate the function at the specified number of steps (determined by the 
+scale, expected to be an integer in this case). The simplex can be split up into
+triangles or hexagons and colored according to one of three styles:
+
+- Triangular -- `triangular`: coloring triangles by summing the values on the
+vertices
+- Dual-triangular  -- `dual-triangular`: mapping (i,j,k) to the upright 
+triangles &#9651; and blending the neigboring triangles for the downward 
+triangles &#9661;
+- Hexagonal  -- `hexagonal`: which does not blend values at all, and divides
+the simplex up into heaxagonal regions
 
 Let's define a function on the simplex for illustration, the [Shannon entropy](http://en.wikipedia.org/wiki/Entropy_%28information_theory%29) of a probability distribution:
 
@@ -245,29 +256,32 @@ tax.set_title("Shannon Entropy Heatmap")
 tax.show()
 ```
 
-In this case the keyword argument *boundary* indicates whether you wish to evaluate points on the boundary of the partition (which is sometimes undesirable). Specify `style="hexagonal"` for hexagons. Large scalings can use a lot of RAM (the number of polygons rendered is O(n^2) ).
+In this case the keyword argument *boundary* indicates whether you wish to evaluate points on the boundary of the partition (which is sometimes undesirable). Specify `style="hexagonal"` for hexagons. Large scalings can use a lot of RAM since the number of polygons rendered is O(n^2).
 
 You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/colormaps_reference.html) (an instance or the colormap name) in the cmap argument.
 
 ![Ternary Heatmap Examples](/../images/readme_images/heatmap_shannon.png)
 
-Ternary can also make heatmaps from data. In this case you need to supply a dictionary mapping `(i,j) for i + j + k = scale` to a float as input for a heatmap, using the function
+Ternary can also make heatmaps from data. In this case you need to supply a dictionary 
+mapping `(i, j)` or `(i, j, k)` for `i + j + k = scale` to a float as input for a heatmap. It is not necessary to include `k` in the dictionary keys since it can be determined from `scale`, `i`, and `j`. This reduces the memory requirements when the partition is very fine (significant when `scale` is in the hundreds). 
+
+Make the heatmap as follows:
 
 ```
-ternary.heatmap(d, scale, ax=None, cmap=None)
+ternary.heatmap(data, scale, ax=None, cmap=None)
 ```
 
 or 
 
 ```
-tax.heatmap(d, cmap=None)
+tax.heatmap(data, cmap=None)
 ```
 
 This can produces images such as:
 
 ![Ternary Heatmap Examples](/../images/readme_images/heatmap_rsp.png)
 
-It is not necessary to include `k` in the dictionary keys since it can be determined from `scale`, `i`, and `j`. This reduces the memory requirements when the partition is very fine (significant when scale >= 500).
+There is a large set of heatmap examples [here](http://people.mbi.ucla.edu/marcharper/stationary_stable/3x3/incentive.html).
 
 # Unittests
 
