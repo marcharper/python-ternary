@@ -6,6 +6,30 @@ from matplotlib import pyplot, gridspec
 
 import ternary
 
+def load_sample_trajectory_data(filename="curve.txt"):
+    points = []
+    with open(filename) as handle:
+        for line in handle:
+            points.append(map(float, line.split(' ')))
+    return points
+
+def load_sample_heatmap_data(filename="sample_heatmap_data.txt"):
+    """Loads sample heatmap data."""
+    data = dict()
+    handle = open(filename)
+    for line in handle:
+        line = line.strip()
+        i, j, k, v = line.split(' ')
+        data[(int(i), int(j))] = float(v)
+    return data
+
+def generate_random_heatmap_data(scale=5):
+    from ternary.helpers import simplex_iterator
+    d = dict()
+    for (i,j,k) in simplex_iterator(scale):
+        d[(i,j)] = random.random()
+    return d
+
 def shannon_entropy(p):
     """Computes the Shannon Entropy at a distribution in the simplex."""
     s = 0.
@@ -25,6 +49,24 @@ def random_points(num_points=25, scale=40):
         points.append((x,y,z))
     return points
 
+def random_heatmap(scale=4):
+    pyplot.figure()
+    gs = gridspec.GridSpec(1,2)
+    ax = pyplot.subplot(gs[0,0])
+
+    d = generate_random_heatmap_data(scale)
+    figure, tax = ternary.figure(scale=scale, ax=ax)
+    tax.heatmap(d, style="t")
+    tax.boundary(color='black')
+    tax.set_title("Heatmap Test: Triangular")
+
+    ax = pyplot.subplot(gs[0,1])
+    figure, tax = ternary.figure(scale=scale, ax=ax)
+    tax.heatmap(d, style="d")
+    tax.boundary(color='black')
+    tax.set_title("Heatmap Test Dual")
+    pyplot.show()
+
 if __name__ == '__main__':
     ## Boundary and Gridlines
     scale = 40
@@ -32,7 +74,7 @@ if __name__ == '__main__':
 
     left_kwargs = {'color': 'blue'}
     right_kwargs = {'color': 'red'}
-    
+
     # Draw Boundary and Gridlines
     ternary_ax.boundary(color="black", linewidth=2.0)
     ternary_ax.gridlines(color="blue", multiple=5, left_kwargs=left_kwargs,
@@ -105,10 +147,7 @@ if __name__ == '__main__':
     figure, tax = ternary.figure(scale=1.0)
     tax.boundary(color='black')
     tax.set_title("Plotting of sample trajectory data", fontsize=20)
-    points = []
-    with open("curve.txt") as handle:
-        for line in handle:
-            points.append(map(float, line.split(' ')))
+    points = load_sample_trajectory_data()
     tax.gridlines(multiple=0.2, color="black")
     tax.plot_colored_trajectory(points, linewidth=2.0)
     points = [(y,z,x) for (x,y,z) in points]
@@ -124,26 +163,44 @@ if __name__ == '__main__':
     ax = pyplot.subplot(gs[0,0])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmapf(function, boundary=True, style="triangular")
-    tax.boundary(scale=scale+1, color='black')
+    tax.boundary(color='black')
     tax.set_title("Triangular with Boundary")
 
     ax = pyplot.subplot(gs[0,1])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmapf(function, boundary=False, style="t")
-    tax.boundary(scale=scale+1, color='black')
+    tax.boundary(color='black')
     tax.set_title("Triangular without Boundary")
 
     ax = pyplot.subplot(gs[1,0])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmapf(function, boundary=True, style="hexagonal")
-    tax.boundary(scale=scale, color='black')
+    tax.boundary(color='black')
     tax.set_title("Hexagonal with Boundary")
 
     ax = pyplot.subplot(gs[1,1])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmapf(function, boundary=False, style="h")
-    tax.boundary(scale=scale, color='black')
+    tax.boundary(color='black')
     tax.set_title("Hexagonal without Boundary")
+
+    ## Heatmaps from data
+    # Careful -- these can use a lot of RAM!
+    scale = 60
+    data = load_sample_heatmap_data()
+    pyplot.figure()
+    gs = gridspec.GridSpec(1,2)
+    ax = pyplot.subplot(gs[0,0])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmap(data, style="dual-triangular")
+    tax.boundary(color='black')
+    tax.set_title("Dual-Triangular Heatmap from Data")
+
+    ax = pyplot.subplot(gs[0,1])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmap(data, style="triangular")
+    tax.boundary(color='black')
+    tax.set_title("Triangular Heatmap from Data")
 
     pyplot.show()
 
