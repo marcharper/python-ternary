@@ -1,4 +1,5 @@
 import math
+import os
 import random
 
 import matplotlib
@@ -6,17 +7,20 @@ from matplotlib import pyplot, gridspec
 
 import ternary
 
-def load_sample_trajectory_data(filename="curve.txt"):
+def load_sample_trajectory_data(filename="curve.txt", directory="sample_data"):
+    full_filename = os.path.join(directory, filename)
     points = []
-    with open(filename) as handle:
+    with open(full_filename) as handle:
         for line in handle:
             points.append(map(float, line.split(' ')))
     return points
 
-def load_sample_heatmap_data(filename="sample_heatmap_data.txt"):
+def load_sample_heatmap_data(filename="sample_heatmap_data.txt",
+                             directory="sample_data"):
     """Loads sample heatmap data."""
+    full_filename = os.path.join(directory, filename)
     data = dict()
-    handle = open(filename)
+    handle = open(full_filename)
     for line in handle:
         line = line.strip()
         i, j, k, v = line.split(' ')
@@ -131,10 +135,7 @@ if __name__ == '__main__':
     figure, tax = ternary.figure(scale=1.0)
     tax.boundary(color='black')
     tax.set_title("Plotting of sample trajectory data", fontsize=20)
-    points = []
-    with open("curve.txt") as handle:
-        for line in handle:
-            points.append(map(float, line.split(' ')))
+    points = load_sample_trajectory_data()
     tax.gridlines(multiple=0.2, color="black")
     tax.plot(points, linewidth=2.0, label="Curve")
     tax.legend()
