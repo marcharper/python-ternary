@@ -50,7 +50,9 @@ tax.scatter(points, marker='s', color='red', label="Red Squares")
 tax.legend()
 ```
 
-Most drawing functions can take standard matplotlib keyword arguments such as [linestyle](http://matplotlib.org/api/lines_api.html#matplotlib.lines.Line2D.set_linestyle) and linewidth. You can use LaTeX in titles and labels.
+Most drawing functions can take standard matplotlib keyword arguments such as
+[linestyle](http://matplotlib.org/api/lines_api.html#matplotlib.lines.Line2D.set_linestyle)
+and linewidth. You can use LaTeX in titles and labels.
 
 If you need to act directly on the underyling matplotlib axes, you can access them:
 
@@ -75,7 +77,8 @@ figure, tax = ternary.figure(ax=ax)
 ...
 ````
 
-`TernaryAxesSubplot` objects keep track of the scale and supply this parameter to other functions as needed.
+`TernaryAxesSubplot` objects keep track of the scale, axes, and other parameters,
+supplying them as needed to other functions.
 
 ## Simplex Boundary and Gridlines
 
@@ -93,7 +96,7 @@ figure, tax = ternary.figure(scale=scale)
 
 # Draw Boundary and Gridlines
 tax.boundary(color="black", linewidth=2.0)
-tax.gridlines(color="blue", multiple=5) # Every 5th gridline, can be fractional
+tax.gridlines(color="blue", multiple=5) # Every 5th gridline, can be a float
 
 # Set Axis labels and Title
 fontsize = 20
@@ -153,7 +156,7 @@ Curves can be plotted by specifying the points of the curve, just like matplotli
 ternary.plot(points)
 ```
 
-Points is a list of tuples or numpy arrays, e.g. [(0.5, 0.25, 0.25), (1./3, 1./3, 1./3)], e.g. as in the [sample data](/curve.txt).
+Points is a list of tuples or numpy arrays, such as [(0.5, 0.25, 0.25), (1./3, 1./3, 1./3)],
 
 ```
 import ternary
@@ -165,7 +168,7 @@ tax.gridlines(multiple=0.2, color="black")
 tax.set_title("Plotting of sample trajectory data", fontsize=20)
 points = []
 # Load some data, tuples (x,y,z)
-with open("curve.txt") as handle:
+with open("sample_data/curve.txt") as handle:
     for line in handle:
         points.append(map(float, line.split(' ')))
 # Plot the data
@@ -247,8 +250,6 @@ import ternary
 scale = 60
 
 figure, tax = ternary.figure(scale=scale)
-tax.set_title("Scatter Plot", fontsize=20)
-
 tax.heatmapf(shannon_entropy, boundary=True, style="triangular")
 tax.boundary(linewidth=2.0)
 tax.set_title("Shannon Entropy Heatmap")
@@ -271,7 +272,7 @@ Make the heatmap as follows:
 ternary.heatmap(data, scale, ax=None, cmap=None)
 ```
 
-or 
+or on a `TernaryAxesSubplot` object
 
 ```
 tax.heatmap(data, cmap=None)
