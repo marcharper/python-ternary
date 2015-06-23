@@ -50,10 +50,6 @@ def random_points(num_points=25, scale=40):
     return points
 
 def random_heatmap(scale=4):
-    pyplot.figure()
-    gs = gridspec.GridSpec(1,2)
-    ax = pyplot.subplot(gs[0,0])
-
     d = generate_random_heatmap_data(scale)
     figure, tax = ternary.figure(scale=scale, ax=ax)
     tax.heatmap(d, style="t")
