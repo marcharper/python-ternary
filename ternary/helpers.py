@@ -69,7 +69,12 @@ def simplex_iterator(scale, boundary=True):
 
 ## Ternary Projections ##
 
-def project_point(p, permutation="012"):
+def permute_point(p, permutation=None):
+    if not permutation:
+        return p
+    return [p[int(permutation[i])] for i in range(len(p))]
+
+def project_point(p, permutation=None):
     """
     Maps (x,y,z) coordinates to planar simplex.
 
@@ -77,16 +82,18 @@ def project_point(p, permutation="012"):
     ----------
     p: 3-tuple
         The point to be projected p = (x, y, z)
-    coordinate_order, string, "012"
+    coordinate_order, string, None, equivalent to "012"
         The order of the coordinates, counterclockwise from the origin
     """
 
-    a, b = [p[int(permutation[i])] for i in range(2)]
+    permuted = permute_point(p, permutation=permutation)
+    a = permuted[0]
+    b = permuted[1]
     x = a + b/2.
     y = SQRT3OVER2 * b
-    return (x, y)
+    return numpy.array([x, y])
 
-def project_sequence(s, permutation="012"):
+def project_sequence(s, permutation=None):
     """
     Projects a point or sequence of points using `project_point` to lists xs, ys
     for plotting with Matplotlib.

@@ -82,95 +82,92 @@ if __name__ == '__main__':
             #tax.scatter([tuple(point)], color=colors[i], marker=markers[i])
             #tax.annotate("".join(map(str, point)), tuple(point), color=colors[i])
     #tax.gridlines(multiple=1.)
-    #pyplot.show()
-    #exit()
-    
-    
-    ## Boundary and Gridlines
-    scale = 40
-    figure, ternary_ax = ternary.figure(scale=scale)
 
-    left_kwargs = {'color': 'blue'}
-    right_kwargs = {'color': 'red'}
+    ### Boundary and Gridlines
+    #scale = 40
+    #figure, ternary_ax = ternary.figure(scale=scale)
 
-    # Draw Boundary and Gridlines
-    ternary_ax.boundary(color="black", linewidth=2.0)
-    ternary_ax.gridlines(color="blue", multiple=5, left_kwargs=left_kwargs,
-                         right_kwargs=right_kwargs)
+    #left_kwargs = {'color': 'blue'}
+    #right_kwargs = {'color': 'red'}
 
-    # Draw Boundary and Gridlines
-    ternary_ax.boundary(color="black", linewidth=2.0)
-    ternary_ax.gridlines(color="blue", multiple=5)
+    ## Draw Boundary and Gridlines
+    #ternary_ax.boundary(color="black", linewidth=2.0)
+    #ternary_ax.gridlines(color="blue", multiple=5, left_kwargs=left_kwargs,
+                         #right_kwargs=right_kwargs)
 
-    # Set Axis labels and Title
-    fontsize = 20
-    ternary_ax.set_title("Simplex Boundary and Gridlines", fontsize=fontsize)
-    ternary_ax.left_axis_label("Left label $\\alpha^2$", fontsize=fontsize)
-    ternary_ax.right_axis_label("Right label $\\beta^2$", fontsize=fontsize)
-    ternary_ax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$", fontsize=fontsize)
+    ## Draw Boundary and Gridlines
+    #ternary_ax.boundary(color="black", linewidth=2.0)
+    #ternary_ax.gridlines(color="blue", multiple=5)
 
-    # Remove default Matplotlib Axes
-    ternary_ax.clear_matplotlib_ticks()
+    ## Set Axis labels and Title
+    #fontsize = 20
+    #ternary_ax.set_title("Simplex Boundary and Gridlines", fontsize=fontsize)
+    #ternary_ax.left_axis_label("Left label $\\alpha^2$", fontsize=fontsize)
+    #ternary_ax.right_axis_label("Right label $\\beta^2$", fontsize=fontsize)
+    #ternary_ax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$", fontsize=fontsize)
 
-    ### Plot Various lines
-    scale = 40
-    figure, ternary_ax = ternary.figure(scale=scale)
+    ## Remove default Matplotlib Axes
+    #ternary_ax.clear_matplotlib_ticks()
 
-    # Draw Boundary and Gridlines
-    ternary_ax.boundary(color="black", linewidth=2.0)
-    ternary_ax.gridlines(color="blue", multiple=5)
+    #### Plot Various lines
+    #scale = 40
+    #figure, ternary_ax = ternary.figure(scale=scale)
 
-    # Set Axis labels and Title
-    fontsize = 20
-    ternary_ax.set_title("Various Lines", fontsize=20)
-    ternary_ax.left_axis_label("Left label $\\alpha^2$", fontsize=fontsize)
-    ternary_ax.right_axis_label("Right label $\\beta^2$", fontsize=fontsize)
-    ternary_ax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$", fontsize=fontsize)
+    ## Draw Boundary and Gridlines
+    #ternary_ax.boundary(color="black", linewidth=2.0)
+    #ternary_ax.gridlines(color="blue", multiple=5)
 
-    # Draw lines parallel to the axes
-    ternary_ax.horizontal_line(16)
-    ternary_ax.left_parallel_line(10, linewidth=2., color='red', linestyle="--")
-    ternary_ax.right_parallel_line(20, linewidth=3., color='blue')
-    # Draw an arbitrary line
-    p1 = (12,8,10)
-    p2 = (2, 26, 2)
-    ternary_ax.line(p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
+    ## Set Axis labels and Title
+    #fontsize = 20
+    #ternary_ax.set_title("Various Lines", fontsize=20)
+    #ternary_ax.left_axis_label("Left label $\\alpha^2$", fontsize=fontsize)
+    #ternary_ax.right_axis_label("Right label $\\beta^2$", fontsize=fontsize)
+    #ternary_ax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$", fontsize=fontsize)
 
-    ### Scatter Plot
-    scale = 40
-    figure, ternary_ax = ternary.figure(scale=scale)
-    ternary_ax.set_title("Scatter Plot", fontsize=20)
-    ternary_ax.boundary(color="black", linewidth=2.0)
-    ternary_ax.gridlines(multiple=5, color="blue")
-    # Plot a few different styles with a legend
-    points = random_points(30, scale=scale)
-    ternary_ax.scatter(points, marker='s', color='red', label="Red Squares")
-    points = random_points(30, scale=scale)
-    ternary_ax.scatter(points, marker='D', color='green', label="Green Diamonds")
-    ternary_ax.legend()
+    ## Draw lines parallel to the axes
+    #ternary_ax.horizontal_line(16)
+    #ternary_ax.left_parallel_line(10, linewidth=2., color='red', linestyle="--")
+    #ternary_ax.right_parallel_line(20, linewidth=3., color='blue')
+    ## Draw an arbitrary line
+    #p1 = (12,8,10)
+    #p2 = (2, 26, 2)
+    #ternary_ax.line(p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
 
-    ## Sample trajectory plot
-    figure, tax = ternary.figure(scale=1.0)
-    tax.boundary(color='black')
-    tax.set_title("Plotting of sample trajectory data", fontsize=20)
-    points = []
-    with open("curve.txt") as handle:
-        for line in handle:
-            points.append(map(float, line.split(' ')))
-    tax.gridlines(multiple=0.2, color="black")
-    tax.plot(points, linewidth=2.0, label="Curve")
-    tax.legend()
+    #### Scatter Plot
+    #scale = 40
+    #figure, ternary_ax = ternary.figure(scale=scale)
+    #ternary_ax.set_title("Scatter Plot", fontsize=20)
+    #ternary_ax.boundary(color="black", linewidth=2.0)
+    #ternary_ax.gridlines(multiple=5, color="blue")
+    ## Plot a few different styles with a legend
+    #points = random_points(30, scale=scale)
+    #ternary_ax.scatter(points, marker='s', color='red', label="Red Squares")
+    #points = random_points(30, scale=scale)
+    #ternary_ax.scatter(points, marker='D', color='green', label="Green Diamonds")
+    #ternary_ax.legend()
 
-    ## Sample colored trajectory plot
-    figure, tax = ternary.figure(scale=1.0)
-    tax.boundary(color='black')
-    tax.set_title("Plotting of sample trajectory data", fontsize=20)
-    points = load_sample_trajectory_data()
-    tax.gridlines(multiple=0.2, color="black")
-    tax.plot_colored_trajectory(points, linewidth=2.0)
-    points = [(y,z,x) for (x,y,z) in points]
-    tax.plot_colored_trajectory(points, cmap="hsv", linewidth=2.0)
-    tax.legend()
+    ### Sample trajectory plot
+    #figure, tax = ternary.figure(scale=1.0)
+    #tax.boundary(color='black')
+    #tax.set_title("Plotting of sample trajectory data", fontsize=20)
+    #points = []
+    #with open("curve.txt") as handle:
+        #for line in handle:
+            #points.append(map(float, line.split(' ')))
+    #tax.gridlines(multiple=0.2, color="black")
+    #tax.plot(points, linewidth=2.0, label="Curve")
+    #tax.legend()
+
+    ### Sample colored trajectory plot
+    #figure, tax = ternary.figure(scale=1.0)
+    #tax.boundary(color='black')
+    #tax.set_title("Plotting of sample trajectory data", fontsize=20)
+    #points = load_sample_trajectory_data()
+    #tax.gridlines(multiple=0.2, color="black")
+    #tax.plot_colored_trajectory(points, linewidth=2.0)
+    #points = [(y,z,x) for (x,y,z) in points]
+    #tax.plot_colored_trajectory(points, cmap="hsv", linewidth=2.0)
+    #tax.legend()
 
     ## Heatmap roundup
     # Careful -- these can use a lot of RAM!
