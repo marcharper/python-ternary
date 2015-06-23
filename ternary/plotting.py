@@ -49,7 +49,7 @@ def clear_matplotlib_ticks(ax=None, axis="both"):
 
 ## Curve Plotting ##
 
-def plot(points, ax=None, **kwargs):
+def plot(points, ax=None, permutation=None, **kwargs):
     """
     Analogous to maplotlib.plot. Plots trajectory points where each point is a
     tuple (x,y,z) satisfying x + y + z = scale (not checked). The tuples are
@@ -66,11 +66,12 @@ def plot(points, ax=None, **kwargs):
     """
     if not ax:
         fig, ax = pyplot.subplots()
-    xs, ys = project_sequence(points)
+    xs, ys = project_sequence(points, permutation=permutation)
     ax.plot(xs, ys, **kwargs)
     return ax
 
-def plot_colored_trajectory(points, cmap=None, ax=None, **kwargs):
+def plot_colored_trajectory(points, cmap=None, ax=None, permutation=None,
+                            **kwargs):
     """
     Plots trajectories with changing color, simlar to `plot`. Trajectory points 
     are tuples (x,y,z) satisfying x + y + z = scale (not checked). The tuples are
@@ -90,7 +91,7 @@ def plot_colored_trajectory(points, cmap=None, ax=None, **kwargs):
     if not ax:
         fig, ax = pyplot.subplots()
     cmap = get_cmap(cmap)
-    xs, ys = project_sequence(points)
+    xs, ys = project_sequence(points, permutation=permutation)
 
     # We want to color each segment independently...which is annoying.
     segments = []

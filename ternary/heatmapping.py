@@ -21,7 +21,7 @@ def blend_value(data, i, j, k, keys=None):
 
     key_size = len(data.keys()[0])
     if not keys:
-        keys = [(i, j, k), (i + 1, j, k - 1), (i, j + 1, k - 1)]
+        keys = triangle_coordinates(i, j, k)
     # Reduce key from (i, j, k) to (i, j) if necessary
     keys = [tuple(key[:key_size]) for key in keys]
 
@@ -38,7 +38,7 @@ def alt_blend_value(data, i, j, k):
     simplex triangulation, where two of the vertices are on the upper
     horizontal."""
 
-    keys = [(i, j + 1, k - 1), (i + 1, j + 1, k), (i + 1, j, k - 1)]
+    keys = alt_triangle_coordinates(i, j, k)
     return blend_value(data, i, j, k, keys=keys)
 
 def triangle_coordinates(i, j, k):
@@ -159,7 +159,6 @@ def polygon_iterator(data, scale, style, permutation=None):
             if i == scale:
                 continue
             vertices = alt_triangle_coordinates(i, j, k)
-            #vertices = alt_triangle_coordinates(i, j, k)
             value = alt_blend_value(data, i, j, k)
             yield (map(project, vertices), value)
 

@@ -70,6 +70,11 @@ def simplex_iterator(scale, boundary=True):
 ## Ternary Projections ##
 
 def permute_point(p, permutation=None):
+    """
+    Permutes the point according to the permutation keyword argument. The
+    default permutation is "012" which does not change the order of the
+    coordinate. To rotate counterclockwise, use "120" and to rotate clockwise
+    use "201"."""
     if not permutation:
         return p
     return [p[int(permutation[i])] for i in range(len(p))]

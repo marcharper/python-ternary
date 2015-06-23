@@ -12,7 +12,7 @@ import plotting
 
 ## Lines ##
 
-def line(ax, p1, p2, **kwargs):
+def line(ax, p1, p2, permutation=None, **kwargs):
     """
     Draws a line on `ax` from p1 to p2.
 
@@ -28,8 +28,8 @@ def line(ax, p1, p2, **kwargs):
         Any kwargs to pass through to Matplotlib.
     """
 
-    pp1 = project_point(p1)
-    pp2 = project_point(p2)
+    pp1 = project_point(p1, permutation=permutation)
+    pp2 = project_point(p2, permutation=permutation)
     ax.add_line(Line2D((pp1[0], pp2[0]), (pp1[1], pp2[1]), **kwargs))
 
 def horizontal_line(ax, scale, i, **kwargs):
