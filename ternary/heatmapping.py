@@ -74,14 +74,35 @@ def alt_triangle_coordinates(i, j, k):
     return [(i, j + 1, k - 1), (i + 1, j + 1, k), (i + 1, j, k - 1)]
 
 ## Hexagonal Heatmaps ##
-# Hexagonal heatmaps do not smooth the colors as in the triangular case.
 
-_alpha = numpy.array([-1./3, 2./3, 0])
-_deltaup = numpy.array([1./3, 1./3, 0])
-_deltadown = numpy.array([2./3, -1./3, 0])
-_i_vec = numpy.array([0, 1, -1]) / 2.
-_i_vec_down = numpy.array([1, -1, 0]) / 2.
-_deltaX_vec = numpy.array([1., 0, -1.]) / 2.
+def generate_hexagon_deltas():
+    """
+    Generates a dictionary of the necessary additive vectors to generate the
+    heaxagon points for the haxagonal heatmap.
+    """
+    _alpha = numpy.array([-1./3, 2./3, 0])
+    _deltaup = numpy.array([1./3, 1./3, 0])
+    _deltadown = numpy.array([2./3, -1./3, 0])
+    _i_vec = numpy.array([0, 1./2, -1./2])
+    _i_vec_down = numpy.array([1./2, -1./2, 0])
+    _deltaX_vec = numpy.array([1./2, 0, -1./2])
+    zero = numpy.array([0,0,0])
+
+    d = dict()
+    # Corner Points
+    d["100"] = [zero, -_deltaX_vec, -_deltadown, -_i_vec_down]
+    d["010"] = [zero, _i_vec_down, -_alpha, -_i_vec]
+    d["001"] = [zero, _i_vec, _deltaup, _deltaX_vec]
+    # On the Edges
+    d["011"] = [_i_vec, _deltaup, _deltadown, -_alpha, -_i_vec]
+    d["101"] = [-_deltaX_vec, -_deltadown, _alpha, _deltaup, _deltaX_vec]
+    d["110"] = [_i_vec_down, -_alpha, -_deltaup, -_deltadown, -_i_vec_down]
+    # Interior point
+    d["111"] = [_alpha, _deltaup, _deltadown, -_alpha, -_deltaup, -_deltadown]
+
+    return d
+
+hexagon_deltas = generate_hexagon_deltas()
 
 def hexagon_coordinates(i, j, k):
     """
@@ -96,32 +117,15 @@ def hexagon_coordinates(i, j, k):
     A numpy array of coordinates of the hexagon (unprojected)
     """
 
-    steps = i + j + k
-    ij = numpy.array([i, j, k])
-
-    # Corner cases (literally)
-    if j == steps: # i == k == 0
-        coords = [ij, ij + _i_vec_down, ij - _alpha, ij - _i_vec]
-    elif k == steps: # i == j == 0
-        coords = [ij, ij + _i_vec, ij + _deltaup, ij + _deltaX_vec]
-    elif i == steps: # j == k == 0
-        coords = [ij, ij - _deltaX_vec, ij - _deltadown, ij - _i_vec_down]
-    # Now the edges
-    elif j == 0:
-        coords = [ij - _deltaX_vec, ij - _deltadown,
-                  ij + _alpha, ij + _deltaup, ij + _deltaX_vec]
-    elif i == 0:
-        coords = [ij + _i_vec, ij + _deltaup, ij + _deltadown,
-                  ij - _alpha, ij - _i_vec]
-    elif k == 0:
-        coords = [ij + _i_vec_down, ij - _alpha, ij - _deltaup,
-                  ij - _deltadown, ij - _i_vec_down]
-    # Must be an interior point
-    else:
-        coords = [ij + _alpha, ij + _deltaup, ij + _deltadown,
-                  ij - _alpha, ij - _deltaup, ij - _deltadown]
-
-    return numpy.array(coords)
+    signature = ""
+    for x in [i, j, k]:
+        if x == 0:
+            signature += "0"
+        else:
+            signature += "1"
+    deltas = hexagon_deltas[signature]
+    center = numpy.array([i, j, k])
+    return numpy.array([center + x for x in deltas])
 
 ## Heatmaps ##
 
