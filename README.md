@@ -290,6 +290,8 @@ tax.heatmap(data, cmap=None)
 
 This can produces images such as:
 
+![Ternary Heatmap Examples](/readme_images/heatmap-dual_vs_triangular.png)
+
 ![Ternary Heatmap Examples](/readme_images/heatmap_rsp.png)
 
 There is a large set of heatmap examples [here](http://people.mbi.ucla.edu/marcharper/stationary_stable/3x3/incentive.html).
