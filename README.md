@@ -232,7 +232,7 @@ The two triangular heatmap styles and the hexagonal heatmap style can be visuali
 maps ternary coordinates to vertices and computes the triangle color based on the
 values at the vertices.
 
-![](/../images/readme_images/heatmap-grids.svg)
+![](/../images/readme_images/heatmap-grids.png)
 
 ![](/../images/readme_images/heatmap_styles_cubehelix.png)
 
