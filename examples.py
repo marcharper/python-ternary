@@ -68,22 +68,22 @@ def random_heatmap(scale=4):
     pyplot.show()
 
 if __name__ == '__main__':
-    # Show Coordinates
-    scale = 3
-    figure, tax = ternary.figure(scale=scale, permutation="120")
-    points_lists = [[(0,0,3), (1,0,2), (2,0,1)],
-                    [(3,0,0), (2,1,0), (1,2,0)],
-                    [(0,3,0), (0,2,1), (0,1,2)],
-                    [(1,1,1)]]
-    colors = ['b', 'r', 'g', 'black']
-    markers = ['o', 'v', '*', 'd']
-    for i, points in enumerate(points_lists):
-        for point in points:
-            tax.scatter([tuple(point)], color=colors[i], marker=markers[i])
-            tax.annotate("".join(map(str, point)), tuple(point), color=colors[i])
-    tax.gridlines(multiple=1.)
-    pyplot.show()
-    exit()
+    ## Show Coordinates
+    #scale = 3
+    #figure, tax = ternary.figure(scale=scale, permutation="120")
+    #points_lists = [[(0,0,3), (1,0,2), (2,0,1)],
+                    #[(3,0,0), (2,1,0), (1,2,0)],
+                    #[(0,3,0), (0,2,1), (0,1,2)],
+                    #[(1,1,1)]]
+    #colors = ['b', 'r', 'g', 'black']
+    #markers = ['o', 'v', '*', 'd']
+    #for i, points in enumerate(points_lists):
+        #for point in points:
+            #tax.scatter([tuple(point)], color=colors[i], marker=markers[i])
+            #tax.annotate("".join(map(str, point)), tuple(point), color=colors[i])
+    #tax.gridlines(multiple=1.)
+    #pyplot.show()
+    #exit()
     
     
     ## Boundary and Gridlines
@@ -149,76 +149,76 @@ if __name__ == '__main__':
     ternary_ax.scatter(points, marker='D', color='green', label="Green Diamonds")
     ternary_ax.legend()
 
-    ### Sample trajectory plot
-    #figure, tax = ternary.figure(scale=1.0)
-    #tax.boundary(color='black')
-    #tax.set_title("Plotting of sample trajectory data", fontsize=20)
-    #points = []
-    #with open("curve.txt") as handle:
-        #for line in handle:
-            #points.append(map(float, line.split(' ')))
-    #tax.gridlines(multiple=0.2, color="black")
-    #tax.plot(points, linewidth=2.0, label="Curve")
-    #tax.legend()
+    ## Sample trajectory plot
+    figure, tax = ternary.figure(scale=1.0)
+    tax.boundary(color='black')
+    tax.set_title("Plotting of sample trajectory data", fontsize=20)
+    points = []
+    with open("curve.txt") as handle:
+        for line in handle:
+            points.append(map(float, line.split(' ')))
+    tax.gridlines(multiple=0.2, color="black")
+    tax.plot(points, linewidth=2.0, label="Curve")
+    tax.legend()
 
-    ### Sample colored trajectory plot
-    #figure, tax = ternary.figure(scale=1.0)
-    #tax.boundary(color='black')
-    #tax.set_title("Plotting of sample trajectory data", fontsize=20)
-    #points = load_sample_trajectory_data()
-    #tax.gridlines(multiple=0.2, color="black")
-    #tax.plot_colored_trajectory(points, linewidth=2.0)
-    #points = [(y,z,x) for (x,y,z) in points]
-    #tax.plot_colored_trajectory(points, cmap="hsv", linewidth=2.0)
-    #tax.legend()
+    ## Sample colored trajectory plot
+    figure, tax = ternary.figure(scale=1.0)
+    tax.boundary(color='black')
+    tax.set_title("Plotting of sample trajectory data", fontsize=20)
+    points = load_sample_trajectory_data()
+    tax.gridlines(multiple=0.2, color="black")
+    tax.plot_colored_trajectory(points, linewidth=2.0)
+    points = [(y,z,x) for (x,y,z) in points]
+    tax.plot_colored_trajectory(points, cmap="hsv", linewidth=2.0)
+    tax.legend()
 
-    ### Heatmap roundup
-    ## Careful -- these can use a lot of RAM!
-    #scale = 60
-    #function = shannon_entropy
-    #pyplot.figure()
-    #gs = gridspec.GridSpec(2,2)
-    #ax = pyplot.subplot(gs[0,0])
-    #figure, tax = ternary.figure(ax=ax, scale=scale)
-    #tax.heatmapf(function, boundary=True, style="triangular")
-    #tax.boundary(color='black')
-    #tax.set_title("Triangular with Boundary")
+    ## Heatmap roundup
+    # Careful -- these can use a lot of RAM!
+    scale = 60
+    function = shannon_entropy
+    pyplot.figure()
+    gs = gridspec.GridSpec(2,2)
+    ax = pyplot.subplot(gs[0,0])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmapf(function, boundary=True, style="triangular")
+    tax.boundary(color='black')
+    tax.set_title("Triangular with Boundary")
 
-    #ax = pyplot.subplot(gs[0,1])
-    #figure, tax = ternary.figure(ax=ax, scale=scale)
-    #tax.heatmapf(function, boundary=False, style="t")
-    #tax.boundary(color='black')
-    #tax.set_title("Triangular without Boundary")
+    ax = pyplot.subplot(gs[0,1])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmapf(function, boundary=False, style="t")
+    tax.boundary(color='black')
+    tax.set_title("Triangular without Boundary")
 
-    #ax = pyplot.subplot(gs[1,0])
-    #figure, tax = ternary.figure(ax=ax, scale=scale)
-    #tax.heatmapf(function, boundary=True, style="hexagonal")
-    #tax.boundary(color='black')
-    #tax.set_title("Hexagonal with Boundary")
+    ax = pyplot.subplot(gs[1,0])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmapf(function, boundary=True, style="hexagonal")
+    tax.boundary(color='black')
+    tax.set_title("Hexagonal with Boundary")
 
-    #ax = pyplot.subplot(gs[1,1])
-    #figure, tax = ternary.figure(ax=ax, scale=scale)
-    #tax.heatmapf(function, boundary=False, style="h")
-    #tax.boundary(color='black')
-    #tax.set_title("Hexagonal without Boundary")
+    ax = pyplot.subplot(gs[1,1])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmapf(function, boundary=False, style="h")
+    tax.boundary(color='black')
+    tax.set_title("Hexagonal without Boundary")
 
-    ### Heatmaps from data
-    ## Careful -- these can use a lot of RAM!
-    #scale = 60
-    #data = load_sample_heatmap_data()
-    #pyplot.figure()
-    #gs = gridspec.GridSpec(1,2)
-    #ax = pyplot.subplot(gs[0,0])
-    #figure, tax = ternary.figure(ax=ax, scale=scale)
-    #tax.heatmap(data, style="dual-triangular")
-    #tax.boundary(color='black')
-    #tax.set_title("Dual-Triangular Heatmap from Data")
+    ## Heatmaps from data
+    # Careful -- these can use a lot of RAM!
+    scale = 60
+    data = load_sample_heatmap_data()
+    pyplot.figure()
+    gs = gridspec.GridSpec(1,2)
+    ax = pyplot.subplot(gs[0,0])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmap(data, style="dual-triangular")
+    tax.boundary(color='black')
+    tax.set_title("Dual-Triangular Heatmap from Data")
 
-    #ax = pyplot.subplot(gs[0,1])
-    #figure, tax = ternary.figure(ax=ax, scale=scale)
-    #tax.heatmap(data, style="triangular")
-    #tax.boundary(color='black')
-    #tax.set_title("Triangular Heatmap from Data")
+    ax = pyplot.subplot(gs[0,1])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmap(data, style="triangular")
+    tax.boundary(color='black')
+    tax.set_title("Triangular Heatmap from Data")
 
     pyplot.show()
 

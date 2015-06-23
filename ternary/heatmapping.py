@@ -5,7 +5,7 @@ Various Heatmaps.
 import numpy
 from matplotlib import pyplot
 
-from helpers import SQRT3, SQRT3OVER2, unzip, normalize, simplex_iterator
+from helpers import SQRT3, SQRT3OVER2, unzip, normalize, simplex_iterator, project_point
 import plotting
 from colormapping import get_cmap, colormapper, colorbar_hack
 
@@ -54,8 +54,7 @@ def triangle_coordinates(i, j, k=None):
     A numpy array of coordinates of the hexagon
     """
 
-    return [(i / 2. + j, i * SQRT3OVER2), (i / 2. + j + 1, i * SQRT3OVER2),
-                (i / 2. + j + 0.5, (i + 1) * SQRT3OVER2)]
+    return map(project_point, [(j, i), (j + 1, i), (j, i + 1)])
 
 def alt_triangle_coordinates(i, j, k=None):
     """
@@ -71,9 +70,7 @@ def alt_triangle_coordinates(i, j, k=None):
     A numpy array of coordinates of the hexagon
     """
 
-    return [(i/2. + j + 1, i * SQRT3OVER2),
-            (i/2. + j + 1.5, (i + 1) * SQRT3OVER2),
-            (i/2. + j + 0.5, (i + 1) * SQRT3OVER2)]
+    return map(project_point, [(j + 1, i), (j + 1, i + 1), (j, i+1)])
 
 ## Hexagonal Heatmaps ##
 ## Original Hexagonal heatmap code submitted by https://github.com/btweinstein

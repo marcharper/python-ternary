@@ -81,7 +81,7 @@ def project_point(p, permutation="012"):
         The order of the coordinates, counterclockwise from the origin
     """
 
-    a, b, c = [p[int(permutation[i])] for i in range(3)]
+    a, b = [p[int(permutation[i])] for i in range(2)]
     x = a + b/2.
     y = SQRT3OVER2 * b
     return (x, y)
