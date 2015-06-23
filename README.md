@@ -108,6 +108,8 @@ tax.clear_matplotlib_ticks()
 pyplot.show()
 ```
 
+![](https://raw.githubusercontent.com/marcharper/python-ternary/5eac62c24ca7b866aa9095cd92fce929e1d751e2/boundary_and_gridlines.png)
+
 ## Drawing lines
 
 You can draw individual lines between any two points with `line` and lines parallel to the axes with `horizonal_line`, `left_parallel_line`, and `right_parallel_line`:
