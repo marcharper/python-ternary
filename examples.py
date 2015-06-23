@@ -40,16 +40,6 @@ def shannon_entropy(p):
             continue
     return -1.*s
 
-<<<<<<< HEAD
-def boundary_and_gridlines(ax=None, steps=30, multiple=5, color="black"):
-    ax = ternary.draw_boundary(steps, color=color, ax=ax)
-    ternary.draw_gridlines(steps, multiple=multiple, ax=ax, color=color)
-    ax.set_title("Simplex Boundary and Gridlines")
-    return ax
-
-if __name__ == '__main__':
-    ## Boundary and Gridlines
-=======
 def random_points(num_points=25, scale=40):
     points = []
     for i in range(num_points):
@@ -60,15 +50,6 @@ def random_points(num_points=25, scale=40):
     return points
 
 def random_heatmap(scale=4):
->>>>>>> upstream
-    pyplot.figure()
-    gs = gridspec.GridSpec(1,2)
-    ax = pyplot.subplot(gs[0,0])
-<<<<<<< HEAD
-    boundary_and_gridlines(ax, steps, multiple=5)
-=======
->>>>>>> upstream
-
     d = generate_random_heatmap_data(scale)
     figure, tax = ternary.figure(scale=scale, ax=ax)
     tax.heatmap(d, style="t")
