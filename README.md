@@ -228,6 +228,16 @@ triangles &#9661;
 - Hexagonal  -- `hexagonal`: which does not blend values at all, and divides
 the simplex up into heaxagonal regions
 
+The two triangular heatmap styles and the hexagonal heatmap style can be visualized as follows. The `dual-triangular` style plots the true values on the upright triangles, mapping ternary coordinates to upright triangles otherwise. The `triangular` style
+maps ternary coordinates to vertices and computes the triangle color based on the
+values at the vertices.
+
+![](/../images/readme_images/heatmap-grids.svg)
+
+![](/../images/readme_images/heatmap_styles_cubehelix.png)
+
+Thanks to [chebee7i](https://github.com/chebee7i) for the above images.
+
 Let's define a function on the simplex for illustration, the [Shannon entropy](http://en.wikipedia.org/wiki/Entropy_%28information_theory%29) of a probability distribution:
 
 ```
