@@ -7,9 +7,10 @@ from matplotlib import pyplot
 import heatmapping
 import lines
 import plotting
+from helpers import project_point
 
 
-def figure(ax=None, scale=None):
+def figure(ax=None, scale=None, permutation=None):
     """
     Wraps a Matplotlib AxesSubplot or generates a new one. Emulates matplotlib's
     > figure, ax = pyplot.subplots()
@@ -22,7 +23,7 @@ def figure(ax=None, scale=None):
         The scale factor of the ternary plot
     """
 
-    ternary_ax = TernaryAxesSubplot(ax=ax, scale=scale)
+    ternary_ax = TernaryAxesSubplot(ax=ax, scale=scale, permutation=permutation)
     return ternary_ax.get_figure(), ternary_ax
 
 
@@ -33,9 +34,13 @@ class TernaryAxesSubplot(object):
     to ease the use of ternary plotting functions.
     """
 
-    def __init__(self, ax=None, scale=None):
+    def __init__(self, ax=None, scale=None, permutation=None):
         if not scale:
             scale = 1.0
+        if not permutation:
+            self._permutation = "012"
+        else:
+            self._permutation = permutation
         if ax:
             self.ax = ax
         else:
@@ -60,9 +65,16 @@ class TernaryAxesSubplot(object):
     def get_axes(self):
         return self.ax
 
+    def annotate(self, text, position, **kwargs):
+        ax = self.get_axes()
+        p = project_point(position)
+        ax.annotate(text, (p[0], p[1]), **kwargs)
+
     def scatter(self, points, **kwargs):
         ax = self.get_axes()
-        plot_ = plotting.scatter(points, ax=ax, **kwargs)
+        permutation = self._permutation
+        plot_ = plotting.scatter(points, ax=ax, permutation=permutation,
+                                 **kwargs)
         return plot_
 
     def plot(self, points, **kwargs):

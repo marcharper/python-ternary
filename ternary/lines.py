@@ -164,13 +164,14 @@ def gridlines(ax, scale, multiple=None, horizontal_kwargs=None, left_kwargs=None
     horizontal_kwargs = merge_dicts(kwargs, horizontal_kwargs)
     left_kwargs = merge_dicts(kwargs, left_kwargs)
     right_kwargs = merge_dicts(kwargs, right_kwargs)
+    if not multiple:
+        multiple = 1.
     ## Draw grid-lines
-    if multiple:
-        # Parallel to horizontal axis
-        for i in arange(0, scale, multiple):
-            horizontal_line(ax, scale, i, **horizontal_kwargs)
-        # Parallel to left and right axes
-        for i in arange(0, scale + multiple, multiple):
-            left_parallel_line(ax, scale, i, **left_kwargs)
-            right_parallel_line(ax, scale, i, **right_kwargs)
+    # Parallel to horizontal axis
+    for i in arange(0, scale, multiple):
+        horizontal_line(ax, scale, i, **horizontal_kwargs)
+    # Parallel to left and right axes
+    for i in arange(0, scale + multiple, multiple):
+        left_parallel_line(ax, scale, i, **left_kwargs)
+        right_parallel_line(ax, scale, i, **right_kwargs)
     return ax

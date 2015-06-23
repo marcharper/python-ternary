@@ -13,6 +13,7 @@ SQRT3OVER2 = SQRT3 / 2.
 ### Auxilliary Functions ###
 
 def unzip(l):
+    """[(a1, b1), ..., (an, bn)] ----> ([a1, ..., an], [b1, ..., bn])"""
     return zip(*l)
 
 def normalize(l):
@@ -68,7 +69,7 @@ def simplex_iterator(scale, boundary=True):
 
 ## Ternary Projections ##
 
-def project_point(p):
+def project_point(p, permutation="012"):
     """
     Maps (x,y,z) coordinates to planar simplex.
 
@@ -76,14 +77,16 @@ def project_point(p):
     ----------
     p: 3-tuple
         The point to be projected p = (x, y, z)
+    coordinate_order, string, "012"
+        The order of the coordinates, counterclockwise from the origin
     """
 
-    a, b, c = p
-    x = b + c/2.
-    y = SQRT3OVER2 * c
+    a, b, c = [p[int(permutation[i])] for i in range(3)]
+    x = a + b/2.
+    y = SQRT3OVER2 * b
     return (x, y)
 
-def project_sequence(s):
+def project_sequence(s, permutation="012"):
     """
     Projects a point or sequence of points using `project_point` to lists xs, ys
     for plotting with Matplotlib.
@@ -98,5 +101,5 @@ def project_sequence(s):
     xs, ys: The sequence of projected points in coordinates as two lists 
     """
 
-    xs, ys = unzip(map(project_point, s))
+    xs, ys = unzip([project_point(p, permutation=permutation) for p in s])
     return xs, ys
