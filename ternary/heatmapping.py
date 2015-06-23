@@ -10,6 +10,9 @@ from helpers import SQRT3, SQRT3OVER2, unzip, normalize, simplex_iterator, proje
 import plotting
 from colormapping import get_cmap, colormapper, colorbar_hack
 
+
+hexagon_deltas = generate_hexagon_deltas()
+
 ### Heatmap Triangulation Coordinates ###
 
 ## Triangular Heatmaps ##
@@ -80,29 +83,28 @@ def generate_hexagon_deltas():
     Generates a dictionary of the necessary additive vectors to generate the
     heaxagon points for the haxagonal heatmap.
     """
-    _alpha = numpy.array([-1./3, 2./3, 0])
-    _deltaup = numpy.array([1./3, 1./3, 0])
-    _deltadown = numpy.array([2./3, -1./3, 0])
-    _i_vec = numpy.array([0, 1./2, -1./2])
-    _i_vec_down = numpy.array([1./2, -1./2, 0])
-    _deltaX_vec = numpy.array([1./2, 0, -1./2])
-    zero = numpy.array([0,0,0])
+
+    zero = numpy.array([0, 0, 0])
+    alpha = numpy.array([-1./3, 2./3, 0])
+    deltaup = numpy.array([1./3, 1./3, 0])
+    deltadown = numpy.array([2./3, -1./3, 0])
+    i_vec = numpy.array([0, 1./2, -1./2])
+    i_vec_down = numpy.array([1./2, -1./2, 0])
+    deltaX_vec = numpy.array([1./2, 0, -1./2])
 
     d = dict()
     # Corner Points
-    d["100"] = [zero, -_deltaX_vec, -_deltadown, -_i_vec_down]
-    d["010"] = [zero, _i_vec_down, -_alpha, -_i_vec]
-    d["001"] = [zero, _i_vec, _deltaup, _deltaX_vec]
+    d["100"] = [zero, -deltaX_vec, -deltadown, -i_vec_down]
+    d["010"] = [zero, i_vec_down, -alpha, -i_vec]
+    d["001"] = [zero, i_vec, deltaup, deltaX_vec]
     # On the Edges
-    d["011"] = [_i_vec, _deltaup, _deltadown, -_alpha, -_i_vec]
-    d["101"] = [-_deltaX_vec, -_deltadown, _alpha, _deltaup, _deltaX_vec]
-    d["110"] = [_i_vec_down, -_alpha, -_deltaup, -_deltadown, -_i_vec_down]
+    d["011"] = [i_vec, deltaup, deltadown, -alpha, -i_vec]
+    d["101"] = [-deltaX_vec, -deltadown, alpha, deltaup, deltaX_vec]
+    d["110"] = [i_vec_down, -alpha, -deltaup, -deltadown, -i_vec_down]
     # Interior point
-    d["111"] = [_alpha, _deltaup, _deltadown, -_alpha, -_deltaup, -_deltadown]
+    d["111"] = [alpha, deltaup, deltadown, -alpha, -deltaup, -deltadown]
 
     return d
-
-hexagon_deltas = generate_hexagon_deltas()
 
 def hexagon_coordinates(i, j, k):
     """
@@ -129,8 +131,8 @@ def hexagon_coordinates(i, j, k):
 
 ## Heatmaps ##
 
-def polygon_iterator(data, scale, style, permutation=None):
-    """Iterator for the vertices of the polygon to be colored and its color,
+def polygon_generator(data, scale, style, permutation=None):
+    """Generator for the vertices of the polygon to be colored and its color,
     depending on style. Called by heatmap."""
 
     # We'll project the coordinates inside this function to prevent
@@ -212,7 +214,7 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
     if style not in ["t", "h", 'd']:
         raise ValueError("Heatmap style must be 'triangular', 'dual-triangular', or 'hexagonal'")
 
-    vertices_values = polygon_iterator(data, scale, style,
+    vertices_values = polygon_generator(data, scale, style,
                                        permutation=permutation)
 
     # Draw the polygons and color them
