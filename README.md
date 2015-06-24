@@ -84,11 +84,6 @@ supplying them as needed to other functions.
 
 The following code draws a boundary for the simplex and gridlines.
 
-<<<<<<< HEAD
-![Ternary Plot -- Boundary and Gridlines](/readme_images/boundary_and_gridlines.png)
-=======
->>>>>>> upstream
-
 ```
 from matplotlib import pyplot
 import ternary
