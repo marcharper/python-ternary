@@ -84,7 +84,10 @@ supplying them as needed to other functions.
 
 The following code draws a boundary for the simplex and gridlines.
 
+<<<<<<< HEAD
 ![Ternary Plot -- Boundary and Gridlines](/readme_images/boundary_and_gridlines.png)
+=======
+>>>>>>> upstream
 
 ```
 from matplotlib import pyplot
@@ -110,6 +113,8 @@ tax.clear_matplotlib_ticks()
 
 pyplot.show()
 ```
+
+![Ternary Plot -- Boundary and Gridlines](/readme_images/boundary_and_gridlines.png)
 
 ## Drawing lines
 
@@ -229,6 +234,16 @@ triangles &#9661;
 - Hexagonal  -- `hexagonal`: which does not blend values at all, and divides
 the simplex up into heaxagonal regions
 
+The two triangular heatmap styles and the hexagonal heatmap style can be visualized as follows. The `dual-triangular` style plots the true values on the upright triangles, mapping ternary coordinates to upright triangles otherwise. The `triangular` style
+maps ternary coordinates to vertices and computes the triangle color based on the
+values at the vertices.
+
+<img src ="/readme_images/heatmap-grids.png" width="500" height="250"/>
+
+![](/readme_images/heatmap_styles_cubehelix.png)
+
+Thanks to [chebee7i](https://github.com/chebee7i) for the above images.
+
 Let's define a function on the simplex for illustration, the [Shannon entropy](http://en.wikipedia.org/wiki/Entropy_%28information_theory%29) of a probability distribution:
 
 ```
@@ -279,6 +294,9 @@ tax.heatmap(data, cmap=None)
 ```
 
 This can produces images such as:
+
+
+![Ternary Heatmap Examples](/readme_images/heatmap-dual_vs_triangular.png)
 
 ![Ternary Heatmap Examples](/readme_images/heatmap_rsp.png)
 
