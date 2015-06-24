@@ -68,6 +68,21 @@ def random_heatmap(scale=4):
     pyplot.show()
 
 if __name__ == '__main__':
+    # Show Coordinates
+    scale = 3
+    figure, tax = ternary.figure(scale=scale, permutation="120")
+    points_lists = [[(0,0,3), (1,0,2), (2,0,1)],
+                    [(3,0,0), (2,1,0), (1,2,0)],
+                    [(0,3,0), (0,2,1), (0,1,2)],
+                    [(1,1,1)]]
+    colors = ['b', 'r', 'g', 'black']
+    markers = ['o', 'v', '*', 'd']
+    for i, points in enumerate(points_lists):
+        for point in points:
+            tax.scatter([tuple(point)], color=colors[i], marker=markers[i])
+            tax.annotate("".join(map(str, point)), tuple(point), color=colors[i])
+    tax.gridlines(multiple=1.)
+
     ## Boundary and Gridlines
     scale = 40
     figure, ternary_ax = ternary.figure(scale=scale)

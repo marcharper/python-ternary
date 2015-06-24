@@ -49,7 +49,7 @@ def clear_matplotlib_ticks(ax=None, axis="both"):
 
 ## Curve Plotting ##
 
-def plot(points, ax=None, **kwargs):
+def plot(points, ax=None, permutation=None, **kwargs):
     """
     Analogous to maplotlib.plot. Plots trajectory points where each point is a
     tuple (x,y,z) satisfying x + y + z = scale (not checked). The tuples are
@@ -66,11 +66,12 @@ def plot(points, ax=None, **kwargs):
     """
     if not ax:
         fig, ax = pyplot.subplots()
-    xs, ys = project_sequence(points)
+    xs, ys = project_sequence(points, permutation=permutation)
     ax.plot(xs, ys, **kwargs)
     return ax
 
-def plot_colored_trajectory(points, cmap=None, ax=None, **kwargs):
+def plot_colored_trajectory(points, cmap=None, ax=None, permutation=None,
+                            **kwargs):
     """
     Plots trajectories with changing color, simlar to `plot`. Trajectory points 
     are tuples (x,y,z) satisfying x + y + z = scale (not checked). The tuples are
@@ -90,7 +91,7 @@ def plot_colored_trajectory(points, cmap=None, ax=None, **kwargs):
     if not ax:
         fig, ax = pyplot.subplots()
     cmap = get_cmap(cmap)
-    xs, ys = project_sequence(points)
+    xs, ys = project_sequence(points, permutation=permutation)
 
     # We want to color each segment independently...which is annoying.
     segments = []
@@ -112,7 +113,7 @@ def plot_colored_trajectory(points, cmap=None, ax=None, **kwargs):
 
     return ax
 
-def scatter(points, ax=None, **kwargs):
+def scatter(points, ax=None, permutation=None, **kwargs):
     """Plots trajectory points where each point satisfies x + y + z = scale. First argument is a list or numpy array of tuples of length 3.
 
     Parameters
@@ -128,7 +129,7 @@ def scatter(points, ax=None, **kwargs):
     """
     if not ax:
         fig, ax = pyplot.subplots()
-    xs, ys = project_sequence(points)
+    xs, ys = project_sequence(points, permutation=permutation)
     ax.scatter(xs, ys, **kwargs)
     return ax
 
@@ -220,7 +221,7 @@ def left_axis_label(ax, label, position=None, rotation=60, offset=0.08, **kwargs
     """
 
     if not position:
-        position = (2./5 , -offset, 3./5)
+        position = (-offset, 3./5, 2./5)
     set_ternary_axis_label(ax, label, position, rotation,
                            horizontalalignment="center", **kwargs)
 
@@ -242,7 +243,7 @@ def right_axis_label(ax, label, position=None, rotation=-60, offset=0.08, **kwar
     """
 
     if not position:
-        position = (0, 2./5 + offset, 3./5)
+        position = (2./5 + offset, 3./5, 0)
     set_ternary_axis_label(ax, label, position, rotation,
                            horizontalalignment="center", **kwargs)
 
@@ -264,6 +265,6 @@ def bottom_axis_label(ax, label, position=None, rotation=0, offset=0.04, **kwarg
     """
 
     if not position:
-        position = (1./2, 1./2, offset)
+        position = (1./2, offset, 1./2)
     set_ternary_axis_label(ax, label, position, rotation,
                            horizontalalignment="center", **kwargs)

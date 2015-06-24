@@ -13,6 +13,7 @@ SQRT3OVER2 = SQRT3 / 2.
 ### Auxilliary Functions ###
 
 def unzip(l):
+    """[(a1, b1), ..., (an, bn)] ----> ([a1, ..., an], [b1, ..., bn])"""
     return zip(*l)
 
 def normalize(l):
@@ -68,7 +69,17 @@ def simplex_iterator(scale, boundary=True):
 
 ## Ternary Projections ##
 
-def project_point(p):
+def permute_point(p, permutation=None):
+    """
+    Permutes the point according to the permutation keyword argument. The
+    default permutation is "012" which does not change the order of the
+    coordinate. To rotate counterclockwise, use "120" and to rotate clockwise
+    use "201"."""
+    if not permutation:
+        return p
+    return [p[int(permutation[i])] for i in range(len(p))]
+
+def project_point(p, permutation=None):
     """
     Maps (x,y,z) coordinates to planar simplex.
 
@@ -76,14 +87,18 @@ def project_point(p):
     ----------
     p: 3-tuple
         The point to be projected p = (x, y, z)
+    coordinate_order, string, None, equivalent to "012"
+        The order of the coordinates, counterclockwise from the origin
     """
 
-    a, b, c = p
-    x = b + c/2.
-    y = SQRT3OVER2 * c
-    return (x, y)
+    permuted = permute_point(p, permutation=permutation)
+    a = permuted[0]
+    b = permuted[1]
+    x = a + b/2.
+    y = SQRT3OVER2 * b
+    return numpy.array([x, y])
 
-def project_sequence(s):
+def project_sequence(s, permutation=None):
     """
     Projects a point or sequence of points using `project_point` to lists xs, ys
     for plotting with Matplotlib.
@@ -98,5 +113,5 @@ def project_sequence(s):
     xs, ys: The sequence of projected points in coordinates as two lists 
     """
 
-    xs, ys = unzip(map(project_point, s))
+    xs, ys = unzip([project_point(p, permutation=permutation) for p in s])
     return xs, ys
