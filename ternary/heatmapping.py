@@ -11,7 +11,7 @@ import plotting
 from colormapping import get_cmap, colormapper, colorbar_hack
 
 
-hexagon_deltas = generate_hexagon_deltas()
+
 
 ### Heatmap Triangulation Coordinates ###
 
@@ -105,6 +105,8 @@ def generate_hexagon_deltas():
     d["111"] = [alpha, deltaup, deltadown, -alpha, -deltaup, -deltadown]
 
     return d
+
+hexagon_deltas = generate_hexagon_deltas()
 
 def hexagon_coordinates(i, j, k):
     """
