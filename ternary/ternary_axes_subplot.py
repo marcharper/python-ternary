@@ -166,9 +166,9 @@ class TernaryAxesSubplot(object):
         ax = self.get_axes()
         ax.set_title(title, **kwargs)
 
-    def save_fig(self, filename, dpi=200, format=None):
+    def savefig(self, filename, dpi=200, format=None):
         figure = self.get_figure()
-        figure.save_fig(filename, format=format, dpi=dpi)
+        figure.savefig(filename, format=format, dpi=dpi)
 
     def legend(self, *args, **kwargs):
         ax = self.get_axes()
