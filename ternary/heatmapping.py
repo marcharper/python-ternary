@@ -141,7 +141,13 @@ def polygon_generator(data, scale, style, permutation=None):
     # passing around permutation more than necessary
     project = functools.partial(project_point, permutation=permutation)
 
-    for key, value in sorted(data.items()):
+    if isinstance(data, dict):
+        data_gen = data.items()
+    else:
+        # Only works with style == 'h'
+        data_gen = data
+
+    for key, value in data_gen:
         if value is None:
             continue
         i = key[0]
@@ -277,3 +283,90 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
                  scientific=scientific, colorbar=colorbar,
                  permutation=permutation)
     return ax
+
+def svg_polygon(coordinates, color):
+    """
+    Create an svg triangle for the stationary heatmap.
+
+    Parameters
+    ----------
+    coordinates: list
+        The coordinates defining the polygon
+    color: string
+        RGB color value e.g. #26ffd1
+
+    Returns
+    -------
+    string, the svg string for the polygon
+    """
+
+    coord_str = []
+    for c in coordinates:
+        coord_str.append(",".join(map(str, c)))
+    coord_str = " ".join(coord_str)
+    polygon = '<polygon points="%s" style="fill:%s;stroke:%s;stroke-width:0"/>\n' % (coord_str, color, color)
+    return polygon
+
+def svg_heatmap(data, scale, filename, vmax=None, vmin=None, style='h',
+                permutation=None, cmap=None):
+    """
+    Create a heatmap in SVG format. Intended for use with very large datasets,
+    which would require large amounts of RAM using matplotlib. You can convert
+    the image to another format with e.g. ImageMagick:
+
+    convert -density 1200 -resize -rotate 180 1000x1000 your.svg your.png
+
+    Parameters
+    ----------
+
+    data: dictionary or k, v generator
+        A dictionary mapping the i, j polygon to the heatmap color, where
+        i + j + k = scale. If using a generator, style must be 'h'.
+    scale: Integer
+        The scale used to partition the simplex.
+    filename: string
+        The filename to write the SVG data to.
+    vmin: float
+        The minimum color value, used to normalize colors.
+    vmax: float
+        The maximum color value, used to normalize colors.
+    cmap: String or matplotlib.colors.Colormap, None
+        The name of the Matplotlib colormap to use.
+    style: String, "h"
+        The style of the heatmap, "triangular", "dual-triangular" or "hexagonal"
+    permutation: string, None
+        A permutation of the coordinates
+    """
+
+    style = style.lower()[0]
+    if style not in ["t", "h", 'd']:
+        raise ValueError("Heatmap style must be 'triangular', 'dual-triangular', or 'hexagonal'")
+
+    if not isinstance(data, dict):
+        if not style == 'h':
+            raise ValueError, "Data can only be given as a generator for hexagonal style heatmaps because of blending for adjacent polygons."
+        elif vmax is None or vmin is None:
+            raise ValueError, "vmax and vmin must be supplied for data given as a generator."
+
+    cmap = get_cmap(cmap)
+
+    if not vmin:
+        vmin = min(data.values())
+    if not vmax:
+        vmax = max(data.values())
+
+    height = scale * numpy.sqrt(3) / 2 + 2
+
+    output_file = open(filename, 'w')
+    output_file.write('<svg height="%s" width="%s">\n' % (height, scale))
+
+
+    vertices_values = polygon_generator(data, scale, style,
+                                       permutation=permutation)
+
+    # Draw the polygons and color them
+    for vertices, value in vertices_values:
+        color = colormapper(value, vmin, vmax, cmap=cmap)
+        output_file.write(svg_polygon(vertices, color))
+
+    output_file.write('</svg>\n')

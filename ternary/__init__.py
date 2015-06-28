@@ -19,6 +19,6 @@ from lines import (
 
 from helpers import project_point
 
-from heatmapping import heatmap, heatmapf
+from heatmapping import heatmap, heatmapf, svg_heatmap
 
 from ternary_axes_subplot import figure, TernaryAxesSubplot
