@@ -61,6 +61,8 @@ def plot(points, ax=None, permutation=None, **kwargs):
         The list of tuples to be plotted as a connected curve.
     ax: Matplotlib AxesSubplot, None
         The subplot to draw on.
+    permutation: string
+        The permutation, a string of 'brl'
     kwargs:
         Any kwargs to pass through to matplotlib.
     """
@@ -85,6 +87,8 @@ def plot_colored_trajectory(points, cmap=None, ax=None, permutation=None,
         The subplot to draw on.
     cmap: String or matplotlib.colors.Colormap, None
         The name of the Matplotlib colormap to use.
+    permutation: string
+        The permutation, a string of 'brl'
     kwargs:
         Any kwargs to pass through to matplotlib.
     """
@@ -124,6 +128,8 @@ def scatter(points, ax=None, permutation=None, **kwargs):
         Simplex scale size.
     ax: Matplotlib AxesSubplot, None
         The subplot to draw on.
+    permutation: string
+        The permutation, a string of 'brl'
     kwargs:
         Any kwargs to pass through to matplotlib.
     """

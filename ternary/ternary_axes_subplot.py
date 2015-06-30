@@ -21,7 +21,7 @@ def figure(ax=None, scale=None, permutation=None, orientation=None):
         The AxesSubplot to wrap
     scale: float, None
         The scale factor of the ternary plot
-    permutation: string, None, '012'
+    permutation: string, None, 'brl'
         The permutation indicating the order to plot, given as a string,
         e.g. '012'
     orientation: string, None, '+' or '-'
@@ -49,7 +49,7 @@ class TernaryAxesSubplot(object):
             The AxesSubplot to wrap
         scale: float, None
             The scale factor of the ternary plot
-        permutation: string, None, '012'
+        permutation: string, None, 'brl'
             The permutation indicating the order to plot, given as a string,
             e.g. '012'
         orientation: string, None, '+' or '-'

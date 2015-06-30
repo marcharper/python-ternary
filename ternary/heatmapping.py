@@ -202,7 +202,7 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
     colorbar: bool, True
         Show colorbar.
     permutation: string, None
-        A permutation of the coordinates
+        The permutation, a string of 'brl'
 
     Returns
     -------
@@ -265,7 +265,7 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
     colorbar: bool, True
         Show colorbar.
     permutation: string, None
-        A permutation of the coordinates
+        The permutation, a string of 'brl'
 
     Returns
     -------
@@ -333,7 +333,7 @@ def svg_heatmap(data, scale, filename, vmax=None, vmin=None, style='h',
     style: String, "h"
         The style of the heatmap, "triangular", "dual-triangular" or "hexagonal"
     permutation: string, None
-        A permutation of the coordinates
+        The permutation, a string of 'brl'
     """
 
     style = style.lower()[0]

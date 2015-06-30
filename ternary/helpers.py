@@ -99,9 +99,9 @@ def compose_permutations(inner, outer):
     Parameters
     ----------
     inner: string
-        The inner (first applied) permutation, a string of '012'
+        The inner (first applied) permutation, a string of 'brl'
     outer: string, None
-        The outer (second applied) permutation, a string of '012'
+        The outer (second applied) permutation, a string of 'brl'
 
     Returns
     -------
@@ -130,8 +130,8 @@ def permute_point(point, permutation=None):
     ----------
     point: 3-tuple, (i, j, k)
         The point to be permuted.
-    permutation: string
-        The permutation, a string of '012'
+    permutation: string, None
+        The permutation, a string of 'brl'
 
     Raises
     ------
@@ -147,7 +147,6 @@ def permute_point(point, permutation=None):
         return point
     if permutation == "brl" or permutation == "012":
         return point
-
     if permutation not in PERMUTATIONS:
         r_permutation = represent_permutation(permutation)
         if r_permutation not in PERMUTATIONS:

@@ -304,7 +304,7 @@ lower axis, the second coordinate up the right axis, and the third coordinate
 down the left axis, counterclockwise. Specifically, for `scale=3`, the coordinates
 are depicted in the following figure:
 
-![Coordinates](/readme_images/heatmap-dual_vs_triangular.png)
+![Coordinates](/readme_images/coordinates.png)
 
 `TernaryAxesSubplot` objects take an optional kwarg `orientation='i'` that
 changes the plotting orientation to clockwise rather than counterclockwise.
@@ -312,15 +312,10 @@ Furthermore, you can specify which axis corresponds to which coordinate with
 the `permutation` kwarg to most plotting functions and `TernaryAxesSubplot`
 objects.
 
-
-
 Permutations are specified as strings of 'b', 'r' 'l' and corresponding to the
 bottom, right, and left axes. The defaul permutation is "brl", placing the
 first coordinate along the right axis, the second coordinate along the lower
 axis, and third coordiante along the left axis.
-
-
-
 
 # Unittests
 

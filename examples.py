@@ -83,7 +83,7 @@ if __name__ == '__main__':
             tax.annotate("".join(map(str, point)), tuple(point), color=colors[i])
     tax.gridlines(multiple=1.)
 
-    ## Boundary and Gridlines
+    # Boundary and Gridlines
     scale = 40
     figure, ternary_ax = ternary.figure(scale=scale)
 
