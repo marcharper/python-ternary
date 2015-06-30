@@ -96,20 +96,20 @@ class FunctionCases(unittest.TestCase):
         self.assertEqual(permuted, (4, 3, 5))
 
     def test_compose_permutations(self):
-        inner = "012"
-        outer = "210"
+        inner = "brl"
+        outer = "lrb"
         composite = compose_permutations(inner, outer)
         self.assertEqual(composite, outer)
 
-        inner = "120"
-        outer = "012"
+        inner = "rlb"
+        outer = "brl"
         composite = compose_permutations(inner, outer)
         self.assertEqual(composite, inner)
 
-        inner = "120"
-        outer = "210"
+        inner = "rlb"
+        outer = "lrb"
         composite = compose_permutations(inner, outer)
-        self.assertEqual(composite, "102")
+        self.assertEqual(composite, "rbl")
 
 if __name__ == "__main__":
     unittest.main()

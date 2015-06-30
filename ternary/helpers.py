@@ -73,6 +73,24 @@ def simplex_iterator(scale, boundary=True):
 
 ## Ternary Projections and Point Operations
 
+translation_dict = dict(zip("brl", "012"))
+reverse_translation_dict = dict(zip("012", "brl"))
+
+def represent_permutation(permutation, reverse=False):
+    """
+    Maps a permutation from the 'brl' specification to or from the '012'
+    internal representation.
+    """
+
+    p = ""
+    if reverse:
+        translator = reverse_translation_dict
+    else:
+        translator = translation_dict
+    for i in permutation:
+        p += translator[i]
+    return p
+
 def compose_permutations(inner, outer):
     """
     Composes the two permutations p1 and p2 as if they were functions in the
@@ -91,10 +109,15 @@ def compose_permutations(inner, outer):
         The permutaton composite = outer o inner
     """
 
+    if inner not in PERMUTATIONS:
+        inner = represent_permutation(inner)
+    if outer not in PERMUTATIONS:
+        outer = represent_permutation(outer)
+
     d_inner = dict(zip("012", inner))
     d_outer = dict(zip("012", outer))
     composite = "".join(d_outer[d_inner[i]] for i in "012")
-    return composite
+    return represent_permutation(composite, reverse=True)
 
 def permute_point(point, permutation=None):
     """
@@ -112,7 +135,7 @@ def permute_point(point, permutation=None):
 
     Raises
     ------
-    ValueError, if permutation is not a string of length 3
+    ValueError, if permutation is not valid
 
     Returns
     -------
@@ -122,10 +145,17 @@ def permute_point(point, permutation=None):
 
     if not permutation:
         return point
+    if permutation == "brl" or permutation == "012":
+        return point
+
     if permutation not in PERMUTATIONS:
-        raise ValeError, "The permutation parameter must be a member of %s" % PERMUTATIONS
-    permuted = tuple(point[int(permutation[i])] for i in range(len(point)))
-    return permuted
+        r_permutation = represent_permutation(permutation)
+        if r_permutation not in PERMUTATIONS:
+            raise ValueError, "Invalid permutation: %s" % permutation
+        permutation = r_permutation
+
+    permuted_point = tuple(point[int(permutation[i])] for i in range(len(point)))
+    return permuted_point
 
 def project_point(p, permutation=None):
     """

@@ -74,13 +74,15 @@ class TernaryAxesSubplot(object):
         """
         Composes the permutation with the orientation permutation, if necessary.
         """
+
+        clockwise = "lrb"
         if self._orientation == '-':
             # Changing from counterclockwise to clockwise is equivalent to the
             # permutation '210'
             if not self._permutation:
-                return "210"
+                return clockwise
             else:
-                return compose_permutations(self._permutation, outer="210")
+                return compose_permutations(self._permutation, outer=clockwise)
         return self._permutation
 
     def get_figure(self):

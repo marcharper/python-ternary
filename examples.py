@@ -70,7 +70,7 @@ def random_heatmap(scale=4):
 if __name__ == '__main__':
     # Show Coordinates
     scale = 3
-    figure, tax = ternary.figure(scale=scale, permutation="120")
+    figure, tax = ternary.figure(scale=scale, permutation="rlb")
     points_lists = [[(0,0,3), (1,0,2), (2,0,1)],
                     [(3,0,0), (2,1,0), (1,2,0)],
                     [(0,3,0), (0,2,1), (0,1,2)],
