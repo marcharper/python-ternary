@@ -306,7 +306,7 @@ are depicted in the following figure:
 
 ![Coordinates](/readme_images/coordinates.png)
 
-`TernaryAxesSubplot` objects take an optional kwarg `orientation='i'` that
+`TernaryAxesSubplot` objects take an optional kwarg `orientation='-'` that
 changes the plotting orientation to clockwise rather than counterclockwise.
 Furthermore, you can specify which axis corresponds to which coordinate with
 the `permutation` kwarg to most plotting functions and `TernaryAxesSubplot`
