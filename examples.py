@@ -147,13 +147,18 @@ if __name__ == '__main__':
     ternary_ax.legend()
 
     ## Sample trajectory plot
-    figure, tax = ternary.figure(scale=1.0)
-    tax.boundary(color='black')
-    tax.set_title("Plotting of sample trajectory data", fontsize=20)
-    points = load_sample_trajectory_data()
-    tax.gridlines(multiple=0.2, color="black")
-    tax.plot(points, linewidth=2.0, label="Curve")
-    tax.legend()
+    gs = gridspec.GridSpec(2,1)
+    ax1 = pyplot.subplot(gs[0,0])
+    ax2 = pyplot.subplot(gs[1,0])
+
+    for ax, orientation in [(ax1, '+'), (ax2, '-')]:
+        figure, tax = ternary.figure(ax=ax, scale=1.0, orientation=orientation)
+        tax.boundary(color='black')
+        tax.set_title("Plotting of sample trajectory data", fontsize=20)
+        points = load_sample_trajectory_data()
+        tax.gridlines(multiple=0.2, color="black")
+        tax.plot(points, linewidth=2.0, label="Curve %s" % orientation)
+        tax.legend()
 
     ## Sample colored trajectory plot
     figure, tax = ternary.figure(scale=1.0)

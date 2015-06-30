@@ -11,8 +11,6 @@ import plotting
 from colormapping import get_cmap, colormapper, colorbar_hack
 
 
-
-
 ### Heatmap Triangulation Coordinates ###
 
 ## Triangular Heatmaps ##
@@ -314,7 +312,7 @@ def svg_heatmap(data, scale, filename, vmax=None, vmin=None, style='h',
     which would require large amounts of RAM using matplotlib. You can convert
     the image to another format with e.g. ImageMagick:
 
-    convert -density 1200 -resize -rotate 180 1000x1000 your.svg your.png
+    convert -density 100 -resize -rotate 180 1000x1000 your.svg your.png
 
     Parameters
     ----------

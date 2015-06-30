@@ -1,7 +1,7 @@
 
 import unittest
 
-from ternary.helpers import normalize, project_point, simplex_iterator, SQRT3OVER2
+from ternary.helpers import normalize, project_point, simplex_iterator, SQRT3OVER2, permute_point, compose_permutations
 
 class FunctionCases(unittest.TestCase):
 
@@ -56,30 +56,60 @@ class FunctionCases(unittest.TestCase):
         self.assertEqual(points, expected)
 
     def test_project_point(self):
-        point = (0,0,0)
-        projected = project_point(point)
+        point = (0, 0, 0)
+        projected = tuple(project_point(point))
         expected = (0.0, 0.0)
         self.assertEqual(projected, expected)
 
-        point = (1,0,0)
-        projected = project_point(point)
-        expected = (0.0, 0.0)
-        self.assertEqual(projected, expected)
-
-        point = (0,1,0)
-        projected = project_point(point)
+        point = (1, 0, 0)
+        projected = tuple(project_point(point))
         expected = (1.0, 0.0)
         self.assertEqual(projected, expected)
 
-        point = (0,0,1)
-        projected = project_point(point)
-        expected = (0.5, SQRT3OVER2)
+        point = (0, 1, 0)
+        projected = tuple(project_point(point))
+        expected = (1./2, SQRT3OVER2)
         self.assertEqual(projected, expected)
 
-        point = (1,1,1)
-        projected = project_point(point)
+        point = (0, 0, 1)
+        projected = tuple(project_point(point))
+        expected = (0, 0)
+        self.assertEqual(projected, expected)
+
+        point = (1, 1, 1)
+        projected = tuple(project_point(point))
         expected = (1.5, SQRT3OVER2)
         self.assertEqual(projected, expected)
+
+    def test_permutations(self):
+        point = (3, 4, 5)
+        permutation = "012"
+        permuted = permute_point(point, permutation)
+        self.assertEqual(permuted, point)
+
+        permutation = "120"
+        permuted = permute_point(point, permutation)
+        self.assertEqual(permuted, (4, 5, 3))
+
+        permutation = "102"
+        permuted = permute_point(point, permutation)
+        self.assertEqual(permuted, (4, 3, 5))
+
+    def test_compose_permutations(self):
+        inner = "012"
+        outer = "210"
+        composite = compose_permutations(inner, outer)
+        self.assertEqual(composite, outer)
+
+        inner = "120"
+        outer = "012"
+        composite = compose_permutations(inner, outer)
+        self.assertEqual(composite, inner)
+
+        inner = "120"
+        outer = "210"
+        composite = compose_permutations(inner, outer)
+        self.assertEqual(composite, "102")
 
 if __name__ == "__main__":
     unittest.main()
