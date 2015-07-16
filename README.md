@@ -25,7 +25,7 @@ Most ternary functions expect the simplex to be partititioned into some number o
 To install clone the repository and run `setup.py` in the usual manner:
 
 ```
-get clone git@github.com:marcharper/python-ternary.git
+git clone git@github.com:marcharper/python-ternary.git
 cd python-ternary
 sudo python setup.py install
 ```
