@@ -297,6 +297,26 @@ This can produces images such as:
 
 There is a large set of heatmap examples [here](http://people.mbi.ucla.edu/marcharper/stationary_stable/3x3/incentive.html).
 
+# Coordinate system
+
+The default coordinate system for `ternary` is to plot the first index along the
+lower axis, the second coordinate up the right axis, and the third coordinate
+down the left axis, counterclockwise. Specifically, for `scale=3`, the coordinates
+are depicted in the following figure:
+
+![Coordinates](/readme_images/coordinates.png)
+
+`TernaryAxesSubplot` objects take an optional kwarg `orientation='-'` that
+changes the plotting orientation to clockwise rather than counterclockwise.
+Furthermore, you can specify which axis corresponds to which coordinate with
+the `permutation` kwarg to most plotting functions and `TernaryAxesSubplot`
+objects.
+
+Permutations are specified as strings of 'b', 'r' 'l' and corresponding to the
+bottom, right, and left axes. The defaul permutation is "brl", placing the
+first coordinate along the right axis, the second coordinate along the lower
+axis, and third coordiante along the left axis.
+
 # Unittests
 
 You can run the test suite as follows:

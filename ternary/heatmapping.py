@@ -11,8 +11,6 @@ import plotting
 from colormapping import get_cmap, colormapper, colorbar_hack
 
 
-
-
 ### Heatmap Triangulation Coordinates ###
 
 ## Triangular Heatmaps ##
@@ -204,7 +202,7 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
     colorbar: bool, True
         Show colorbar.
     permutation: string, None
-        A permutation of the coordinates
+        The permutation, a string of 'brl'
 
     Returns
     -------
@@ -267,7 +265,7 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
     colorbar: bool, True
         Show colorbar.
     permutation: string, None
-        A permutation of the coordinates
+        The permutation, a string of 'brl'
 
     Returns
     -------
@@ -314,7 +312,7 @@ def svg_heatmap(data, scale, filename, vmax=None, vmin=None, style='h',
     which would require large amounts of RAM using matplotlib. You can convert
     the image to another format with e.g. ImageMagick:
 
-    convert -density 1200 -resize -rotate 180 1000x1000 your.svg your.png
+    convert -density 100 -resize -rotate 180 1000x1000 your.svg your.png
 
     Parameters
     ----------
@@ -335,7 +333,7 @@ def svg_heatmap(data, scale, filename, vmax=None, vmin=None, style='h',
     style: String, "h"
         The style of the heatmap, "triangular", "dual-triangular" or "hexagonal"
     permutation: string, None
-        A permutation of the coordinates
+        The permutation, a string of 'brl'
     """
 
     style = style.lower()[0]

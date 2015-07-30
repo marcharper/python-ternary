@@ -9,11 +9,15 @@ import numpy
 
 SQRT3 = numpy.sqrt(3)
 SQRT3OVER2 = SQRT3 / 2.
+PERMUTATIONS = set(["012", "120", "201", "102", "021", "210"])
 
 ### Auxilliary Functions ###
 
 def unzip(l):
-    """[(a1, b1), ..., (an, bn)] ----> ([a1, ..., an], [b1, ..., bn])"""
+    """
+    [(a1, b1), ..., (an, bn)] ----> ([a1, ..., an], [b1, ..., bn])
+    """
+
     return zip(*l)
 
 def normalize(l):
@@ -67,17 +71,90 @@ def simplex_iterator(scale, boundary=True):
             k = scale - i - j
             yield (i, j, k)
 
-## Ternary Projections ##
+## Ternary Projections and Point Operations
 
-def permute_point(p, permutation=None):
+translation_dict = dict(zip("brl", "012"))
+reverse_translation_dict = dict(zip("012", "brl"))
+
+def represent_permutation(permutation, reverse=False):
+    """
+    Maps a permutation from the 'brl' specification to or from the '012'
+    internal representation.
+    """
+
+    p = ""
+    if reverse:
+        translator = reverse_translation_dict
+    else:
+        translator = translation_dict
+    for i in permutation:
+        p += translator[i]
+    return p
+
+def compose_permutations(inner, outer):
+    """
+    Composes the two permutations p1 and p2 as if they were functions in the
+    symmetric group. That is, p3 = p1 o p2.
+
+    Parameters
+    ----------
+    inner: string
+        The inner (first applied) permutation, a string of 'brl'
+    outer: string, None
+        The outer (second applied) permutation, a string of 'brl'
+
+    Returns
+    -------
+    composite, string
+        The permutaton composite = outer o inner
+    """
+
+    if inner not in PERMUTATIONS:
+        inner = represent_permutation(inner)
+    if outer not in PERMUTATIONS:
+        outer = represent_permutation(outer)
+
+    d_inner = dict(zip("012", inner))
+    d_outer = dict(zip("012", outer))
+    composite = "".join(d_outer[d_inner[i]] for i in "012")
+    return represent_permutation(composite, reverse=True)
+
+def permute_point(point, permutation=None):
     """
     Permutes the point according to the permutation keyword argument. The
     default permutation is "012" which does not change the order of the
     coordinate. To rotate counterclockwise, use "120" and to rotate clockwise
-    use "201"."""
+    use "201".
+
+    Parameters
+    ----------
+    point: 3-tuple, (i, j, k)
+        The point to be permuted.
+    permutation: string, None
+        The permutation, a string of 'brl'
+
+    Raises
+    ------
+    ValueError, if permutation is not valid
+
+    Returns
+    -------
+    permuted, 3-tuple, (i, j, k)
+        The permutation point
+    """
+
     if not permutation:
-        return p
-    return [p[int(permutation[i])] for i in range(len(p))]
+        return point
+    if permutation == "brl" or permutation == "012":
+        return point
+    if permutation not in PERMUTATIONS:
+        r_permutation = represent_permutation(permutation)
+        if r_permutation not in PERMUTATIONS:
+            raise ValueError, "Invalid permutation: %s" % permutation
+        permutation = r_permutation
+
+    permuted_point = tuple(point[int(permutation[i])] for i in range(len(point)))
+    return permuted_point
 
 def project_point(p, permutation=None):
     """
@@ -86,17 +163,22 @@ def project_point(p, permutation=None):
     Parameters
     ----------
     p: 3-tuple
-        The point to be projected p = (x, y, z)
-    coordinate_order, string, None, equivalent to "012"
+        The point to be projected p = (i, j, k)
+    permutation, string, None, equivalent to "012"
         The order of the coordinates, counterclockwise from the origin
+
+    Returns
+    -------
+    projected, numpy.array of projected tuple (x, y)
     """
 
     permuted = permute_point(p, permutation=permutation)
-    a = permuted[0]
-    b = permuted[1]
-    x = a + b/2.
-    y = SQRT3OVER2 * b
-    return numpy.array([x, y])
+    i = permuted[0]
+    j = permuted[1]
+    x = i + j / 2.
+    y = SQRT3OVER2 * j
+    projected = numpy.array([x, y])
+    return projected
 
 def project_sequence(s, permutation=None):
     """
@@ -110,8 +192,8 @@ def project_sequence(s, permutation=None):
 
     Returns
     -------
-    xs, ys: The sequence of projected points in coordinates as two lists 
+    xs, ys: The sequence of projected points in coordinates as two lists
     """
 
-    xs, ys = unzip([project_point(p, permutation=permutation) for p in s])
+    xs, ys = unzip(project_point(p, permutation=permutation) for p in s)
     return xs, ys

@@ -117,7 +117,7 @@ def boundary(ax, scale, **kwargs):
 def merge_dicts(base, updates):
     '''
     Given two dicts, merge them into a new dict as a shallow copy.
-    
+
     Parameters
     ----------
     base: dict

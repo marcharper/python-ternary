@@ -7,10 +7,10 @@ from matplotlib import pyplot
 import heatmapping
 import lines
 import plotting
-from helpers import project_point
+from helpers import project_point, compose_permutations
 
 
-def figure(ax=None, scale=None, permutation=None):
+def figure(ax=None, scale=None, permutation=None, orientation=None):
     """
     Wraps a Matplotlib AxesSubplot or generates a new one. Emulates matplotlib's
     > figure, ax = pyplot.subplots()
@@ -21,9 +21,16 @@ def figure(ax=None, scale=None, permutation=None):
         The AxesSubplot to wrap
     scale: float, None
         The scale factor of the ternary plot
+    permutation: string, None, 'brl'
+        The permutation indicating the order to plot, given as a string,
+        e.g. '012'
+    orientation: string, None, '+' or '-'
+        The orientation of plotting, either '+' or '-'
     """
 
-    ternary_ax = TernaryAxesSubplot(ax=ax, scale=scale, permutation=permutation)
+    ternary_ax = TernaryAxesSubplot(ax=ax, scale=scale,
+                                    permutation=permutation,
+                                    orientation=orientation)
     return ternary_ax.get_figure(), ternary_ax
 
 
@@ -34,19 +41,49 @@ class TernaryAxesSubplot(object):
     to ease the use of ternary plotting functions.
     """
 
-    def __init__(self, ax=None, scale=None, permutation=None):
+    def __init__(self, ax=None, scale=None, permutation=None, orientation=None):
+        """
+        Parameters
+        ----------
+        ax: AxesSubplot, None
+            The AxesSubplot to wrap
+        scale: float, None
+            The scale factor of the ternary plot
+        permutation: string, None, 'brl'
+            The permutation indicating the order to plot, given as a string,
+            e.g. '012'
+        orientation: string, None, '+' or '-'
+            The orientation of plotting, either '+' or '-'
+        """
+
         if not scale:
             scale = 1.0
         if ax:
             self.ax = ax
         else:
             _, self.ax = pyplot.subplots()
-        self._permutation = None
+        self._permutation = permutation
+        self._orientation = orientation
         self.set_scale(scale=scale)
         self._boundary_scale = scale
 
     def __repr__(self):
         return "TernaryAxesSubplot: %s" % self.ax.__hash__()
+
+    def get_permutation(self):
+        """
+        Composes the permutation with the orientation permutation, if necessary.
+        """
+
+        clockwise = "lrb"
+        if self._orientation == '-':
+            # Changing from counterclockwise to clockwise is equivalent to the
+            # permutation '210'
+            if not self._permutation:
+                return clockwise
+            else:
+                return compose_permutations(self._permutation, outer=clockwise)
+        return self._permutation
 
     def get_figure(self):
         ax = self.get_axes()
@@ -69,20 +106,20 @@ class TernaryAxesSubplot(object):
 
     def scatter(self, points, **kwargs):
         ax = self.get_axes()
-        permutation = self._permutation
+        permutation = self.get_permutation()
         plot_ = plotting.scatter(points, ax=ax, permutation=permutation,
                                  **kwargs)
         return plot_
 
     def plot(self, points, **kwargs):
         ax = self.get_axes()
-        permutation = self._permutation
+        permutation = self.get_permutation()
         plotting.plot(points, ax=ax, permutation=permutation,
                       **kwargs)
 
     def plot_colored_trajectory(self, points, cmap=None, **kwargs):
         ax = self.get_axes()
-        permutation = self._permutation
+        permutation = self.get_permutation()
         plotting.plot_colored_trajectory(points, cmap=cmap, ax=ax,
                                          permutation=permutation, **kwargs)
 
@@ -104,7 +141,7 @@ class TernaryAxesSubplot(object):
 
     def heatmap(self, data, scale=None, cmap=None, scientific=False,
                 style='triangular', colorbar=True):
-        permutation = self._permutation
+        permutation = self.get_permutation()
         if not scale:
             scale = self.get_scale()
         if style.lower()[0] == 'd':
@@ -120,7 +157,7 @@ class TernaryAxesSubplot(object):
             scale = self.get_scale()
         if style.lower()[0] == 'd':
             self._boundary_scale = scale + 1
-        permutation = self._permutation
+        permutation = self.get_permutation()
         ax = self.get_axes()
         heatmapping.heatmapf(func, scale, cmap=cmap, style=style,
                              boundary=boundary, ax=ax, scientific=scientific,
