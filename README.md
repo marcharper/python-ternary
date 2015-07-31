@@ -297,6 +297,16 @@ This can produces images such as:
 
 There is a large set of heatmap examples [here](http://people.mbi.ucla.edu/marcharper/stationary_stable/3x3/incentive.html).
 
+
+# RGBA colors
+
+With the hexagonal-style heatmaps you can alternatively specify colors as rgba
+tuples `(r,g,b,a)` (all between zero and one). To use this feature, pass
+`colormap=False` to `heatmap()` so that the library will not attempt to map the
+tuple to a value with a matplotlib colormap. Note that this disables the inclusion
+of a colorbar.
+
+
 # Unittests
 
 You can run the test suite as follows:
@@ -322,3 +332,5 @@ Marc Harper, Python-ternary: A python library for ternary plots, 2011-2015, avai
 
 - Marc Harper [marcharper](https://github.com/marcharper)
 - Bryan Weinstein [btweinstein](https://github.com/btweinstein): Hexagonal heatmaps, colored trajectory plots
+- [chebee7i](https://github.com/chebee7i): Docs and figures, triangular heatmapping
+
