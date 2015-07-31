@@ -103,7 +103,7 @@ class TernaryAxesSubplot(object):
         plotting.bottom_axis_label(ax, label, position=position, **kwargs)
 
     def heatmap(self, data, scale=None, cmap=None, scientific=False,
-                style='triangular', colorbar=True):
+                style='triangular', colorbar=True, colormap=True):
         permutation = self._permutation
         if not scale:
             scale = self.get_scale()
@@ -112,7 +112,7 @@ class TernaryAxesSubplot(object):
         ax = self.get_axes()
         heatmapping.heatmap(data, scale, cmap=cmap, style=style, ax=ax,
                             scientific=scientific, colorbar=colorbar,
-                            permutation=permutation)
+                            permutation=permutation, colormap=colormap)
 
     def heatmapf(self, func, scale=None, cmap=None, boundary=True,
                  style='triangular', colorbar=True, scientific=True):

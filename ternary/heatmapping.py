@@ -11,7 +11,7 @@ import plotting
 from colormapping import get_cmap, colormapper, colorbar_hack
 
 
-
+#from matplotlib.colors import rgb2hex
 
 ### Heatmap Triangulation Coordinates ###
 
@@ -178,7 +178,7 @@ def polygon_generator(data, scale, style, permutation=None):
 
 def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
             scientific=False, style='triangular', colorbar=True,
-            permutation=None):
+            permutation=None, colormap=True):
     """
     Plots heatmap of given color values.
 
@@ -229,12 +229,15 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
     for vertices, value in vertices_values:
         if value is None:
             continue
-        color = colormapper(value, vmin, vmax, cmap=cmap)
+        if colormap:
+            color = colormapper(value, vmin, vmax, cmap=cmap)
+        else:
+            color = value # rgba tuple (r,g,b,a) all in [0,1]
         # Matplotlib wants a list of xs and a list of ys
         xs, ys = unzip(vertices)
         ax.fill(xs, ys, facecolor=color, edgecolor=color)
 
-    if colorbar:
+    if colorbar and colormap:
         colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific)
     return ax
 
