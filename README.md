@@ -70,6 +70,9 @@ tax = ternary.TernaryAxesSubplot(ax=ax)
 This is useful if you want to use ternary as part of another figure, such as
 
 ```
+
+from matplotlib import pyplot, gridspec
+
 pyplot.figure()
 gs = gridspec.GridSpec(2,2)
 ax = pyplot.subplot(gs[0,0])
