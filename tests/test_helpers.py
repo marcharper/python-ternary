@@ -1,7 +1,10 @@
 
 import unittest
 
+from numpy.testing import assert_array_equal
+
 from ternary.helpers import normalize, project_point, simplex_iterator, SQRT3OVER2
+
 
 class FunctionCases(unittest.TestCase):
 
@@ -56,30 +59,31 @@ class FunctionCases(unittest.TestCase):
         self.assertEqual(points, expected)
 
     def test_project_point(self):
-        point = (0,0,0)
+        point = (0, 0, 0)
         projected = project_point(point)
         expected = (0.0, 0.0)
-        self.assertEqual(projected, expected)
+        assert_array_equal(projected, expected)
 
-        point = (1,0,0)
-        projected = project_point(point)
-        expected = (0.0, 0.0)
-        self.assertEqual(projected, expected)
-
-        point = (0,1,0)
+        point = (1, 0, 0)
         projected = project_point(point)
         expected = (1.0, 0.0)
-        self.assertEqual(projected, expected)
+        assert_array_equal(projected, expected)
 
-        point = (0,0,1)
+        point = (0, 1, 0)
         projected = project_point(point)
         expected = (0.5, SQRT3OVER2)
-        self.assertEqual(projected, expected)
+        assert_array_equal(projected, expected)
 
-        point = (1,1,1)
+        point = (0, 0, 1)
+        projected = project_point(point)
+        expected = (0, 0)
+        assert_array_equal(projected, expected)
+
+        point = (1, 1, 1)
         projected = project_point(point)
         expected = (1.5, SQRT3OVER2)
-        self.assertEqual(projected, expected)
+        assert_array_equal(projected, expected)
+
 
 if __name__ == "__main__":
     unittest.main()
