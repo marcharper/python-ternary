@@ -70,6 +70,9 @@ tax = ternary.TernaryAxesSubplot(ax=ax)
 This is useful if you want to use ternary as part of another figure, such as
 
 ```
+
+from matplotlib import pyplot, gridspec
+
 pyplot.figure()
 gs = gridspec.GridSpec(2,2)
 ax = pyplot.subplot(gs[0,0])
@@ -216,7 +219,7 @@ tax.show()
 
 ## Heatmaps
 
-Ternary can plot heatmaps in two ways and two styles. Given a function, ternary
+Ternary can plot heatmaps in two ways and three styles. Given a function, ternary
 will evaluate the function at the specified number of steps (determined by the 
 scale, expected to be an integer in this case). The simplex can be split up into
 triangles or hexagons and colored according to one of three styles:
