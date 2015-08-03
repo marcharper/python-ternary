@@ -24,7 +24,7 @@ def load_sample_heatmap_data(filename="sample_heatmap_data.txt",
     for line in handle:
         line = line.strip()
         i, j, k, v = line.split(' ')
-        data[(int(i), int(j))] = float(v)
+        data[(int(i), int(j), int(k))] = float(v)
     return data
 
 def generate_random_heatmap_data(scale=5):
@@ -171,26 +171,39 @@ if __name__ == '__main__':
     scale = 60
     function = shannon_entropy
     pyplot.figure()
-    gs = gridspec.GridSpec(2,2)
+    gs = gridspec.GridSpec(2,3)
+
     ax = pyplot.subplot(gs[0,0])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmapf(function, boundary=True, style="triangular")
     tax.boundary(color='black')
     tax.set_title("Triangular with Boundary")
 
-    ax = pyplot.subplot(gs[0,1])
+    ax = pyplot.subplot(gs[1,0])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmapf(function, boundary=False, style="t")
     tax.boundary(color='black')
     tax.set_title("Triangular without Boundary")
 
-    ax = pyplot.subplot(gs[1,0])
+    ax = pyplot.subplot(gs[0,1])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmapf(function, boundary=True, style="dual-triangular")
+    tax.boundary(color='black')
+    tax.set_title("Dual Triangular with Boundary")
+
+    ax = pyplot.subplot(gs[1,1])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmapf(function, boundary=False, style="d")
+    tax.boundary(color='black')
+    tax.set_title("Dual Triangular without Boundary")
+
+    ax = pyplot.subplot(gs[0,2])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmapf(function, boundary=True, style="hexagonal")
     tax.boundary(color='black')
     tax.set_title("Hexagonal with Boundary")
 
-    ax = pyplot.subplot(gs[1,1])
+    ax = pyplot.subplot(gs[1,2])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmapf(function, boundary=False, style="h")
     tax.boundary(color='black')
@@ -201,7 +214,7 @@ if __name__ == '__main__':
     scale = 60
     data = load_sample_heatmap_data()
     pyplot.figure()
-    gs = gridspec.GridSpec(1,2)
+    gs = gridspec.GridSpec(1, 3)
     ax = pyplot.subplot(gs[0,0])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmap(data, style="dual-triangular")
@@ -213,6 +226,13 @@ if __name__ == '__main__':
     tax.heatmap(data, style="triangular")
     tax.boundary(color='black')
     tax.set_title("Triangular Heatmap from Data")
+
+    ax = pyplot.subplot(gs[0,2])
+    figure, tax = ternary.figure(ax=ax, scale=scale)
+    tax.heatmap(data, style="hexagonal")
+    tax.boundary(color='black')
+    tax.set_title("Hexagonal Heatmap from Data")
+
 
     pyplot.show()
 

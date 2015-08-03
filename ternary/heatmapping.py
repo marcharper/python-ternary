@@ -74,7 +74,7 @@ def alt_triangle_coordinates(i, j, k):
     A numpy array of coordinates of the hexagon (unprojected)
     """
 
-    return [(i, j + 1, k - 1), (i + 1, j + 1, k), (i + 1, j, k - 1)]
+    return [(i, j + 1, k - 1), (i + 1, j, k - 1), (i + 1, j + 1, k - 2)]
 
 ## Hexagonal Heatmaps ##
 
