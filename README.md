@@ -10,6 +10,8 @@ Most ternary functions expect the simplex to be partititioned into some number o
 # Gallery
 
 <div style="text-align:center">
+
+<img src ="/readme_images/boundary_and_gridlines.png" width="150" height="150"/>
 <img src ="/readme_images/various_lines.png" width="150" height="150"/>
 <img src ="/readme_images/colored_trajectory.png" width="150" height="150"/>
 <img src ="/readme_images/scatter.png" width="150" height="150"/>

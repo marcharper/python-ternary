@@ -135,6 +135,8 @@ if __name__ == '__main__':
     p1 = (12,8,10)
     p2 = (2, 26, 2)
     ternary_ax.line(p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
+
+    ternary_ax.clear_matplotlib_ticks()
     ternary_ax.ticks(axis='lbr', color="black", multiple=5, linewidth=1)
 
     ### Scatter Plot
@@ -149,6 +151,7 @@ if __name__ == '__main__':
     points = random_points(30, scale=scale)
     ternary_ax.scatter(points, marker='D', color='green', label="Green Diamonds")
     ternary_ax.legend()
+    ternary_ax.clear_matplotlib_ticks()
     ternary_ax.ticks(axis='lbr', color="black", multiple=5, linewidth=1)
 
     ## Sample trajectory plot
@@ -170,6 +173,7 @@ if __name__ == '__main__':
     points = [(y,z,x) for (x,y,z) in points]
     tax.plot_colored_trajectory(points, cmap="hsv", linewidth=2.0)
     tax.legend()
+    ternary_ax.clear_matplotlib_ticks()
     tax.ticks(axis='lbr', color="black", linewidth=1, multiple=0.1)
 
     pyplot.show()
