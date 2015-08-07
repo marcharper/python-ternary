@@ -2,6 +2,9 @@
 Wrapper class for all ternary plotting functions.
 """
 
+from functools import partial
+
+import numpy
 from matplotlib import pyplot
 
 import heatmapping
@@ -26,6 +29,49 @@ def figure(ax=None, scale=None, permutation=None):
     ternary_ax = TernaryAxesSubplot(ax=ax, scale=scale, permutation=permutation)
     return ternary_ax.get_figure(), ternary_ax
 
+def mpl_redraw_callback(event, tax):
+    """
+    Callback to properly rotate and redraw text labels when the plot is drawn 
+    or resized.
+
+    Parameters:
+    event: a matplotlib event
+        either 'resize_event' or 'draw_event'
+    tax: TernaryAxesSubplot
+         the TernaryAxesSubplot 
+    """
+
+    #http://stackoverflow.com/questions/4018860/text-box-with-line-wrapping-in-matplotlib
+
+    ax = tax.get_axes()
+    figure = tax.get_figure()
+
+    ## Axis Labels
+    # Remove any previous labels
+    for mpl_object in tax._to_remove:
+        mpl_object.remove()
+    tax._to_remove = []
+    # Redraw the labels with the appropriate angles
+    for (label, position, rotation, kwargs) in tax._labels.values():
+        transform = ax.transAxes
+        x, y = project_point(position)
+        # Calculate the new angle.
+        position = numpy.array([x,y])
+        new_rotation = ax.transData.transform_angles(numpy.array((rotation,)), position.reshape((1,2)))[0]
+        text = ax.text(x, y, label, rotation=new_rotation, transform=transform,
+                       horizontalalignment="center", **kwargs)
+        text.set_rotation_mode("anchor")
+        tax._to_remove.append(text)
+
+    # Temporarily disconnect any callbacks to the draw event...
+    # (To avoid recursion)
+    func_handles = figure.canvas.callbacks.callbacks[event.name]
+    figure.canvas.callbacks.callbacks[event.name] = {}
+    # Re-draw the figure..
+    figure.canvas.draw()
+    # Reset the draw event callbacks
+    figure.canvas.callbacks.callbacks[event.name] = func_handles
+
 
 class TernaryAxesSubplot(object):
     """Wrapper for python-ternary and matplotlib figure. Parameters for member
@@ -44,6 +90,15 @@ class TernaryAxesSubplot(object):
         self._permutation = None
         self.set_scale(scale=scale)
         self._boundary_scale = scale
+        self._labels = dict() # Container for the axis labels supplied by the user
+        self._to_remove = [] # Container for the redrawing of labels
+
+        # Connect resize and redraw matplotlib callbacks
+        event_names = ('resize_event', 'draw_event')
+        figure = self.get_figure()
+        callback = partial(mpl_redraw_callback, tax=self)
+        for event_name in event_names:
+            figure.canvas.mpl_connect(event_name, callback)
 
     def __repr__(self):
         return "TernaryAxesSubplot: %s" % self.ax.__hash__()
@@ -90,17 +145,80 @@ class TernaryAxesSubplot(object):
         ax = self.get_axes()
         plotting.clear_matplotlib_ticks(ax=ax, axis=axis)
 
-    def left_axis_label(self, label, position=None, **kwargs):
-        ax = self.get_axes()
-        plotting.left_axis_label(ax, label, position=position, **kwargs)
+    def left_axis_label(self, label, position=None,  rotation=60, offset=0.08,
+                        **kwargs):
+        """
+        Sets the label on the left axis.
 
-    def right_axis_label(self, label, position=None, **kwargs):
-        ax = self.get_axes()
-        plotting.right_axis_label(ax, label, position=position, **kwargs)
+        Parameters
+        ----------
+        ax: Matplotlib AxesSubplot, None
+            The subplot to draw on.
+        label: String
+            The axis label
+        position: 3-Tuple of floats, None
+            The position of the text label
+        rotation: float, 60
+            The angle of rotation of the label
+        offset: float,
+            Used to compute the distance of the label from the axis
+        kwargs:
+            Any kwargs to pass through to matplotlib.
+        """
 
-    def bottom_axis_label(self, label, position=None, **kwargs):
-        ax = self.get_axes()
-        plotting.bottom_axis_label(ax, label, position=position, **kwargs)
+        if not position:
+            position = (-offset, 3./5, 2./5)
+        self._labels["left"] = (label, position, rotation, kwargs)
+
+    def right_axis_label(self, label, position=None, rotation=-60, offset=0.08,
+                         **kwargs):
+        """
+        Sets the label on the right axis.
+
+        Parameters
+        ----------
+        ax: Matplotlib AxesSubplot, None
+            The subplot to draw on.
+        label: String
+            The axis label
+        position: 3-Tuple of floats, None
+            The position of the text label
+        rotation: float, -60
+            The angle of rotation of the label
+        offset: float,
+            Used to compute the distance of the label from the axis
+        kwargs:
+            Any kwargs to pass through to matplotlib.
+        """
+
+        if not position:
+            position = (2./5 + offset, 3./5, 0)
+        self._labels["right"] = (label, position, rotation, kwargs)
+
+    def bottom_axis_label(self, label, position=None, rotation=0, offset=0.02,
+                          **kwargs):
+        """
+        Sets the label on the bottom axis.
+
+        Parameters
+        ----------
+        ax: Matplotlib AxesSubplot, None
+            The subplot to draw on.
+        label: String
+            The axis label
+        position: 3-Tuple of floats, None
+            The position of the text label
+        rotation: float, 0
+            The angle of rotation of the label
+        offset: float,
+            Used to compute the distance of the label from the axis
+        kwargs:
+            Any kwargs to pass through to matplotlib.
+        """
+
+        if not position:
+            position = (1./2, offset, 1./2)
+        self._labels["bottom"] = (label, position, rotation, kwargs)
 
     def heatmap(self, data, scale=None, cmap=None, scientific=False,
                 style='triangular', colorbar=True, colormap=True):
