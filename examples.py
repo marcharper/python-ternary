@@ -173,7 +173,7 @@ if __name__ == '__main__':
     points = [(y,z,x) for (x,y,z) in points]
     tax.plot_colored_trajectory(points, cmap="hsv", linewidth=2.0)
     tax.legend()
-    ternary_ax.clear_matplotlib_ticks()
+    tax.clear_matplotlib_ticks()
     tax.ticks(axis='lbr', color="black", linewidth=1, multiple=0.1)
 
     pyplot.show()
