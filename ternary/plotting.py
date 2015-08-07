@@ -120,8 +120,6 @@ def scatter(points, ax=None, permutation=None, **kwargs):
     ----------
     points: List of 3-tuples
         The list of tuples to be scatter-plotted.
-    scale: float, 1.0
-        Simplex scale size.
     ax: Matplotlib AxesSubplot, None
         The subplot to draw on.
     kwargs:

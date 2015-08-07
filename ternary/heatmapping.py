@@ -158,23 +158,25 @@ def polygon_generator(data, scale, style, permutation=None):
             yield (map(project, vertices), value)
         elif style == 'd':
             # Upright triangles
-            vertices = triangle_coordinates(i, j, k)
-            yield (map(project, vertices), value)
+            if (i <= scale) and (j <= scale) and (k >= 0):
+                vertices = triangle_coordinates(i, j, k)
+                yield (map(project, vertices), value)
             # Upside-down triangles
-            vertices = alt_triangle_coordinates(i, j, k)
-            value = blend_value(data, i, j, k)
-            yield (map(project, vertices), value)
+            if (i < scale) and (j < scale) and (k >= 1):
+                vertices = alt_triangle_coordinates(i, j, k)
+                value = blend_value(data, i, j, k)
+                yield (map(project, vertices), value)
         elif style == 't':
             # Upright triangles
-            vertices = triangle_coordinates(i, j, k)
-            value = blend_value(data, i, j, k)
-            yield (map(project, vertices), value)
+            if (i < scale) and (j < scale) and (k > 0):
+                vertices = triangle_coordinates(i, j, k)
+                value = blend_value(data, i, j, k)
+                yield (map(project, vertices), value)
             # If not on the boundary add the upside-down triangle
-            if i == scale:
-                continue
-            vertices = alt_triangle_coordinates(i, j, k)
-            value = alt_blend_value(data, i, j, k)
-            yield (map(project, vertices), value)
+            if (i < scale) and (j < scale) and (k > 1):
+                vertices = alt_triangle_coordinates(i, j, k)
+                value = alt_blend_value(data, i, j, k)
+                yield (map(project, vertices), value)
 
 def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
             scientific=False, style='triangular', colorbar=True,
@@ -213,11 +215,17 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
 
     if not ax:
         fig, ax = pyplot.subplots()
-    cmap = get_cmap(cmap)
-    if not vmin:
-        vmin = min(data.values())
-    if not vmax:
-        vmax = max(data.values())
+    # If not colormap, then make the RGBA values numpy arrays so that they can
+    # be averaged.
+    if not colormap:
+        for k, v in data.items():
+            data[k] = numpy.array(v)
+    else:
+        cmap = get_cmap(cmap)
+        if not vmin:
+            vmin = min(data.values())
+        if not vmax:
+            vmax = max(data.values())
     style = style.lower()[0]
     if style not in ["t", "h", 'd']:
         raise ValueError("Heatmap style must be 'triangular', 'dual-triangular', or 'hexagonal'")
