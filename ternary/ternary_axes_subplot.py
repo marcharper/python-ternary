@@ -41,21 +41,9 @@ def mpl_redraw_callback(event, tax):
          the TernaryAxesSubplot 
     """
 
-    #http://stackoverflow.com/questions/4018860/text-box-with-line-wrapping-in-matplotlib
-
     ax = tax.get_axes()
     figure = tax.get_figure()
     tax._redraw_labels()
-
-    # Temporarily disconnect any callbacks to the draw event...
-    # (To avoid recursion)
-    func_handles = figure.canvas.callbacks.callbacks[event.name]
-    figure.canvas.callbacks.callbacks[event.name] = {}
-    # Re-draw the figure..
-    figure.canvas.draw()
-    # Reset the draw event callbacks
-    figure.canvas.callbacks.callbacks[event.name] = func_handles
-
 
 class TernaryAxesSubplot(object):
     """
@@ -85,7 +73,7 @@ class TernaryAxesSubplot(object):
         Connect resize and redraw matplotlib callbacks.
         """
 
-        event_names = ('resize_event', 'draw_event')
+        event_names = ('resize_event', )
         figure = self.get_figure()
         callback = partial(mpl_redraw_callback, tax=self)
         for event_name in event_names:
