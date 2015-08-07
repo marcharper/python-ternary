@@ -180,5 +180,13 @@ class TernaryAxesSubplot(object):
             scale = self.get_scale()
         plotting.resize_drawing_canvas(ax, scale=scale)
 
+    def ticks(self, ticks=None, locations=None, multiple=1, axis='b',
+              clockwise=False, **kwargs):
+        ax = self.get_axes()
+        scale = self.get_scale()
+        lines.ticks(ax, scale, ticks=ticks, locations=locations,
+                    multiple=multiple, clockwise=clockwise, axis=axis, 
+                    **kwargs)
+
     def show(self):
         pyplot.show()

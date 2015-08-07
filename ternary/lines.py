@@ -48,8 +48,8 @@ def horizontal_line(ax, scale, i, **kwargs):
         Any kwargs to pass through to Matplotlib.
     """
 
-    p1 = (0, scale-i, i)
-    p2 = (scale-i, 0, i)
+    p1 = (0, scale - i, i)
+    p2 = (scale - i, 0, i)
     line(ax, p1, p2, **kwargs)
 
 def left_parallel_line(ax, scale, i,  **kwargs):
@@ -68,8 +68,8 @@ def left_parallel_line(ax, scale, i,  **kwargs):
         Any kwargs to pass through to Matplotlib.
     """
 
-    p1 = (0, i, scale-i)
-    p2 = (scale-i, i, 0)
+    p1 = (0, i, scale - i)
+    p2 = (scale - i, i, 0)
     line(ax, p1, p2, **kwargs)
 
 def right_parallel_line(ax, scale, i, **kwargs):
@@ -88,8 +88,8 @@ def right_parallel_line(ax, scale, i, **kwargs):
         Any kwargs to pass through to Matplotlib.
     """
 
-    p1 = (i, scale-i, 0)
-    p2 = (i, 0, scale-i)
+    p1 = (i, scale - i, 0)
+    p2 = (i, 0, scale - i)
     line(ax, p1, p2, **kwargs)
 
 ## Boundary, Gridlines ##
@@ -175,3 +175,47 @@ def gridlines(ax, scale, multiple=None, horizontal_kwargs=None, left_kwargs=None
         left_parallel_line(ax, scale, i, **left_kwargs)
         right_parallel_line(ax, scale, i, **right_kwargs)
     return ax
+
+def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
+          offset = 0.01, clockwise=False, **kwargs):
+    axis_ = axis.lower()[0]
+    if axis_ not in ['l', 'r', 'b']:
+        raise ValueError, "axis must be one of 'left', 'right', 'bottom'"
+
+    if not ticks:
+        locations = arange(0, scale, multiple)
+        ticks = locations
+
+    if axis_ == 'r':
+        for i in arange(0, scale + multiple, multiple):
+            loc1 = (scale - i, i, 0)
+            if clockwise:
+                # Right parallel
+                loc2 = (scale - i, i + offset * scale, 0)
+            else:
+                # Horizontal
+                loc2 = (scale - i + offset * scale, i, 0)
+            line(ax, loc1, loc2, **kwargs)
+
+    if axis_ == 'l':
+        for i in arange(0, scale + multiple, multiple):
+            loc1 = (0, i, 0)
+            if clockwise:
+                # Horizontal
+                loc2 = (-offset * scale, i, 0)
+            else:
+                # Right parallel
+                loc2 = (-offset * scale, i + offset * scale, 0)
+            line(ax, loc1, loc2, **kwargs)
+
+    elif axis_ == 'b':
+        for i in arange(0, scale + multiple, multiple):
+            loc1 = (i, 0, 0)
+            if clockwise:
+                # Right parallel
+                loc2 = (i + offset * scale, -offset * scale, 0)
+            else:
+                # Left parallel
+                loc2 = (i, -offset * scale, 0)
+            line(ax, loc1, loc2, **kwargs)
+
