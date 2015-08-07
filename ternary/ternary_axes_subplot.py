@@ -21,7 +21,7 @@ def figure(ax=None, scale=None, permutation=None):
     Parameters
     ----------
     ax: AxesSubplot, None
-        The AxesSubplot to wrap
+        The matplotlib AxesSubplot to wrap
     scale: float, None
         The scale factor of the ternary plot
     """
@@ -74,7 +74,8 @@ def mpl_redraw_callback(event, tax):
 
 
 class TernaryAxesSubplot(object):
-    """Wrapper for python-ternary and matplotlib figure. Parameters for member
+    """
+    Wrapper for python-ternary and matplotlib figure. Parameters for member
     functions simply pass through to ternary's functions with the same names.
     This class manages the matplotlib axes, the scale, and the boundary scale
     to ease the use of ternary plotting functions.
@@ -117,11 +118,6 @@ class TernaryAxesSubplot(object):
     def get_axes(self):
         return self.ax
 
-    def annotate(self, text, position, **kwargs):
-        ax = self.get_axes()
-        p = project_point(position)
-        ax.annotate(text, (p[0], p[1]), **kwargs)
-
     def scatter(self, points, **kwargs):
         ax = self.get_axes()
         permutation = self._permutation
@@ -141,9 +137,13 @@ class TernaryAxesSubplot(object):
         plotting.plot_colored_trajectory(points, cmap=cmap, ax=ax,
                                          permutation=permutation, **kwargs)
 
-    def clear_matplotlib_ticks(self, axis="both"):
+
+
+
+    def set_title(self, title, **kwargs):
         ax = self.get_axes()
-        plotting.clear_matplotlib_ticks(ax=ax, axis=axis)
+        ax.set_title(title, **kwargs)
+
 
     def left_axis_label(self, label, position=None,  rotation=60, offset=0.08,
                         **kwargs):
@@ -220,6 +220,13 @@ class TernaryAxesSubplot(object):
             position = (1./2, offset, 1./2)
         self._labels["bottom"] = (label, position, rotation, kwargs)
 
+    def annotate(self, text, position, **kwargs):
+        ax = self.get_axes()
+        p = project_point(position)
+        ax.annotate(text, (p[0], p[1]), **kwargs)
+
+
+
     def heatmap(self, data, scale=None, cmap=None, scientific=False,
                 style='triangular', colorbar=True, colormap=True):
         permutation = self._permutation
@@ -244,6 +251,23 @@ class TernaryAxesSubplot(object):
                              boundary=boundary, ax=ax, scientific=scientific,
                              colorbar=colorbar, permutation=permutation)
 
+    def boundary(self, scale=None, **kwargs):
+        # Sometimes you want to draw a bigger boundary
+        if not scale:
+            scale = self._boundary_scale # defaults to self._scale
+        ax = self.get_axes()
+        self.resize_drawing_canvas(scale)
+        lines.boundary(scale=scale, ax=ax, **kwargs)
+
+    def gridlines(self, multiple=None, horizontal_kwargs=None, left_kwargs=None,
+                  right_kwargs=None, **kwargs):
+        ax = self.get_axes()
+        scale = self.get_scale()
+        lines.gridlines(scale=scale, multiple=multiple,
+                        ax=ax, horizontal_kwargs=horizontal_kwargs,
+                        left_kwargs=left_kwargs, right_kwargs=right_kwargs,
+                        **kwargs)
+
     def line(self, p1, p2, **kwargs):
         ax = self.get_axes()
         lines.line(ax, p1, p2, **kwargs)
@@ -263,31 +287,6 @@ class TernaryAxesSubplot(object):
         scale = self.get_scale()
         lines.right_parallel_line(ax, scale, i, **kwargs)
 
-    def boundary(self, scale=None, **kwargs):
-        # Sometimes you want to draw a bigger boundary
-        if not scale:
-            scale = self._boundary_scale # defaults to self._scale
-        ax = self.get_axes()
-        self.resize_drawing_canvas(scale)
-        lines.boundary(scale=scale, ax=ax, **kwargs)
-
-    def gridlines(self, multiple=None, horizontal_kwargs=None, left_kwargs=None,
-                  right_kwargs=None, **kwargs):
-        ax = self.get_axes()
-        scale = self.get_scale()
-        lines.gridlines(scale=scale, multiple=multiple,
-                        ax=ax, horizontal_kwargs=horizontal_kwargs,
-                        left_kwargs=left_kwargs, right_kwargs=right_kwargs,
-                        **kwargs)
-
-    def set_title(self, title, **kwargs):
-        ax = self.get_axes()
-        ax.set_title(title, **kwargs)
-
-    def savefig(self, filename, dpi=200, format=None):
-        figure = self.get_figure()
-        figure.savefig(filename, format=format, dpi=dpi)
-
     def legend(self, *args, **kwargs):
         ax = self.get_axes()
         ax.legend(*args, **kwargs)
@@ -298,6 +297,14 @@ class TernaryAxesSubplot(object):
             scale = self.get_scale()
         plotting.resize_drawing_canvas(ax, scale=scale)
 
+    def clear_matplotlib_ticks(self, axis="both"):
+        """
+        Clears the default matplotlib ticks.
+        """
+
+        ax = self.get_axes()
+        plotting.clear_matplotlib_ticks(ax=ax, axis=axis)
+
     def ticks(self, ticks=None, locations=None, multiple=1, axis='b',
               clockwise=False, **kwargs):
         ax = self.get_axes()
@@ -305,6 +312,10 @@ class TernaryAxesSubplot(object):
         lines.ticks(ax, scale, ticks=ticks, locations=locations,
                     multiple=multiple, clockwise=clockwise, axis=axis, 
                     **kwargs)
+
+    def savefig(self, filename, dpi=200, format=None):
+        figure = self.get_figure()
+        figure.savefig(filename, format=format, dpi=dpi)
 
     def show(self):
         pyplot.show()
