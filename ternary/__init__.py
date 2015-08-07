@@ -3,9 +3,6 @@ from plotting import (
     plot,
     resize_drawing_canvas,
     scatter,
-    left_axis_label,
-    right_axis_label,
-    bottom_axis_label
 )
 
 from lines import (
