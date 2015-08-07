@@ -213,39 +213,58 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
         raise ValueError, "axis must be some combination of 'l', 'r', and 'b'"
 
     if not ticks:
-        locations = arange(0, scale, multiple)
+        locations = arange(0, scale + multiple, multiple)
         ticks = locations
 
     if 'r' in axis:
-        for i in arange(0, scale + multiple, multiple):
+        for index, i in enumerate(locations):
             loc1 = (scale - i, i, 0)
             if clockwise:
                 # Right parallel
                 loc2 = (scale - i, i + offset * scale, 0)
+                text_location = (scale - i, i + 2 * offset * scale, 0)
+                tick = ticks[index]
             else:
                 # Horizontal
                 loc2 = (scale - i + offset * scale, i, 0)
+                text_location = (scale - i + 2.4 * offset * scale, i - 20 * offset, 0)
+                tick = ticks[-(index+1)]
             line(ax, loc1, loc2, **kwargs)
+            x, y = project_point(text_location)
+            ax.text(x, y, str(tick), horizontalalignment="center",)
 
     if 'l' in axis:
-        for i in arange(0, scale + multiple, multiple):
+        for index, i in enumerate(locations):
             loc1 = (0, i, 0)
             if clockwise:
                 # Horizontal
                 loc2 = (-offset * scale, i, 0)
+                text_location = (-2 * offset * scale, i - 20 * offset, 0)
+                tick = ticks[-(index+1)]
             else:
                 # Right parallel
                 loc2 = (-offset * scale, i + offset * scale, 0)
+                text_location = (-2 * offset * scale, i + 1.5 * offset * scale, 0)
+
+                tick = ticks[index]
             line(ax, loc1, loc2, **kwargs)
+            x, y = project_point(text_location)
+            ax.text(x, y, str(tick), horizontalalignment="center",)
 
     if 'b' in axis:
-        for i in arange(0, scale + multiple, multiple):
+        for index, i in enumerate(locations):
             loc1 = (i, 0, 0)
             if clockwise:
                 # Right parallel
                 loc2 = (i + offset * scale, -offset * scale, 0)
+                text_location = (i + 2.5 * offset * scale, - 3 * offset * scale, 0)
+                tick = ticks[index]
             else:
                 # Left parallel
                 loc2 = (i, -offset * scale, 0)
+                text_location = (i, - 3 * offset * scale, 0)
+                tick = ticks[-(index+1)]
             line(ax, loc1, loc2, **kwargs)
+            x, y = project_point(text_location)
+            ax.text(x, y, str(tick), horizontalalignment="center",)
 

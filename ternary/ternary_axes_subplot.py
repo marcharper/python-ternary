@@ -45,23 +45,7 @@ def mpl_redraw_callback(event, tax):
 
     ax = tax.get_axes()
     figure = tax.get_figure()
-
-    ## Axis Labels
-    # Remove any previous labels
-    for mpl_object in tax._to_remove:
-        mpl_object.remove()
-    tax._to_remove = []
-    # Redraw the labels with the appropriate angles
-    for (label, position, rotation, kwargs) in tax._labels.values():
-        transform = ax.transAxes
-        x, y = project_point(position)
-        # Calculate the new angle.
-        position = numpy.array([x,y])
-        new_rotation = ax.transData.transform_angles(numpy.array((rotation,)), position.reshape((1,2)))[0]
-        text = ax.text(x, y, label, rotation=new_rotation, transform=transform,
-                       horizontalalignment="center", **kwargs)
-        text.set_rotation_mode("anchor")
-        tax._to_remove.append(text)
+    tax._redraw_labels()
 
     # Temporarily disconnect any callbacks to the draw event...
     # (To avoid recursion)
@@ -88,13 +72,19 @@ class TernaryAxesSubplot(object):
             self.ax = ax
         else:
             _, self.ax = pyplot.subplots()
-        self._permutation = None
         self.set_scale(scale=scale)
+        self._permutation = permutation
         self._boundary_scale = scale
         self._labels = dict() # Container for the axis labels supplied by the user
+        self._ticks = dict()
         self._to_remove = [] # Container for the redrawing of labels
+        self._connect_callbacks()
 
-        # Connect resize and redraw matplotlib callbacks
+    def _connect_callbacks(self):
+        """
+        Connect resize and redraw matplotlib callbacks.
+        """
+
         event_names = ('resize_event', 'draw_event')
         figure = self.get_figure()
         callback = partial(mpl_redraw_callback, tax=self)
@@ -104,7 +94,18 @@ class TernaryAxesSubplot(object):
     def __repr__(self):
         return "TernaryAxesSubplot: %s" % self.ax.__hash__()
 
+    def get_axes(self):
+        """
+        Return the underlying matplotlib AxesSubplot object
+        """
+
+        return self.ax
+
     def get_figure(self):
+        """
+        Return the underlying matplotlib figure object.
+        """
+
         ax = self.get_axes()
         return ax.get_figure()
 
@@ -115,35 +116,15 @@ class TernaryAxesSubplot(object):
     def get_scale(self):
         return self._scale
 
-    def get_axes(self):
-        return self.ax
-
-    def scatter(self, points, **kwargs):
-        ax = self.get_axes()
-        permutation = self._permutation
-        plot_ = plotting.scatter(points, ax=ax, permutation=permutation,
-                                 **kwargs)
-        return plot_
-
-    def plot(self, points, **kwargs):
-        ax = self.get_axes()
-        permutation = self._permutation
-        plotting.plot(points, ax=ax, permutation=permutation,
-                      **kwargs)
-
-    def plot_colored_trajectory(self, points, cmap=None, **kwargs):
-        ax = self.get_axes()
-        permutation = self._permutation
-        plotting.plot_colored_trajectory(points, cmap=cmap, ax=ax,
-                                         permutation=permutation, **kwargs)
-
-
-
+    # Title and Axis Labels
 
     def set_title(self, title, **kwargs):
+        """
+        Sets the title on the underlying matplotlib AxesSubplot
+        """
+
         ax = self.get_axes()
         ax.set_title(title, **kwargs)
-
 
     def left_axis_label(self, label, position=None,  rotation=60, offset=0.08,
                         **kwargs):
@@ -225,7 +206,127 @@ class TernaryAxesSubplot(object):
         p = project_point(position)
         ax.annotate(text, (p[0], p[1]), **kwargs)
 
+    # Boundary and Gridlines
 
+    def boundary(self, scale=None, **kwargs):
+        # Sometimes you want to draw a bigger boundary
+        if not scale:
+            scale = self._boundary_scale # defaults to self._scale
+        ax = self.get_axes()
+        self.resize_drawing_canvas(scale)
+        lines.boundary(scale=scale, ax=ax, **kwargs)
+
+    def gridlines(self, multiple=None, horizontal_kwargs=None, left_kwargs=None,
+                  right_kwargs=None, **kwargs):
+        ax = self.get_axes()
+        scale = self.get_scale()
+        lines.gridlines(scale=scale, multiple=multiple,
+                        ax=ax, horizontal_kwargs=horizontal_kwargs,
+                        left_kwargs=left_kwargs, right_kwargs=right_kwargs,
+                        **kwargs)
+
+    # Various Lines
+
+    def line(self, p1, p2, **kwargs):
+        ax = self.get_axes()
+        lines.line(ax, p1, p2, **kwargs)
+
+    def horizontal_line(self, i, **kwargs):
+        ax = self.get_axes()
+        scale = self.get_scale()
+        lines.horizontal_line(ax, scale, i, **kwargs) 
+
+    def left_parallel_line(self, i, **kwargs):
+        ax = self.get_axes()
+        scale = self.get_scale()
+        lines.left_parallel_line(ax, scale, i, **kwargs)
+
+    def right_parallel_line(self, i, **kwargs):
+        ax = self.get_axes()
+        scale = self.get_scale()
+        lines.right_parallel_line(ax, scale, i, **kwargs)
+
+    # Matplotlib passthroughs
+
+    def legend(self, *args, **kwargs):
+        ax = self.get_axes()
+        ax.legend(*args, **kwargs)
+
+    def savefig(self, filename, dpi=200, format=None):
+        figure = self.get_figure()
+        figure.savefig(filename, format=format, dpi=dpi)
+
+    def show(self):
+        pyplot.show()
+
+    # Axis ticks
+
+    def clear_matplotlib_ticks(self, axis="both"):
+        """
+        Clears the default matplotlib ticks.
+        """
+
+        ax = self.get_axes()
+        plotting.clear_matplotlib_ticks(ax=ax, axis=axis)
+
+    def ticks(self, ticks=None, locations=None, multiple=1, axis='b',
+              clockwise=False, **kwargs):
+        ax = self.get_axes()
+        scale = self.get_scale()
+        lines.ticks(ax, scale, ticks=ticks, locations=locations,
+                    multiple=multiple, clockwise=clockwise, axis=axis, 
+                    **kwargs)
+
+    # Redrawing and resizing
+
+    def resize_drawing_canvas(self, scale=None):
+        ax = self.get_axes()
+        if not scale:
+            scale = self.get_scale()
+        plotting.resize_drawing_canvas(ax, scale=scale)
+
+    def _redraw_labels(self):
+        """
+        Redraw axis labels, typically after draw or resize events.
+        """
+
+        ax = self.get_axes()
+        # Remove any previous labels
+        for mpl_object in self._to_remove:
+            mpl_object.remove()
+        self._to_remove = []
+        # Redraw the labels with the appropriate angles
+        for (label, position, rotation, kwargs) in self._labels.values():
+            transform = ax.transAxes
+            x, y = project_point(position)
+            # Calculate the new angle.
+            position = numpy.array([x,y])
+            new_rotation = ax.transData.transform_angles(numpy.array((rotation,)), position.reshape((1,2)))[0]
+            text = ax.text(x, y, label, rotation=new_rotation, transform=transform,
+                        horizontalalignment="center", **kwargs)
+            text.set_rotation_mode("anchor")
+            self._to_remove.append(text)
+
+    ## Various Plots
+
+    def scatter(self, points, **kwargs):
+        ax = self.get_axes()
+        permutation = self._permutation
+        plot_ = plotting.scatter(points, ax=ax, permutation=permutation,
+                                 **kwargs)
+        return plot_
+
+    def plot(self, points, **kwargs):
+        ax = self.get_axes()
+        permutation = self._permutation
+        plotting.plot(points, ax=ax, permutation=permutation,
+                      **kwargs)
+
+    def plot_colored_trajectory(self, points, cmap=None, **kwargs):
+        ax = self.get_axes()
+        permutation = self._permutation
+        plotting.plot_colored_trajectory(points, cmap=cmap, ax=ax,
+                                         permutation=permutation, **kwargs)
 
     def heatmap(self, data, scale=None, cmap=None, scientific=False,
                 style='triangular', colorbar=True, colormap=True):
@@ -250,72 +351,3 @@ class TernaryAxesSubplot(object):
         heatmapping.heatmapf(func, scale, cmap=cmap, style=style,
                              boundary=boundary, ax=ax, scientific=scientific,
                              colorbar=colorbar, permutation=permutation)
-
-    def boundary(self, scale=None, **kwargs):
-        # Sometimes you want to draw a bigger boundary
-        if not scale:
-            scale = self._boundary_scale # defaults to self._scale
-        ax = self.get_axes()
-        self.resize_drawing_canvas(scale)
-        lines.boundary(scale=scale, ax=ax, **kwargs)
-
-    def gridlines(self, multiple=None, horizontal_kwargs=None, left_kwargs=None,
-                  right_kwargs=None, **kwargs):
-        ax = self.get_axes()
-        scale = self.get_scale()
-        lines.gridlines(scale=scale, multiple=multiple,
-                        ax=ax, horizontal_kwargs=horizontal_kwargs,
-                        left_kwargs=left_kwargs, right_kwargs=right_kwargs,
-                        **kwargs)
-
-    def line(self, p1, p2, **kwargs):
-        ax = self.get_axes()
-        lines.line(ax, p1, p2, **kwargs)
-
-    def horizontal_line(self, i, **kwargs):
-        ax = self.get_axes()
-        scale = self.get_scale()
-        lines.horizontal_line(ax, scale, i, **kwargs) 
-
-    def left_parallel_line(self, i, **kwargs):
-        ax = self.get_axes()
-        scale = self.get_scale()
-        lines.left_parallel_line(ax, scale, i, **kwargs)
-
-    def right_parallel_line(self, i, **kwargs):
-        ax = self.get_axes()
-        scale = self.get_scale()
-        lines.right_parallel_line(ax, scale, i, **kwargs)
-
-    def legend(self, *args, **kwargs):
-        ax = self.get_axes()
-        ax.legend(*args, **kwargs)
-
-    def resize_drawing_canvas(self, scale=None):
-        ax = self.get_axes()
-        if not scale:
-            scale = self.get_scale()
-        plotting.resize_drawing_canvas(ax, scale=scale)
-
-    def clear_matplotlib_ticks(self, axis="both"):
-        """
-        Clears the default matplotlib ticks.
-        """
-
-        ax = self.get_axes()
-        plotting.clear_matplotlib_ticks(ax=ax, axis=axis)
-
-    def ticks(self, ticks=None, locations=None, multiple=1, axis='b',
-              clockwise=False, **kwargs):
-        ax = self.get_axes()
-        scale = self.get_scale()
-        lines.ticks(ax, scale, ticks=ticks, locations=locations,
-                    multiple=multiple, clockwise=clockwise, axis=axis, 
-                    **kwargs)
-
-    def savefig(self, filename, dpi=200, format=None):
-        figure = self.get_figure()
-        figure.savefig(filename, format=format, dpi=dpi)
-
-    def show(self):
-        pyplot.show()
