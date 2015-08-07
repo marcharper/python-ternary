@@ -26,7 +26,7 @@ Most ternary functions expect the simplex to be partititioned into some number o
 
 To install clone the repository and run `setup.py` in the usual manner:
 
-```
+```bash
     git clone git@github.com:marcharper/python-ternary.git
     cd python-ternary
     sudo python setup.py install
@@ -39,14 +39,14 @@ New features are still being added to python-ternary. A stable release is upcomi
 The easiest way to use python-ternary is with the wrapper class `TernaryAxesSubplot`,
 which mimics Matplotlib's AxesSubplot. Start with
 
-```
+```python
     figure, tax = ternary.figure()
 ```
 
 With a ternary axes object `tax` you can use many of the usual matplotlib 
 axes object functions:
 
-```
+```python
     tax.set_title("Scatter Plot", fontsize=20)
     tax.scatter(points, marker='s', color='red', label="Red Squares")
     tax.legend()
@@ -58,7 +58,7 @@ and linewidth. You can use LaTeX in titles and labels.
 
 If you need to act directly on the underyling matplotlib axes, you can access them:
 
-```
+```python
     ax = tax.get_axes()
 ```
 
@@ -71,7 +71,7 @@ You can also wrap a Matplotlib AxesSubplot object:
 
 This is useful if you want to use ternary as part of another figure, such as
 
-```
+```python
     from matplotlib import pyplot, gridspec
 
     pyplot.figure()
@@ -88,7 +88,7 @@ supplying them as needed to other functions.
 
 The following code draws a boundary for the simplex and gridlines.
 
-```
+```python
     from matplotlib import pyplot
     import ternary
 
@@ -122,7 +122,7 @@ The following code draws a boundary for the simplex and gridlines.
 
 You can draw individual lines between any two points with `line` and lines parallel to the axes with `horizonal_line`, `left_parallel_line`, and `right_parallel_line`:
 
-```
+```python
     import ternary
 
     scale = 40
@@ -167,7 +167,7 @@ Curves can be plotted by specifying the points of the curve, just like matplotli
 
 Points is a list of tuples or numpy arrays, such as [(0.5, 0.25, 0.25), (1./3, 1./3, 1./3)],
 
-```
+```python
     import ternary
 
     ## Sample trajectory plot
@@ -201,7 +201,7 @@ You can also color the curves with a Matplotlib heatmap using:
 
 Similarly, ternary can make scatter plots:
 
-```
+```python
     import ternary
 
     ### Scatter Plot
@@ -251,7 +251,7 @@ Thanks to [chebee7i](https://github.com/chebee7i) for the above images.
 
 Let's define a function on the simplex for illustration, the [Shannon entropy](http://en.wikipedia.org/wiki/Entropy_%28information_theory%29) of a probability distribution:
 
-```
+```python
     def shannon_entropy(p):
         """Computes the Shannon Entropy at a distribution in the simplex."""
         s = 0.
@@ -265,7 +265,7 @@ Let's define a function on the simplex for illustration, the [Shannon entropy](h
 
 We can get a heatmap of this function as follows:
 
-```
+```python
     import ternary
     scale = 60
 
@@ -288,13 +288,13 @@ mapping `(i, j)` or `(i, j, k)` for `i + j + k = scale` to a float as input for 
 
 Make the heatmap as follows:
 
-```
+```python
     ternary.heatmap(data, scale, ax=None, cmap=None)
 ```
 
 or on a `TernaryAxesSubplot` object
 
-```
+```python
     tax.heatmap(data, cmap=None)
 ```
 
@@ -316,7 +316,7 @@ tuples `(r,g,b,a)` (all between zero and one). To use this feature, pass
 tuple to a value with a matplotlib colormap. Note that this disables the
 inclusion of a colorbar. Here is an example:
 
-```
+```python
     import math
 
     from matplotlib import pyplot
@@ -363,7 +363,7 @@ This produces the following image:
 
 You can run the test suite as follows:
 
-```
+```python
 python -m unittest discover tests
 ```
 
