@@ -97,7 +97,8 @@ if __name__ == '__main__':
 
     # Draw Boundary and Gridlines
     ternary_ax.boundary(color="black", linewidth=2.0)
-    ternary_ax.gridlines(color="blue", multiple=5)
+    ternary_ax.gridlines(color="black", multiple=5)
+    ternary_ax.gridlines(color="blue", multiple=1, linewidth=0.5)
 
     # Set Axis labels and Title
     fontsize = 20
@@ -105,6 +106,8 @@ if __name__ == '__main__':
     ternary_ax.left_axis_label("Left label $\\alpha^2$", fontsize=fontsize)
     ternary_ax.right_axis_label("Right label $\\beta^2$", fontsize=fontsize)
     ternary_ax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$", fontsize=fontsize)
+
+    ternary_ax.ticks(axis='lbr', clockwise=True, multiple=5, color="black", linewidth=1)
 
     # Remove default Matplotlib Axes
     ternary_ax.clear_matplotlib_ticks()
@@ -132,6 +135,7 @@ if __name__ == '__main__':
     p1 = (12,8,10)
     p2 = (2, 26, 2)
     ternary_ax.line(p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
+    ternary_ax.ticks(axis='lbr', color="black", multiple=5, linewidth=1)
 
     ### Scatter Plot
     scale = 40
@@ -145,6 +149,7 @@ if __name__ == '__main__':
     points = random_points(30, scale=scale)
     ternary_ax.scatter(points, marker='D', color='green', label="Green Diamonds")
     ternary_ax.legend()
+    ternary_ax.ticks(axis='lbr', color="black", multiple=5, linewidth=1)
 
     ## Sample trajectory plot
     figure, tax = ternary.figure(scale=1.0)
@@ -165,6 +170,9 @@ if __name__ == '__main__':
     points = [(y,z,x) for (x,y,z) in points]
     tax.plot_colored_trajectory(points, cmap="hsv", linewidth=2.0)
     tax.legend()
+    tax.ticks(axis='lbr', color="black", linewidth=1, multiple=0.1)
+
+    pyplot.show()
 
     ## Heatmap roundup
     # Careful -- these can use a lot of RAM!

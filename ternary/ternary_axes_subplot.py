@@ -269,7 +269,7 @@ class TernaryAxesSubplot(object):
         ax = self.get_axes()
         plotting.clear_matplotlib_ticks(ax=ax, axis=axis)
 
-    def ticks(self, ticks=None, locations=None, multiple=1, axis='b',
+    def ticks(self, ticks=None, locations=None, multiple=1, axis='blr',
               clockwise=False, **kwargs):
         ax = self.get_axes()
         scale = self.get_scale()
