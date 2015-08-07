@@ -247,7 +247,7 @@ def right_axis_label(ax, label, position=None, rotation=-60, offset=0.08, **kwar
     set_ternary_axis_label(ax, label, position, rotation,
                            horizontalalignment="center", **kwargs)
 
-def bottom_axis_label(ax, label, position=None, rotation=0, offset=0.04, **kwargs):
+def bottom_axis_label(ax, label, position=None, rotation=0, offset=0.02, **kwargs):
     """
     Sets axis label on the bottom (lower) triangular axis. The label can include
     LaTeX.

@@ -117,7 +117,7 @@ def boundary(ax, scale, **kwargs):
 def merge_dicts(base, updates):
     '''
     Given two dicts, merge them into a new dict as a shallow copy.
-    
+
     Parameters
     ----------
     base: dict
@@ -178,15 +178,17 @@ def gridlines(ax, scale, multiple=None, horizontal_kwargs=None, left_kwargs=None
 
 def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
           offset = 0.01, clockwise=False, **kwargs):
-    axis_ = axis.lower()[0]
-    if axis_ not in ['l', 'r', 'b']:
-        raise ValueError, "axis must be one of 'left', 'right', 'bottom'"
+    axis = axis.lower()
+    valid_axis_chars = set(['l', 'r', 'b'])
+    axis_chars = set(axis)
+    if not axis_chars.issubset(valid_axis_chars):
+        raise ValueError, "axis must be some combination of 'l', 'r', and 'b'"
 
     if not ticks:
         locations = arange(0, scale, multiple)
         ticks = locations
 
-    if axis_ == 'r':
+    if 'r' in axis:
         for i in arange(0, scale + multiple, multiple):
             loc1 = (scale - i, i, 0)
             if clockwise:
@@ -197,7 +199,7 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
                 loc2 = (scale - i + offset * scale, i, 0)
             line(ax, loc1, loc2, **kwargs)
 
-    if axis_ == 'l':
+    if 'l' in axis:
         for i in arange(0, scale + multiple, multiple):
             loc1 = (0, i, 0)
             if clockwise:
@@ -208,7 +210,7 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
                 loc2 = (-offset * scale, i + offset * scale, 0)
             line(ax, loc1, loc2, **kwargs)
 
-    elif axis_ == 'b':
+    if 'b' in axis:
         for i in arange(0, scale + multiple, multiple):
             loc1 = (i, 0, 0)
             if clockwise:
