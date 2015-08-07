@@ -177,7 +177,35 @@ def gridlines(ax, scale, multiple=None, horizontal_kwargs=None, left_kwargs=None
     return ax
 
 def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
-          offset = 0.01, clockwise=False, **kwargs):
+          offset=0.01, clockwise=False, **kwargs):
+    """
+    Sets tick marks and labels.
+
+    Parameters
+    ----------
+    ax: Matplotlib AxesSubplot, None
+        The subplot to draw on.
+    scale: float, 1.0
+        Simplex scale size.
+    ticks: list of strings, None
+        The tick labels
+    locations: list of points, None
+        The locations of the ticks
+    multiple: float, None
+        Specifies which ticks gridelines to draw. For example, if scale=30 and
+        multiple=6, only 5 ticks will be drawn.
+    axis: str, 'b'
+        The axis or axes to draw the ticks for. `axis` must be a substring of
+        'lrb' (as sets)
+    offset: float, 0.01
+        controls the length of the ticks
+    clockwise: bool, False
+        Draw ticks marks clockwise or counterclockwise
+    kwargs:
+        Any kwargs to pass through to matplotlib.
+
+    """
+
     axis = axis.lower()
     valid_axis_chars = set(['l', 'r', 'b'])
     axis_chars = set(axis)
