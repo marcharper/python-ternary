@@ -367,6 +367,8 @@ You can run the test suite as follows:
 python -m unittest discover tests
 ```
 
+The included script of [examples](https://github.com/marcharper/python-ternary/blob/master/examples.py) is intended to act as a series of extended tests.
+
 # Contributing
 
 Contributions are welcome! Please share any nice example plots, contribute 
