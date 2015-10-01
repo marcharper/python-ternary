@@ -41,8 +41,6 @@ def mpl_redraw_callback(event, tax):
          the TernaryAxesSubplot 
     """
 
-    ax = tax.get_axes()
-    figure = tax.get_figure()
     tax._redraw_labels()
 
 class TernaryAxesSubplot(object):
@@ -70,12 +68,12 @@ class TernaryAxesSubplot(object):
 
     def _connect_callbacks(self):
         """
-        Connect resize and redraw matplotlib callbacks.
+        Connect resize matplotlib callbacks.
         """
 
-        event_names = ('resize_event', )
         figure = self.get_figure()
         callback = partial(mpl_redraw_callback, tax=self)
+        event_names = ('resize_event', )
         for event_name in event_names:
             figure.canvas.mpl_connect(event_name, callback)
 
@@ -317,7 +315,8 @@ class TernaryAxesSubplot(object):
                                          permutation=permutation, **kwargs)
 
     def heatmap(self, data, scale=None, cmap=None, scientific=False,
-                style='triangular', colorbar=True, colormap=True):
+                style='triangular', colorbar=True, colormap=True,
+                vmin=None, vmax=None):
         permutation = self._permutation
         if not scale:
             scale = self.get_scale()
@@ -326,7 +325,8 @@ class TernaryAxesSubplot(object):
         ax = self.get_axes()
         heatmapping.heatmap(data, scale, cmap=cmap, style=style, ax=ax,
                             scientific=scientific, colorbar=colorbar,
-                            permutation=permutation, colormap=colormap)
+                            permutation=permutation, colormap=colormap,
+                            vmin=vmin, vmax=vmax)
 
     def heatmapf(self, func, scale=None, cmap=None, boundary=True,
                  style='triangular', colorbar=True, scientific=True):
