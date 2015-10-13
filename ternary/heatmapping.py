@@ -6,9 +6,8 @@ import functools
 import numpy
 from matplotlib import pyplot
 
-from helpers import SQRT3, SQRT3OVER2, unzip, normalize, simplex_iterator, project_point
-import plotting
-from colormapping import get_cmap, colormapper, colorbar_hack
+from .helpers import SQRT3, SQRT3OVER2, unzip, normalize, simplex_iterator, project_point
+from .colormapping import get_cmap, colormapper, colorbar_hack
 
 
 #from matplotlib.colors import rgb2hex
@@ -22,7 +21,7 @@ def blend_value(data, i, j, k, keys=None):
     simplex triangulation, where two of the vertices are on the lower
     horizontal."""
 
-    key_size = len(data.keys()[0])
+    key_size = len(list(data.keys())[0])
     if not keys:
         keys = triangle_coordinates(i, j, k)
     # Reduce key from (i, j, k) to (i, j) if necessary
@@ -355,9 +354,9 @@ def svg_heatmap(data, scale, filename, vmax=None, vmin=None, style='h',
 
     if not isinstance(data, dict):
         if not style == 'h':
-            raise ValueError, "Data can only be given as a generator for hexagonal style heatmaps because of blending for adjacent polygons."
+            raise ValueError("Data can only be given as a generator for hexagonal style heatmaps because of blending for adjacent polygons.")
         elif vmax is None or vmin is None:
-            raise ValueError, "vmax and vmin must be supplied for data given as a generator."
+            raise ValueError("vmax and vmin must be supplied for data given as a generator.")
 
     cmap = get_cmap(cmap)
 

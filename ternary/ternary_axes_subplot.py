@@ -7,10 +7,10 @@ from functools import partial
 import numpy
 from matplotlib import pyplot
 
-import heatmapping
-import lines
-import plotting
-from helpers import project_point
+from . import heatmapping
+from . import lines
+from . import plotting
+from .helpers import project_point
 
 
 def figure(ax=None, scale=None, permutation=None):

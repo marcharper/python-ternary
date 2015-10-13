@@ -8,8 +8,8 @@ import matplotlib
 from matplotlib import pyplot
 import numpy as np
 
-from helpers import project_sequence, project_point
-from colormapping import get_cmap
+from .helpers import project_sequence, project_point
+from .colormapping import get_cmap
 
 ### Drawing Helpers ###
 

@@ -6,8 +6,7 @@ from numpy import arange
 from matplotlib.lines import Line2D
 from matplotlib import pyplot
 
-from helpers import project_point
-import plotting
+from .helpers import project_point
 
 
 ## Lines ##
@@ -210,7 +209,7 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
     valid_axis_chars = set(['l', 'r', 'b'])
     axis_chars = set(axis)
     if not axis_chars.issubset(valid_axis_chars):
-        raise ValueError, "axis must be some combination of 'l', 'r', and 'b'"
+        raise ValueError("axis must be some combination of 'l', 'r', and 'b'")
 
     if not ticks:
         locations = arange(0, scale + multiple, multiple)

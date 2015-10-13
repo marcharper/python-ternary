@@ -1,11 +1,11 @@
-from plotting import (
+from .plotting import (
     clear_matplotlib_ticks,
     plot,
     resize_drawing_canvas,
     scatter,
 )
 
-from lines import (
+from .lines import (
     boundary,
     gridlines,
     line,
@@ -14,8 +14,8 @@ from lines import (
     right_parallel_line,
 )
 
-from helpers import project_point
+from .helpers import project_point
 
-from heatmapping import heatmap, heatmapf, svg_heatmap
+from .heatmapping import heatmap, heatmapf, svg_heatmap
 
-from ternary_axes_subplot import figure, TernaryAxesSubplot
+from .ternary_axes_subplot import figure, TernaryAxesSubplot
