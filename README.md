@@ -1,3 +1,7 @@
+# Welcome!
+
+2015-10-14: There has been an increase in traffic lately! Please feel free to add issues for desired features, and of course, contributions are welcome!
+
 # python-ternary
 
 This is a plotting library for use with [matplotlib](http://matplotlib.org/index.html) to make [ternary plots](http://en.wikipedia.org/wiki/Ternary_plot)
