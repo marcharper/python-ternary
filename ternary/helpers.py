@@ -14,7 +14,7 @@ SQRT3OVER2 = SQRT3 / 2.
 
 def unzip(l):
     """[(a1, b1), ..., (an, bn)] ----> ([a1, ..., an], [b1, ..., bn])"""
-    return zip(*l)
+    return list(zip(*l))
 
 def normalize(l):
     """
@@ -90,7 +90,6 @@ def project_point(p, permutation=None):
     coordinate_order, string, None, equivalent to "012"
         The order of the coordinates, counterclockwise from the origin
     """
-
     permuted = permute_point(p, permutation=permutation)
     a = permuted[0]
     b = permuted[1]

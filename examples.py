@@ -12,7 +12,7 @@ def load_sample_trajectory_data(filename="curve.txt", directory="sample_data"):
     points = []
     with open(full_filename) as handle:
         for line in handle:
-            points.append(map(float, line.split(' ')))
+            points.append(list(map(float, line.split(' '))))
     return points
 
 def load_sample_heatmap_data(filename="sample_heatmap_data.txt",
