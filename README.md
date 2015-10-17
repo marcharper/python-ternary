@@ -112,7 +112,7 @@ The following code draws a boundary for the simplex and gridlines.
     tax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$", fontsize=fontsize)
 
     # Set ticks
-    ternary_ax.ticks(axis='lbr', color="black", linewidth=1)
+    tax.ticks(axis='lbr', color="black", linewidth=1)
 
     # Remove default Matplotlib Axes
     tax.clear_matplotlib_ticks()
@@ -152,7 +152,7 @@ You can draw individual lines between any two points with `line` and lines paral
     p2 = (2, 26, 2)
     tax.line(p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
 
-    ternary_ax.ticks(axis='lbr', color="black", multiple=5, linewidth=1)
+    tax.ticks(axis='lbr', color="black", multiple=5, linewidth=1)
 
     tax.show()
 ```
