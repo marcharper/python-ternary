@@ -252,7 +252,7 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
 
 def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
              scientific=False, style='triangular', colorbar=True,
-             permutation=None):
+             permutation=None, vmin=None, vmax=None):
     """
     Computes func on heatmap partition coordinates and plots heatmap. In other
     words, computes the function on lattice points of the simplex (normalized
@@ -278,6 +278,10 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
         Show colorbar.
     permutation: string, None
         A permutation of the coordinates
+    vmin: float
+        The minimum color value, used to normalize colors.
+    vmax: float
+        The maximum color value, used to normalize colors.
 
     Returns
     -------
@@ -291,7 +295,7 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
     # Pass everything to the heatmapper
     ax = heatmap(data, scale, cmap=cmap, ax=ax, style=style,
                  scientific=scientific, colorbar=colorbar,
-                 permutation=permutation)
+                 permutation=permutation, vmin=vmin, vmax=vmax)
     return ax
 
 def svg_polygon(coordinates, color):
