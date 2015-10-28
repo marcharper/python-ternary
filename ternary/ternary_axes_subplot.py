@@ -329,7 +329,8 @@ class TernaryAxesSubplot(object):
                             vmin=vmin, vmax=vmax)
 
     def heatmapf(self, func, scale=None, cmap=None, boundary=True,
-                 style='triangular', colorbar=True, scientific=True):
+                 style='triangular', colorbar=True, scientific=True,
+                 vmin=None, vmax=None):
         if not scale:
             scale = self.get_scale()
         if style.lower()[0] == 'd':
@@ -338,4 +339,5 @@ class TernaryAxesSubplot(object):
         ax = self.get_axes()
         heatmapping.heatmapf(func, scale, cmap=cmap, style=style,
                              boundary=boundary, ax=ax, scientific=scientific,
-                             colorbar=colorbar, permutation=permutation)
+                             colorbar=colorbar, permutation=permutation,
+                             vmin=vmin, vmax=vmax)
