@@ -4,7 +4,11 @@ from matplotlib.colors import rgb2hex
 
 
 ## Default colormap, other options here: http://www.scipy.org/Cookbook/Matplotlib/Show_colormaps
-DEFAULT_COLOR_MAP_NAME = 'jet'
+s = matplotlib.__version__.split('.')
+if int(s[0]) >= 1 and int(s[1]) >= 5:
+    DEFAULT_COLOR_MAP_NAME = "viridis"
+else:
+    DEFAULT_COLOR_MAP_NAME = 'jet'
 
 ## Matplotlib Colormapping ##
 
@@ -32,7 +36,7 @@ def get_cmap(cmap=None):
         cmap_name = cmap
     else:
         cmap_name = DEFAULT_COLOR_MAP_NAME
-    return pyplot.get_cmap(cmap)
+    return pyplot.get_cmap(cmap_name)
 
 def colormapper(value, lower=0, upper=1, cmap=None):
     """
