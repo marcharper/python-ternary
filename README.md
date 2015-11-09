@@ -1,5 +1,7 @@
 # Welcome!
 
+[![Join the chat at https://gitter.im/marcharper/python-ternary](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/marcharper/python-ternary?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 2015-10-14: There has been an increase in traffic lately! Please feel free to add issues for desired features, and of course, contributions are welcome!
 
 # python-ternary
