@@ -2,8 +2,6 @@
 
 [![Join the chat at https://gitter.im/marcharper/python-ternary](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/marcharper/python-ternary?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-2015-10-14: There has been an increase in traffic lately! Please feel free to add issues for desired features, and of course, contributions are welcome!
-
 # python-ternary
 
 This is a plotting library for use with [matplotlib](http://matplotlib.org/index.html) to make [ternary plots](http://en.wikipedia.org/wiki/Ternary_plot)
@@ -26,11 +24,17 @@ Most ternary functions expect the simplex to be partititioned into some number o
 <img src ="/readme_images/16_80_stationary.png" width="150" height="150"/>
 <img src ="/readme_images/23_80_0.png" width="150" height="150"/>
 <img src ="/readme_images/24_80_1.png" width="150" height="150"/>
+<img src ="/readme_images/colored_boundary.png" width="150" height="150"/>
 </div>
 
 # Installation
 
-To install clone the repository and run `setup.py` in the usual manner:
+You can install the current release (0.1) with pip (you may need to use sudo):
+```bash
+    pip install python-ternary
+```
+
+Alternatively you can clone the repository and run `setup.py` in the usual manner:
 
 ```bash
     git clone git@github.com:marcharper/python-ternary.git
@@ -38,7 +42,7 @@ To install clone the repository and run `setup.py` in the usual manner:
     sudo python setup.py install
 ```
 
-New features are still being added to python-ternary. A stable release is upcoming.
+New features are still being added to python-ternary.
 
 # Basic Plotting Functions
 
