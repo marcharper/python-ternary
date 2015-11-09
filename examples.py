@@ -91,12 +91,12 @@ if __name__ == '__main__':
     right_kwargs = {'color': 'red'}
 
     # Draw Boundary and Gridlines
-    ternary_ax.boundary(color="black", linewidth=2.0)
+    ternary_ax.boundary(linewidth=2.0)
     ternary_ax.gridlines(color="blue", multiple=5, left_kwargs=left_kwargs,
                          right_kwargs=right_kwargs)
 
     # Draw Boundary and Gridlines
-    ternary_ax.boundary(color="black", linewidth=2.0)
+    ternary_ax.boundary(linewidth=2.0)
     ternary_ax.gridlines(color="black", multiple=5)
     ternary_ax.gridlines(color="blue", multiple=1, linewidth=0.5)
 
@@ -107,7 +107,7 @@ if __name__ == '__main__':
     ternary_ax.right_axis_label("Right label $\\beta^2$", fontsize=fontsize)
     ternary_ax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$", fontsize=fontsize)
 
-    ternary_ax.ticks(axis='lbr', clockwise=True, multiple=5, color="black", linewidth=1)
+    ternary_ax.ticks(axis='lbr', clockwise=True, multiple=5, linewidth=1)
 
     # Remove default Matplotlib Axes
     ternary_ax.clear_matplotlib_ticks()
@@ -117,7 +117,7 @@ if __name__ == '__main__':
     figure, ternary_ax = ternary.figure(scale=scale)
 
     # Draw Boundary and Gridlines
-    ternary_ax.boundary(color="black", linewidth=2.0)
+    ternary_ax.boundary(linewidth=2.0)
     ternary_ax.gridlines(color="blue", multiple=5)
 
     # Set Axis labels and Title
@@ -137,13 +137,13 @@ if __name__ == '__main__':
     ternary_ax.line(p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
 
     ternary_ax.clear_matplotlib_ticks()
-    ternary_ax.ticks(axis='lbr', color="black", multiple=5, linewidth=1)
+    ternary_ax.ticks(axis='lbr', multiple=5, linewidth=1)
 
     ### Scatter Plot
     scale = 40
     figure, ternary_ax = ternary.figure(scale=scale)
     ternary_ax.set_title("Scatter Plot", fontsize=20)
-    ternary_ax.boundary(color="black", linewidth=2.0)
+    ternary_ax.boundary(linewidth=2.0)
     ternary_ax.gridlines(multiple=5, color="blue")
     # Plot a few different styles with a legend
     points = random_points(30, scale=scale)
@@ -152,11 +152,11 @@ if __name__ == '__main__':
     ternary_ax.scatter(points, marker='D', color='green', label="Green Diamonds")
     ternary_ax.legend()
     ternary_ax.clear_matplotlib_ticks()
-    ternary_ax.ticks(axis='lbr', color="black", multiple=5, linewidth=1)
+    ternary_ax.ticks(axis='lbr', multiple=5, linewidth=1)
 
     ## Sample trajectory plot
     figure, tax = ternary.figure(scale=1.0)
-    tax.boundary(color='black')
+    tax.boundary()
     tax.set_title("Plotting of sample trajectory data", fontsize=20)
     points = load_sample_trajectory_data()
     tax.gridlines(multiple=0.2, color="black")
@@ -165,7 +165,7 @@ if __name__ == '__main__':
 
     ## Sample colored trajectory plot
     figure, tax = ternary.figure(scale=1.0)
-    tax.boundary(color='black')
+    tax.boundary()
     tax.set_title("Plotting of sample trajectory data", fontsize=20)
     points = load_sample_trajectory_data()
     tax.gridlines(multiple=0.2, color="black")
@@ -174,7 +174,7 @@ if __name__ == '__main__':
     tax.plot_colored_trajectory(points, cmap="hsv", linewidth=2.0)
     tax.legend()
     tax.clear_matplotlib_ticks()
-    tax.ticks(axis='lbr', color="black", linewidth=1, multiple=0.1)
+    tax.ticks(axis='lbr', linewidth=1, multiple=0.1)
 
     pyplot.show()
 
@@ -188,37 +188,37 @@ if __name__ == '__main__':
     ax = pyplot.subplot(gs[0,0])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmapf(function, boundary=True, style="triangular")
-    tax.boundary(color='black')
+    tax.boundary()
     tax.set_title("Triangular with Boundary")
 
     ax = pyplot.subplot(gs[1,0])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmapf(function, boundary=False, style="t")
-    tax.boundary(color='black')
+    tax.boundary()
     tax.set_title("Triangular without Boundary")
 
     ax = pyplot.subplot(gs[0,1])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmapf(function, boundary=True, style="dual-triangular")
-    tax.boundary(color='black')
+    tax.boundary()
     tax.set_title("Dual Triangular with Boundary")
 
     ax = pyplot.subplot(gs[1,1])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmapf(function, boundary=False, style="d")
-    tax.boundary(color='black')
+    tax.boundary()
     tax.set_title("Dual Triangular without Boundary")
 
     ax = pyplot.subplot(gs[0,2])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmapf(function, boundary=True, style="hexagonal")
-    tax.boundary(color='black')
+    tax.boundary()
     tax.set_title("Hexagonal with Boundary")
 
     ax = pyplot.subplot(gs[1,2])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmapf(function, boundary=False, style="h")
-    tax.boundary(color='black')
+    tax.boundary()
     tax.set_title("Hexagonal without Boundary")
 
     ## Heatmaps from data
@@ -230,21 +230,19 @@ if __name__ == '__main__':
     ax = pyplot.subplot(gs[0,0])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmap(data, style="dual-triangular")
-    tax.boundary(color='black')
+    tax.boundary()
     tax.set_title("Dual-Triangular Heatmap from Data")
 
     ax = pyplot.subplot(gs[0,1])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmap(data, style="triangular")
-    tax.boundary(color='black')
+    tax.boundary()
     tax.set_title("Triangular Heatmap from Data")
 
     ax = pyplot.subplot(gs[0,2])
     figure, tax = ternary.figure(ax=ax, scale=scale)
     tax.heatmap(data, style="hexagonal")
-    tax.boundary(color='black')
+    tax.boundary()
     tax.set_title("Hexagonal Heatmap from Data")
 
-
     pyplot.show()
-
