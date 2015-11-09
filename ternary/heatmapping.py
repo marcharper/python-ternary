@@ -221,9 +221,9 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
             data[k] = numpy.array(v)
     else:
         cmap = get_cmap(cmap)
-        if not vmin:
+        if vmin is None:
             vmin = min(data.values())
-        if not vmax:
+        if vmax is None:
             vmax = max(data.values())
     style = style.lower()[0]
     if style not in ["t", "h", 'd']:
