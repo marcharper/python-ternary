@@ -110,13 +110,13 @@ def boundary(ax, scale, axes_colors=None, **kwargs):
         Option for coloring boundaries different colors.
         e.g. {'l': 'g'} for coloring the left axis boundary green
     """
-    
-    # set default color as blue
+
+    # set default color as black
     if axes_colors is None:
         axes_colors = dict()
     for _axis in ['l', 'r', 'b']:
         if _axis not in axes_colors.keys():
-            axes_colors[_axis] = 'b'
+            axes_colors[_axis] = 'black'
 
     horizontal_line(ax, scale, 0, color=axes_colors['b'], **kwargs)
     left_parallel_line(ax, scale, 0, color=axes_colors['l'], **kwargs)
@@ -228,12 +228,12 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
         locations = arange(0, scale + multiple, multiple)
         ticks = locations
 
-    # default color: blue
+    # Default color: black
     if axes_colors is None:
         axes_colors = dict()
     for _axis in valid_axis_chars:
         if _axis not in axes_colors:
-            axes_colors[_axis] = 'b'
+            axes_colors[_axis] = 'black'
 
     offset *= scale
 
