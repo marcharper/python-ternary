@@ -101,7 +101,7 @@ The following code draws a boundary for the simplex and gridlines.
     figure, tax = ternary.figure(scale=scale)
 
     # Draw Boundary and Gridlines
-    tax.boundary(color="black", linewidth=2.0)
+    tax.boundary(linewidth=2.0)
     tax.gridlines(color="blue", multiple=5) # Every 5th gridline, can be a float
 
     # Set Axis labels and Title
@@ -112,7 +112,7 @@ The following code draws a boundary for the simplex and gridlines.
     tax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$", fontsize=fontsize)
 
     # Set ticks
-    tax.ticks(axis='lbr', color="black", linewidth=1)
+    tax.ticks(axis='lbr', linewidth=1)
 
     # Remove default Matplotlib Axes
     tax.clear_matplotlib_ticks()
@@ -133,7 +133,7 @@ You can draw individual lines between any two points with `line` and lines paral
     figure, tax = ternary.figure(scale=scale)
 
     # Draw Boundary and Gridlines
-    tax.boundary(color="black", linewidth=2.0)
+    tax.boundary(linewidth=2.0)
     tax.gridlines(color="blue", multiple=5)
 
     # Set Axis labels and Title
@@ -152,7 +152,7 @@ You can draw individual lines between any two points with `line` and lines paral
     p2 = (2, 26, 2)
     tax.line(p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
 
-    tax.ticks(axis='lbr', color="black", multiple=5, linewidth=1)
+    tax.ticks(axis='lbr', multiple=5, linewidth=1)
 
     tax.show()
 ```
@@ -176,7 +176,7 @@ Points is a list of tuples or numpy arrays, such as [(0.5, 0.25, 0.25), (1./3, 1
 
     ## Sample trajectory plot
     figure, tax = ternary.figure(scale=1.0)
-    tax.boundary(color='black')
+    tax.boundary()
     tax.gridlines(multiple=0.2, color="black")
     tax.set_title("Plotting of sample trajectory data", fontsize=20)
     points = []
@@ -212,7 +212,7 @@ Similarly, ternary can make scatter plots:
     scale = 40
     figure, tax = ternary.figure(scale=scale)
     tax.set_title("Scatter Plot", fontsize=20)
-    tax.boundary(color="black", linewidth=2.0)
+    tax.boundary(linewidth=2.0)
     tax.gridlines(multiple=5, color="blue")
     # Plot a few different styles with a legend
     points = random_points(30, scale=scale)
@@ -220,7 +220,7 @@ Similarly, ternary can make scatter plots:
     points = random_points(30, scale=scale)
     tax.scatter(points, marker='D', color='green', label="Green Diamonds")
     tax.legend()
-    tax.ticks(axis='lbr', color="black", linewidth=1, multiple=0.1)
+    tax.ticks(axis='lbr', linewidth=1, multiple=0.1)
 
     tax.show()
 
@@ -322,11 +322,8 @@ inclusion of a colorbar. Here is an example:
 
 ```python
     import math
-
     from matplotlib import pyplot
-
     import ternary
-
 
     def color_point(x, y, z, scale):
         w = 255
@@ -352,7 +349,7 @@ inclusion of a colorbar. Here is an example:
         data = generate_heatmap_data(scale)
         figure, tax = ternary.figure(scale=scale, permutation="210")
         tax.heatmap(data, style="hexagonal", colormap=False) # Allow colors as rgba tuples
-        tax.boundary(color='black')
+        tax.boundary()
         tax.set_title("Hexagonal Heatmap from Data")
         pyplot.show()
 
@@ -391,4 +388,5 @@ Marc Harper, Python-ternary: A python library for ternary plots, 2011-2015, avai
 - Marc Harper [marcharper](https://github.com/marcharper)
 - Bryan Weinstein [btweinstein](https://github.com/btweinstein): Hexagonal heatmaps, colored trajectory plots
 - [chebee7i](https://github.com/chebee7i): Docs and figures, triangular heatmapping
+
 
