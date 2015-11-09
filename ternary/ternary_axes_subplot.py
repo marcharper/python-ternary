@@ -194,13 +194,13 @@ class TernaryAxesSubplot(object):
 
     # Boundary and Gridlines
 
-    def boundary(self, scale=None, **kwargs):
+    def boundary(self, scale=None, axes_colors=None, **kwargs):
         # Sometimes you want to draw a bigger boundary
         if not scale:
             scale = self._boundary_scale # defaults to self._scale
         ax = self.get_axes()
         self.resize_drawing_canvas(scale)
-        lines.boundary(scale=scale, ax=ax, **kwargs)
+        lines.boundary(scale=scale, ax=ax, axes_colors=axes_colors, **kwargs)
 
     def gridlines(self, multiple=None, horizontal_kwargs=None, left_kwargs=None,
                   right_kwargs=None, **kwargs):
@@ -256,12 +256,12 @@ class TernaryAxesSubplot(object):
         plotting.clear_matplotlib_ticks(ax=ax, axis=axis)
 
     def ticks(self, ticks=None, locations=None, multiple=1, axis='blr',
-              clockwise=False, **kwargs):
+              clockwise=False, axes_colors=None, **kwargs):
         ax = self.get_axes()
         scale = self.get_scale()
         lines.ticks(ax, scale, ticks=ticks, locations=locations,
                     multiple=multiple, clockwise=clockwise, axis=axis, 
-                    **kwargs)
+                    axes_colors=axes_colors, **kwargs)
 
     # Redrawing and resizing
 
@@ -316,7 +316,7 @@ class TernaryAxesSubplot(object):
 
     def heatmap(self, data, scale=None, cmap=None, scientific=False,
                 style='triangular', colorbar=True, colormap=True,
-                vmin=None, vmax=None):
+                vmin=None, vmax=None, cbarlabel=None):
         permutation = self._permutation
         if not scale:
             scale = self.get_scale()
@@ -326,11 +326,11 @@ class TernaryAxesSubplot(object):
         heatmapping.heatmap(data, scale, cmap=cmap, style=style, ax=ax,
                             scientific=scientific, colorbar=colorbar,
                             permutation=permutation, colormap=colormap,
-                            vmin=vmin, vmax=vmax)
+                            vmin=vmin, vmax=vmax, cbarlabel=cbarlabel)
 
     def heatmapf(self, func, scale=None, cmap=None, boundary=True,
                  style='triangular', colorbar=True, scientific=True,
-                 vmin=None, vmax=None):
+                 vmin=None, vmax=None, cbarlabel=None):
         if not scale:
             scale = self.get_scale()
         if style.lower()[0] == 'd':
@@ -340,4 +340,4 @@ class TernaryAxesSubplot(object):
         heatmapping.heatmapf(func, scale, cmap=cmap, style=style,
                              boundary=boundary, ax=ax, scientific=scientific,
                              colorbar=colorbar, permutation=permutation,
-                             vmin=vmin, vmax=vmax)
+                             vmin=vmin, vmax=vmax, cbarlabel=cbarlabel)

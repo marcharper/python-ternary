@@ -179,7 +179,7 @@ def polygon_generator(data, scale, style, permutation=None):
 
 def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
             scientific=False, style='triangular', colorbar=True,
-            permutation=None, colormap=True):
+            permutation=None, colormap=True, cbarlabel=None):
     """
     Plots heatmap of given color values.
 
@@ -221,9 +221,9 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
             data[k] = numpy.array(v)
     else:
         cmap = get_cmap(cmap)
-        if not vmin:
+        if vmin is None:
             vmin = min(data.values())
-        if not vmax:
+        if vmax is None:
             vmax = max(data.values())
     style = style.lower()[0]
     if style not in ["t", "h", 'd']:
@@ -245,14 +245,15 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
         ax.fill(xs, ys, facecolor=color, edgecolor=color)
 
     if colorbar and colormap:
-        colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific)
+        colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific,
+                      cbarlabel=cbarlabel)
     return ax
 
 ## User Convenience Functions ##
 
 def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
              scientific=False, style='triangular', colorbar=True,
-             permutation=None, vmin=None, vmax=None):
+             permutation=None, vmin=None, vmax=None, cbarlabel=None):
     """
     Computes func on heatmap partition coordinates and plots heatmap. In other
     words, computes the function on lattice points of the simplex (normalized
@@ -295,7 +296,8 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
     # Pass everything to the heatmapper
     ax = heatmap(data, scale, cmap=cmap, ax=ax, style=style,
                  scientific=scientific, colorbar=colorbar,
-                 permutation=permutation, vmin=vmin, vmax=vmax)
+                 permutation=permutation, vmin=vmin, vmax=vmax, 
+                 cbarlabel=cbarlabel)
     return ax
 
 def svg_polygon(coordinates, color):
