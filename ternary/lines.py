@@ -176,7 +176,7 @@ def gridlines(ax, scale, multiple=None, horizontal_kwargs=None, left_kwargs=None
     return ax
 
 def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
-          offset=0.01, clockwise=False, **kwargs):
+          offset=0.01, clockwise=False, axes_colors=None, **kwargs):
     """
     Sets tick marks and labels.
 
@@ -200,6 +200,9 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
         controls the length of the ticks
     clockwise: bool, False
         Draw ticks marks clockwise or counterclockwise
+    axes_colors: Dict, None
+        Option to color ticks differently for each axis, 'l', 'r', 'b'
+        e.g. {'l': 'g', 'r':'b', 'b': 'y'}
     kwargs:
         Any kwargs to pass through to matplotlib.
 
@@ -214,6 +217,13 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
     if not ticks:
         locations = arange(0, scale + multiple, multiple)
         ticks = locations
+
+    # default color: blue
+    if axes_colors is None:
+        axes_colors = dict()
+    for _axis in valid_axis_chars:
+        if _axis not in axes_colors:
+            axes_colors[_axis] = 'b'
 
     offset *= scale
 
@@ -230,9 +240,10 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
                 loc2 = (scale - i + offset, i, 0)
                 text_location = (scale - i + 2.6 * offset, i - 0.5 * offset, 0)
                 tick = ticks[-(index+1)]
-            line(ax, loc1, loc2, **kwargs)
+            line(ax, loc1, loc2, color=axes_colors['r'], **kwargs)
             x, y = project_point(text_location)
-            ax.text(x, y, str(tick), horizontalalignment="center",)
+            ax.text(x, y, str(tick), horizontalalignment="center", 
+                color=axes_colors['r'])
 
     if 'l' in axis:
         for index, i in enumerate(locations):
@@ -248,9 +259,10 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
                 text_location = (-2 * offset, i + 1.5 * offset, 0)
 
                 tick = ticks[index]
-            line(ax, loc1, loc2, **kwargs)
+            line(ax, loc1, loc2, color=axes_colors['l'], **kwargs)
             x, y = project_point(text_location)
-            ax.text(x, y, str(tick), horizontalalignment="center",)
+            ax.text(x, y, str(tick), horizontalalignment="center",
+                color=axes_colors['l'])
 
     if 'b' in axis:
         for index, i in enumerate(locations):
@@ -265,7 +277,7 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
                 loc2 = (i, -offset, 0)
                 text_location = (i + 0.5 * offset, - 3.5 * offset, 0)
                 tick = ticks[-(index+1)]
-            line(ax, loc1, loc2, **kwargs)
+            line(ax, loc1, loc2, color=axes_colors['b'], **kwargs)
             x, y = project_point(text_location)
-            ax.text(x, y, str(tick), horizontalalignment="center",)
-
+            ax.text(x, y, str(tick), horizontalalignment="center",
+                color=axes_colors['b'])

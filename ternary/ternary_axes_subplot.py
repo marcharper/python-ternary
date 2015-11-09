@@ -256,12 +256,12 @@ class TernaryAxesSubplot(object):
         plotting.clear_matplotlib_ticks(ax=ax, axis=axis)
 
     def ticks(self, ticks=None, locations=None, multiple=1, axis='blr',
-              clockwise=False, **kwargs):
+              clockwise=False, axes_colors=None, **kwargs):
         ax = self.get_axes()
         scale = self.get_scale()
         lines.ticks(ax, scale, ticks=ticks, locations=locations,
                     multiple=multiple, clockwise=clockwise, axis=axis, 
-                    **kwargs)
+                    axes_colors=axes_colors, **kwargs)
 
     # Redrawing and resizing
 
