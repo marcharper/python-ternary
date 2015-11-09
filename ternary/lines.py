@@ -93,7 +93,7 @@ def right_parallel_line(ax, scale, i, **kwargs):
 
 ## Boundary, Gridlines ##
 
-def boundary(ax, scale, **kwargs):
+def boundary(ax, scale, axes_colors=None, **kwargs):
     """
     Plots the boundary of the simplex. Creates and returns matplotlib axis if
     none given.
@@ -106,11 +106,21 @@ def boundary(ax, scale, **kwargs):
         Simplex scale size.
     kwargs:
         Any kwargs to pass through to matplotlib.
+    axes_colors: dict
+        Option for coloring boundaries different colors.
+        e.g. {'l': 'g'} for coloring the left axis boundary green
     """
+    
+    # set default color as blue
+    if axes_colors is None:
+        axes_colors = dict()
+    for _axis in ['l', 'r', 'b']:
+        if _axis not in axes_colors.keys():
+            axes_colors[_axis] = 'b'
 
-    horizontal_line(ax, scale, 0, **kwargs)
-    left_parallel_line(ax, scale, 0, **kwargs)
-    right_parallel_line(ax, scale, 0, **kwargs)
+    horizontal_line(ax, scale, 0, color=axes_colors['b'], **kwargs)
+    left_parallel_line(ax, scale, 0, color=axes_colors['l'], **kwargs)
+    right_parallel_line(ax, scale, 0, color=axes_colors['r'], **kwargs)
     return ax
 
 def merge_dicts(base, updates):

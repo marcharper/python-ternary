@@ -194,13 +194,13 @@ class TernaryAxesSubplot(object):
 
     # Boundary and Gridlines
 
-    def boundary(self, scale=None, **kwargs):
+    def boundary(self, scale=None, axes_colors=None, **kwargs):
         # Sometimes you want to draw a bigger boundary
         if not scale:
             scale = self._boundary_scale # defaults to self._scale
         ax = self.get_axes()
         self.resize_drawing_canvas(scale)
-        lines.boundary(scale=scale, ax=ax, **kwargs)
+        lines.boundary(scale=scale, ax=ax, axes_colors=axes_colors, **kwargs)
 
     def gridlines(self, multiple=None, horizontal_kwargs=None, left_kwargs=None,
                   right_kwargs=None, **kwargs):
