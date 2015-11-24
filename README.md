@@ -10,7 +10,7 @@ plots in the two dimensional simplex projected onto a two dimensional plane.
 
 The library provides functions for plotting projected lines, curves (trajectories), scatter plots, and heatmaps. There are [several examples](https://github.com/marcharper/python-ternary/blob/master/examples.py) and a short tutorial below.
 
-Most ternary functions expect the simplex to be partititioned into some number of steps, determined by the scale parameter. A few functions will do this partitioning for you, but when working with real data or simulation output, you may have partitioned already. if you are working with probability distributions, just use `scale=1` (the default). Otherwise the scale parameter effectively controls the resolution of many plot types (e.g. heatmaps).
+Some ternary functions expect the simplex to be partititioned into some number of steps, determined by the scale parameter. A few functions will do this partitioning automatically for you, but when working with real data or simulation output, you may have partitioned already. If you are working with probability distributions, just use `scale=1` (the default). Otherwise the scale parameter effectively controls the resolution of many plot types (e.g. heatmaps).
 
 # Gallery
 
