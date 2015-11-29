@@ -73,7 +73,7 @@ class TernaryAxesSubplot(object):
 
         figure = self.get_figure()
         callback = partial(mpl_redraw_callback, tax=self)
-        event_names = ('resize_event', )
+        event_names = ('resize_event', 'draw_event')
         for event_name in event_names:
             figure.canvas.mpl_connect(event_name, callback)
 
