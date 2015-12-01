@@ -396,4 +396,12 @@ Marc Harper, Python-ternary: A python library for ternary plots, 2011-2015, avai
 - Bryan Weinstein [btweinstein](https://github.com/btweinstein): Hexagonal heatmaps, colored trajectory plots
 - [chebee7i](https://github.com/chebee7i): Docs and figures, triangular heatmapping
 
+# Known-Issues
+
+There appears to be an issue with anaconda that causes the axes labels not to render. The workaround is to manually call
+```
+tax._redraw_labels()
+```
+before showing or rendering the image.
+
 
