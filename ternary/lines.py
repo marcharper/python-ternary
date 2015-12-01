@@ -224,6 +224,12 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
     if not axis_chars.issubset(valid_axis_chars):
         raise ValueError("axis must be some combination of 'l', 'r', and 'b'")
 
+    if ticks and not locations:
+        num_ticks = len(ticks)
+        if num_ticks != 0:
+            multiple = scale / (num_ticks - 1)
+            locations = arange(0, scale + multiple, multiple)
+
     if not ticks:
         locations = arange(0, scale + multiple, multiple)
         ticks = locations
