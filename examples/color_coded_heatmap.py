@@ -31,10 +31,10 @@ tax.gridlines(multiple=1, linewidth=2,
               right_kwargs={'color':axes_colors['r']},
               alpha=0.7)
 
-tax.ticks(axis='rlb', linewidth=1, locations=range(scale+1), clockwise=True,
-         axes_colors=axes_colors,
-         ticks=["%.1f" % (1.0 - 1.0 * i / scale) for i in range(scale+1)],
-         offset=0.03)
+ticks = [round(i / float(scale), 1) for i in range(scale+1)]
+tax.ticks(ticks=ticks, axis='rlb', linewidth=1, clockwise=True,
+          axes_colors=axes_colors, offset=0.03)
+
 tax.clear_matplotlib_ticks()
 
 tax._redraw_labels()
