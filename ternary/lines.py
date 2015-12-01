@@ -246,7 +246,7 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
     if 'r' in axis:
         for index, i in enumerate(locations):
             loc1 = (scale - i, i, 0)
-            if not clockwise:
+            if clockwise:
                 # Right parallel
                 loc2 = (scale - i, i + offset, 0)
                 text_location = (scale - i, i + 2 * offset, 0)
@@ -264,7 +264,7 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
     if 'l' in axis:
         for index, i in enumerate(locations):
             loc1 = (0, i, 0)
-            if not clockwise:
+            if clockwise:
                 # Horizontal
                 loc2 = (-offset, i, 0)
                 text_location = (-2 * offset, i - 0.5 * offset, 0)
@@ -282,7 +282,7 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
     if 'b' in axis:
         for index, i in enumerate(locations):
             loc1 = (i, 0, 0)
-            if not clockwise:
+            if clockwise:
                 # Right parallel
                 loc2 = (i + offset, -offset, 0)
                 text_location = (i + 3 * offset, -3.5 * offset, 0)

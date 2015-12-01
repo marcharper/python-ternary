@@ -316,7 +316,19 @@ This can produces images such as:
 
 ![Ternary Heatmap Examples](/readme_images/heatmap_rsp.png)
 
-There is a large set of heatmap examples [here](http://people.mbi.ucla.edu/marcharper/stationary_stable/3x3/incentive.html).
+There is a large set of heatmap examples [here](http://www.marcharper.net/stationary_examples/index.html).
+
+
+# Axes Ticks and Orientations
+
+For a given ternary plot there are two valid ways to label the axes ticks
+corresponding to the clockwise and counterclockwise orientations. However note
+that the axes labels need to be adjusted accordingly, and `ternary` does not
+do so automatically when you pass `clockwise=True` to `tax.ticks()`.
+
+![](/readme_images/orientations.png)
+
+There is a [more detailed discussion](https://github.com/marcharper/python-ternary/issues/18) on issue #18 (closed).
 
 
 # RGBA colors
