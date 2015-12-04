@@ -20,7 +20,7 @@ classifiers = [
 
 setup(
     name = "python-ternary",
-    version = "0.1",
+    version = "0.1.1",
     packages=['ternary'],
 
     install_requires = ["matplotlib>=1.4"],
