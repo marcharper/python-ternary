@@ -396,11 +396,12 @@ Contributions are welcome! Please share any nice example plots, contribute
 features, and add unit tests! Use the pull request and issue systems to contribute.
 
 # Citation
+[![DOI](https://zenodo.org/badge/19505/marcharper/python-ternary.svg)](https://zenodo.org/badge/latestdoi/19505/marcharper/python-ternary)
 
 Please cite as follows:
 
 ```
-Marc Harper, Python-ternary: A python library for ternary plots, 2011-2015, available at: https://github.com/marcharper/python-ternary
+Marc Harper et al.. (2015). python-ternary: Ternary Plots in Python. Zenodo. 10.5281/zenodo.34938
 ```
 
 # Contributors
