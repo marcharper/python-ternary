@@ -404,15 +404,20 @@ Please cite as follows:
 Marc Harper et al.. (2015). python-ternary: Ternary Plots in Python. Zenodo. 10.5281/zenodo.34938
 ```
 
+# Recent Usage in Publications:
+
+- [pyIAST: Ideal adsorbed solution theory (IAST) Python package](http://www.sciencedirect.com/science/article/pii/S0010465515004403) by [Cory Simon](https://github.com/CorySimon)
+
 # Contributors
 
 - Marc Harper [marcharper](https://github.com/marcharper)
 - Bryan Weinstein [btweinstein](https://github.com/btweinstein): Hexagonal heatmaps, colored trajectory plots
 - [chebee7i](https://github.com/chebee7i): Docs and figures, triangular heatmapping
+- [Cory Simon](https://github.com/CorySimon): Axis Colors, colored heatmap example
 
 # Known-Issues
 
-There appears to be an issue with anaconda that causes the axes labels not to render. The workaround is to manually call
+There appears to be an issue with anaconda on macs that causes the axes labels not to render. The workaround is to manually call
 ```
 tax._redraw_labels()
 ```
