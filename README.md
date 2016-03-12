@@ -110,7 +110,8 @@ The following code draws a boundary for the simplex and gridlines.
 
     # Draw Boundary and Gridlines
     tax.boundary(linewidth=2.0)
-    tax.gridlines(color="blue", multiple=5) # Every 5th gridline, can be a float
+    ternary_ax.gridlines(color="black", multiple=5)
+    ternary_ax.gridlines(color="blue", multiple=1, linewidth=0.5)
 
     # Set Axis labels and Title
     fontsize = 20
@@ -191,7 +192,7 @@ Points is a list of tuples or numpy arrays, such as [(0.5, 0.25, 0.25), (1./3, 1
     # Load some data, tuples (x,y,z)
     with open("sample_data/curve.txt") as handle:
         for line in handle:
-            points.append(map(float, line.split(' ')))
+            points.append(list(map(float, line.split(' '))))
     # Plot the data
     tax.plot(points, linewidth=2.0, label="Curve")
     tax.legend()
@@ -228,7 +229,7 @@ Similarly, ternary can make scatter plots:
     points = random_points(30, scale=scale)
     tax.scatter(points, marker='D', color='green', label="Green Diamonds")
     tax.legend()
-    tax.ticks(axis='lbr', linewidth=1, multiple=0.1)
+    tax.ticks(axis='lbr', linewidth=1, multiple=5)
 
     tax.show()
 
@@ -362,16 +363,13 @@ inclusion of a colorbar. Here is an example:
             d[(i, j, k)] = color_point(i, j, k, scale)
         return d
 
-    if __name__ == "__main__":
-        ## Heatmaps from data
-
-        scale = 80
-        data = generate_heatmap_data(scale)
-        figure, tax = ternary.figure(scale=scale, permutation="210")
-        tax.heatmap(data, style="hexagonal", colormap=False) # Allow colors as rgba tuples
-        tax.boundary()
-        tax.set_title("Hexagonal Heatmap from Data")
-        pyplot.show()
+    scale = 80
+    data = generate_heatmap_data(scale)
+    figure, tax = ternary.figure(scale=scale, permutation="210")
+    tax.heatmap(data, style="hexagonal", colormap=False) # Allow colors as rgba tuples
+    tax.boundary()
+    tax.set_title("RGBA Heatmap")
+    pyplot.show()
 
 ```
 
@@ -422,5 +420,3 @@ There appears to be an issue with anaconda on macs that causes the axes labels n
 tax._redraw_labels()
 ```
 before showing or rendering the image.
-
-

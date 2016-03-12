@@ -1,3 +1,5 @@
+from matplotlib import pyplot as plt
+
 from .plotting import (
     clear_matplotlib_ticks,
     plot,
