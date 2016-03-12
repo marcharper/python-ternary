@@ -103,7 +103,6 @@ supplying them as needed to other functions.
 The following code draws a boundary for the simplex and gridlines.
 
 ```python
-    from matplotlib import pyplot
     import ternary
 
     ## Boundary and Gridlines
@@ -128,7 +127,7 @@ The following code draws a boundary for the simplex and gridlines.
     # Remove default Matplotlib Axes
     tax.clear_matplotlib_ticks()
 
-    pyplot.show()
+    ternary.plt.show()
 ```
 
 ![Ternary Plot -- Boundary and Gridlines](/readme_images/boundary_and_gridlines.png)
