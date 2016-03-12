@@ -46,7 +46,9 @@ Alternatively you can clone the repository and run `setup.py` in the usual manne
 
 New features are still being added to python-ternary.
 
-# Basic Plotting Functions
+# Usage, Examples, Plotting Functions
+
+You can explore some of these examples with [this Jupyter notebook](Ternary-Examples.ipynb).
 
 The easiest way to use python-ternary is with the wrapper class `TernaryAxesSubplot`,
 which mimics Matplotlib's AxesSubplot. Start with
