@@ -31,10 +31,25 @@ Some ternary functions expect the simplex to be partititioned into some number o
 
 # Installation
 
+### Anaconda
+
+You can install python-ternary with conda:
+
+```bash
+conda config --add channels conda-forge
+conda install python-ternary
+```
+
+See [here](https://github.com/conda-forge/python-ternary-feedstock) for more information.
+
+### Pip
+
 You can install the current release (0.1) with pip (you may need to use sudo):
 ```bash
     pip install python-ternary
 ```
+
+### With setup.py
 
 Alternatively you can clone the repository and run `setup.py` in the usual manner:
 
@@ -44,7 +59,7 @@ Alternatively you can clone the repository and run `setup.py` in the usual manne
     sudo python setup.py install
 ```
 
-New features are still being added to python-ternary.
+New features are still being added to python-ternary. The master branch should generally be stable enough for most purposes.
 
 # Usage, Examples, Plotting Functions
 
