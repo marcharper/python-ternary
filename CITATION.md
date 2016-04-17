@@ -1,4 +1,5 @@
 # Citation
+
 [![DOI](https://zenodo.org/badge/19505/marcharper/python-ternary.svg)](https://zenodo.org/badge/latestdoi/19505/marcharper/python-ternary)
 
 Please cite as follows:
