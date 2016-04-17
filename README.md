@@ -57,7 +57,7 @@ which mimics Matplotlib's AxesSubplot. Start with
     figure, tax = ternary.figure()
 ```
 
-With a ternary axes object `tax` you can use many of the usual matplotlib 
+With a ternary axes object `tax` you can use many of the usual matplotlib
 axes object functions:
 
 ```python
@@ -241,14 +241,14 @@ Similarly, ternary can make scatter plots:
 ## Heatmaps
 
 Ternary can plot heatmaps in two ways and three styles. Given a function, ternary
-will evaluate the function at the specified number of steps (determined by the 
+will evaluate the function at the specified number of steps (determined by the
 scale, expected to be an integer in this case). The simplex can be split up into
 triangles or hexagons and colored according to one of three styles:
 
 - Triangular -- `triangular`: coloring triangles by summing the values on the
 vertices
-- Dual-triangular  -- `dual-triangular`: mapping (i,j,k) to the upright 
-triangles &#9651; and blending the neigboring triangles for the downward 
+- Dual-triangular  -- `dual-triangular`: mapping (i,j,k) to the upright
+triangles &#9651; and blending the neigboring triangles for the downward
 triangles &#9661;
 - Hexagonal  -- `hexagonal`: which does not blend values at all, and divides
 the simplex up into heaxagonal regions
@@ -297,8 +297,8 @@ You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/col
 
 ![Ternary Heatmap Examples](/readme_images/heatmap_shannon.png)
 
-Ternary can also make heatmaps from data. In this case you need to supply a dictionary 
-mapping `(i, j)` or `(i, j, k)` for `i + j + k = scale` to a float as input for a heatmap. It is not necessary to include `k` in the dictionary keys since it can be determined from `scale`, `i`, and `j`. This reduces the memory requirements when the partition is very fine (significant when `scale` is in the hundreds). 
+Ternary can also make heatmaps from data. In this case you need to supply a dictionary
+mapping `(i, j)` or `(i, j, k)` for `i + j + k = scale` to a float as input for a heatmap. It is not necessary to include `k` in the dictionary keys since it can be determined from `scale`, `i`, and `j`. This reduces the memory requirements when the partition is very fine (significant when `scale` is in the hundreds).
 
 Make the heatmap as follows:
 
@@ -391,10 +391,11 @@ The included script of [examples](https://github.com/marcharper/python-ternary/b
 
 # Contributing
 
-Contributions are welcome! Please share any nice example plots, contribute 
+Contributions are welcome! Please share any nice example plots, contribute
 features, and add unit tests! Use the pull request and issue systems to contribute.
 
 # Citation
+
 [![DOI](https://zenodo.org/badge/19505/marcharper/python-ternary.svg)](https://zenodo.org/badge/latestdoi/19505/marcharper/python-ternary)
 
 Please cite as follows:
