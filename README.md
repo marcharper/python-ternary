@@ -126,8 +126,8 @@ The following code draws a boundary for the simplex and gridlines.
 
     # Draw Boundary and Gridlines
     tax.boundary(linewidth=2.0)
-    ternary_ax.gridlines(color="black", multiple=5)
-    ternary_ax.gridlines(color="blue", multiple=1, linewidth=0.5)
+    tax.gridlines(color="black", multiple=5)
+    tax.gridlines(color="blue", multiple=1, linewidth=0.5)
 
     # Set Axis labels and Title
     fontsize = 20
