@@ -9,7 +9,7 @@ from matplotlib import pyplot
 import numpy as np
 
 from .helpers import project_sequence, project_point
-from .colormapping import get_cmap
+from .colormapping import get_cmap, colorbar_hack
 
 ### Drawing Helpers ###
 
@@ -113,7 +113,7 @@ def plot_colored_trajectory(points, cmap=None, ax=None, permutation=None,
 
     return ax
 
-def scatter(points, ax=None, permutation=None, **kwargs):
+def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None, vmin=0, vmax = 1, **kwargs):
     """Plots trajectory points where each point satisfies x + y + z = scale. First argument is a list or numpy array of tuples of length 3.
 
     Parameters
@@ -122,6 +122,14 @@ def scatter(points, ax=None, permutation=None, **kwargs):
         The list of tuples to be scatter-plotted.
     ax: Matplotlib AxesSubplot, None
         The subplot to draw on.
+    colorbar: bool, False
+        Show colorbar.
+    colormap: String or matplotlib.colors.Colormap, None
+        The name of the Matplotlib colormap to use.
+    vmin: int, 0
+        Minimum value for colorbar.
+    vmax: int, 1
+        Maximum value for colorbar.
     kwargs:
         Any kwargs to pass through to matplotlib.
     """
@@ -129,4 +137,8 @@ def scatter(points, ax=None, permutation=None, **kwargs):
         fig, ax = pyplot.subplots()
     xs, ys = project_sequence(points, permutation=permutation)
     ax.scatter(xs, ys, **kwargs)
+
+    if colorbar and (colormap != None):
+        colorbar_hack(ax, vmin, vmax, colormap)
+
     return ax
