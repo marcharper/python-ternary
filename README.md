@@ -17,16 +17,17 @@ Some ternary functions expect the simplex to be partititioned into some number o
 
 <div style="text-align:center">
 
-<img src ="/readme_images/boundary_and_gridlines.png" width="150" height="150"/>
-<img src ="/readme_images/various_lines.png" width="150" height="150"/>
-<img src ="/readme_images/colored_trajectory.png" width="150" height="150"/>
-<img src ="/readme_images/scatter.png" width="150" height="150"/>
-<img src ="/readme_images/heatmap_rsp.png" width="150" height="150"/>
 <img src ="/readme_images/16_80_1.png" width="150" height="150"/>
 <img src ="/readme_images/16_80_stationary.png" width="150" height="150"/>
 <img src ="/readme_images/23_80_0.png" width="150" height="150"/>
 <img src ="/readme_images/24_80_1.png" width="150" height="150"/>
+<img src ="/readme_images/heatmap_rsp.png" width="150" height="150"/>
 <img src ="/readme_images/colored_boundary.png" width="150" height="150"/>
+<img src ="/readme_images/boundary_and_gridlines.png" width="150" height="150"/>
+<img src ="/readme_images/various_lines.png" width="150" height="150"/>
+<img src ="/readme_images/colored_trajectory.png" width="150" height="150"/>
+<img src ="/readme_images/scatter.png" width="150" height="150"/>
+
 </div>
 
 # Installation
