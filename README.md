@@ -1,10 +1,10 @@
-# Welcome!
+
+
+# python-ternary
 
 <a href="https://pypi.python.org/pypi/python-ternary"><img src="https://img.shields.io/pypi/v/python-ternary.svg"/></a>
 [![DOI](https://zenodo.org/badge/19505/marcharper/python-ternary.svg)](https://zenodo.org/badge/latestdoi/19505/marcharper/python-ternary)
 [![Join the chat at https://gitter.im/marcharper/python-ternary](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/marcharper/python-ternary?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-# python-ternary
 
 This is a plotting library for use with [matplotlib](http://matplotlib.org/index.html) to make [ternary plots](http://en.wikipedia.org/wiki/Ternary_plot)
 plots in the two dimensional simplex projected onto a two dimensional plane.
@@ -61,7 +61,7 @@ Alternatively you can clone the repository and run `setup.py` in the usual manne
     sudo python setup.py install
 ```
 
-New features are still being added to python-ternary. The master branch should generally be stable enough for most purposes.
+Though there are releases available through pip and anaconda, the master branch should be stable enough for most purposes.
 
 # Usage, Examples, Plotting Functions
 
