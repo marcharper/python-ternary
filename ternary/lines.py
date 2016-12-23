@@ -186,7 +186,7 @@ def gridlines(ax, scale, multiple=None, horizontal_kwargs=None, left_kwargs=None
     return ax
 
 def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
-          offset=0.01, clockwise=False, axes_colors=None,fsize = 10, **kwargs):
+          offset=0.01, clockwise=False, axes_colors=None, fsize = 10, **kwargs):
     """
     Sets tick marks and labels.
 
@@ -259,7 +259,7 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
             line(ax, loc1, loc2, color=axes_colors['r'], **kwargs)
             x, y = project_point(text_location)
             ax.text(x, y, str(tick), horizontalalignment="center", 
-                color=axes_colors['r'],fontsize=fsize)
+                color=axes_colors['r'], fontsize=fsize)
 
     if 'l' in axis:
         for index, i in enumerate(locations):
@@ -277,7 +277,7 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
             line(ax, loc1, loc2, color=axes_colors['l'], **kwargs)
             x, y = project_point(text_location)
             ax.text(x, y, str(tick), horizontalalignment="center",
-                color=axes_colors['l'],fontsize=fsize)
+                color=axes_colors['l'], fontsize=fsize)
 
     if 'b' in axis:
         for index, i in enumerate(locations):
@@ -295,4 +295,4 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
             line(ax, loc1, loc2, color=axes_colors['b'], **kwargs)
             x, y = project_point(text_location)
             ax.text(x, y, str(tick), horizontalalignment="center",
-                color=axes_colors['b'],fontsize=fsize)
+                color=axes_colors['b'], fontsize=fsize)
