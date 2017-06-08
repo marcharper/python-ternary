@@ -23,12 +23,13 @@ Some ternary functions expect the simplex to be partititioned into some number o
 <img src="/readme_images/24_80_1.png" width="150" height="150"/>
 <img src="/readme_images/heatmap_rsp.png" width="150" height="150"/>
 <img src="/readme_images/colored_boundary.png" width="150" height="150"/>
-<img src="/readme_images/boundary_and_gridlines.png" width="150" height="150"/>
+<img src="/readme_images/rgba_example.png" width="150" height="150"/>
 <img src="/readme_images/various_lines.png" width="150" height="150"/>
 <img src="/readme_images/colored_trajectory.png" width="150" height="150"/>
 <img src="/readme_images/scatter.png" width="150" height="150"/>
-<img src="/readme_images/rgba_example.png" width="150" height="150"/>
-
+<br/>
+From <a href="http://biorxiv.org/content/early/2017/06/07/145631">Genetic Drift and Selection in Many-Allele Range Expansions</a>:<br/>
+<img src="/readme_images/btweinstein_example.png" width="300" height="150"/>
 </div>
 
 # Installation
@@ -423,7 +424,10 @@ Marc Harper et al. (2015). python-ternary: Ternary Plots in Python. Zenodo. 10.5
 
 # Recent Usage in Publications:
 
+- [Genetic Drift and Selection in Many-Allele Range Expansions](http://biorxiv.org/content/early/2017/06/07/145631) by [Bryan T. Weinstein](https://github.com/btweinstein)
+- [Stationary Stability for Evolutionary Dynamics in Finite Populations](http://www.mdpi.com/1099-4300/18/9/316/htm) by Marc Harper and Dashiell Fryer. Entropy 18.9 (2016): 316.
 - [pyIAST: Ideal adsorbed solution theory (IAST) Python package](http://www.sciencedirect.com/science/article/pii/S0010465515004403) by [Cory Simon](https://github.com/CorySimon)
+
 
 # Contributors
 
