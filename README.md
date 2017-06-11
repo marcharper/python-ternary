@@ -35,7 +35,7 @@ See the citations below for more example images.
 
 Have you used python-ternary in a publication? Open a PR or issue to include your citations or example plots!
 
-- [Genetic Drift and Selection in Many-Allele Range Expansions](http://biorxiv.org/content/early/2017/06/07/145631) by [Bryan T. Weinstein](https://github.com/btweinstein) (2017)
+- [Genetic Drift and Selection in Many-Allele Range Expansions](http://biorxiv.org/content/early/2017/06/07/145631) by [Bryan T. Weinstein](https://github.com/btweinstein), Maxim O. Lavrentovich, Wolfram Möbius, Andrew W. Murray, and David R. Nelson (2017)
 - [Gibbs Sampler-Based λ-Dynamics and Rao–Blackwell Estimator for Alchemical Free Energy Calculation](http://pubs.acs.org/doi/abs/10.1021/acs.jctc.7b00204?src=recsys&journalCode=jctcce) by Xinqiang Ding, Jonah Z. Vilseck, Ryan L. Hayes, and Charles L. Brooks (2017)
 - [PREDICTD: PaRallel Epigenomics Data Imputation With Cloud-based Tensor Decomposition](http://biorxiv.org/content/early/2017/04/04/123927) by Timothy J Durham, Maxwell W Libbrecht, Jeffry Howbert, Jeffrey Bilmes, William S Noble (2017)
 - Kottke, Daniel, et al. [Multi-class probabilistic active learning](http://ebooks.iospress.nl/publication/44803) Proc. of the 22nd Europ. Conf. on Artificial Intelligence (ECAI2016). 2016.
