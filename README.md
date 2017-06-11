@@ -1,5 +1,4 @@
 
-
 # python-ternary
 
 <a href="https://pypi.python.org/pypi/python-ternary"><img src="https://img.shields.io/pypi/v/python-ternary.svg"/></a>
@@ -10,8 +9,6 @@ This is a plotting library for use with [matplotlib](http://matplotlib.org/index
 plots in the two dimensional simplex projected onto a two dimensional plane.
 
 The library provides functions for plotting projected lines, curves (trajectories), scatter plots, and heatmaps. There are [several examples](https://github.com/marcharper/python-ternary/blob/master/examples.py) and a short tutorial below.
-
-Some ternary functions expect the simplex to be partititioned into some number of steps, determined by the scale parameter. A few functions will do this partitioning automatically for you, but when working with real data or simulation output, you may have partitioned already. If you are working with probability distributions, just use `scale=1` (the default). Otherwise the scale parameter effectively controls the resolution of many plot types (e.g. heatmaps).
 
 # Gallery
 
@@ -30,7 +27,22 @@ Some ternary functions expect the simplex to be partititioned into some number o
 <br/>
 From <a href="http://biorxiv.org/content/early/2017/06/07/145631">Genetic Drift and Selection in Many-Allele Range Expansions</a>:<br/>
 <img src="/readme_images/btweinstein_example.png" width="300" height="150"/>
+<br/>
+See the citations below for more example images.
 </div>
+
+# Citations and Recent Usage in Publications:
+
+Have you used python-ternary in a publication? Open a PR or issue to include your citations or example plots!
+
+- [Genetic Drift and Selection in Many-Allele Range Expansions](http://biorxiv.org/content/early/2017/06/07/145631) by [Bryan T. Weinstein](https://github.com/btweinstein) (2017)
+- [Gibbs Sampler-Based λ-Dynamics and Rao–Blackwell Estimator for Alchemical Free Energy Calculation](http://pubs.acs.org/doi/abs/10.1021/acs.jctc.7b00204?src=recsys&journalCode=jctcce) by Xinqiang Ding, Jonah Z. Vilseck, Ryan L. Hayes, and Charles L. Brooks (2017)
+- [PREDICTD: PaRallel Epigenomics Data Imputation With Cloud-based Tensor Decomposition](http://biorxiv.org/content/early/2017/04/04/123927) by Timothy J Durham, Maxwell W Libbrecht, Jeffry Howbert, Jeffrey Bilmes, William S Noble (2017)
+- Kottke, Daniel, et al. [Multi-class probabilistic active learning](http://ebooks.iospress.nl/publication/44803) Proc. of the 22nd Europ. Conf. on Artificial Intelligence (ECAI2016). 2016.
+- [On the origins of three-dimensionality in drug-like molecules](http://www.future-science.com/doi/full/10.4155/fmc-2016-0095) by Joshua Meyers, Michael Carter, N Yi Mok, and Nathan Brown (2016)
+- [Stationary Stability for Evolutionary Dynamics in Finite Populations](http://www.mdpi.com/1099-4300/18/9/316/htm) by Marc Harper and Dashiell Fryer. Entropy 18.9 (2016): 316.
+- [pyIAST: Ideal adsorbed solution theory (IAST) Python package](http://www.sciencedirect.com/science/article/pii/S0010465515004403) by [Cory Simon](https://github.com/CorySimon) (2016)
+- [Lyapunov Functions for Time-Scale Dynamics on Riemannian Geometries of the Simplex](https://link.springer.com/article/10.1007/s13235-014-0124-0) by Marc Harper and Dashiell Fryer. Dynamic Games and Applications (2015) 
 
 # Installation
 
@@ -47,7 +59,7 @@ See [here](https://github.com/conda-forge/python-ternary-feedstock) for more inf
 
 ### Pip
 
-You can install the current release (1.0) with pip (you may need to use sudo):
+You can install the current release (1.0.1) with pip (you may need to use sudo):
 ```bash
     pip install python-ternary
 ```
@@ -111,7 +123,13 @@ This is useful if you want to use ternary as part of another figure, such as
     ax = pyplot.subplot(gs[0,0])
     figure, tax = ternary.figure(ax=ax)
     ...
-````
+```
+
+Some ternary functions expect the simplex to be partititioned into some number of steps,
+determined by the scale parameter. A few functions will do this partitioning automatically
+for you, but when working with real data or simulation output, you may have partitioned
+already. If you are working with probability distributions, just use `scale=1` (the default).
+Otherwise the scale parameter effectively controls the resolution of many plot types (e.g. heatmaps).
 
 `TernaryAxesSubplot` objects keep track of the scale, axes, and other parameters,
 supplying them as needed to other functions.
@@ -269,9 +287,11 @@ vertices
 triangles &#9651; and blending the neigboring triangles for the downward
 triangles &#9661;
 - Hexagonal  -- `hexagonal`: which does not blend values at all, and divides
-the simplex up into heaxagonal regions
+the simplex up into hexagonal regions
 
-The two triangular heatmap styles and the hexagonal heatmap style can be visualized as follows. The `dual-triangular` style plots the true values on the upright triangles, mapping ternary coordinates to upright triangles otherwise. The `triangular` style
+The two triangular heatmap styles and the hexagonal heatmap style can be visualized
+as follows. The `dual-triangular` style plots the true values on the upright triangles,
+mapping ternary coordinates to upright triangles otherwise. The `triangular` style
 maps ternary coordinates to vertices and computes the triangle color based on the
 values at the vertices.
 
@@ -421,13 +441,6 @@ Please cite as follows:
 ```
 Marc Harper et al. (2015). python-ternary: Ternary Plots in Python. Zenodo. 10.5281/zenodo.34938
 ```
-
-# Recent Usage in Publications:
-
-- [Genetic Drift and Selection in Many-Allele Range Expansions](http://biorxiv.org/content/early/2017/06/07/145631) by [Bryan T. Weinstein](https://github.com/btweinstein)
-- [Stationary Stability for Evolutionary Dynamics in Finite Populations](http://www.mdpi.com/1099-4300/18/9/316/htm) by Marc Harper and Dashiell Fryer. Entropy 18.9 (2016): 316.
-- [pyIAST: Ideal adsorbed solution theory (IAST) Python package](http://www.sciencedirect.com/science/article/pii/S0010465515004403) by [Cory Simon](https://github.com/CorySimon)
-
 
 # Contributors
 
