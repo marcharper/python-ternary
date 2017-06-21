@@ -73,7 +73,7 @@ def plot(points, ax=None, permutation=None, **kwargs):
 def plot_colored_trajectory(points, cmap=None, ax=None, permutation=None,
                             **kwargs):
     """
-    Plots trajectories with changing color, simlar to `plot`. Trajectory points 
+    Plots trajectories with changing color, simlar to `plot`. Trajectory points
     are tuples (x,y,z) satisfying x + y + z = scale (not checked). The tuples are
     projected and plotted as a curve.
 
@@ -113,7 +113,7 @@ def plot_colored_trajectory(points, cmap=None, ax=None, permutation=None,
 
     return ax
 
-def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None, vmin=0, vmax = 1, **kwargs):
+def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None, cbarlabel=None, vmin=0, vmax = 1, **kwargs):
     """Plots trajectory points where each point satisfies x + y + z = scale. First argument is a list or numpy array of tuples of length 3.
 
     Parameters
@@ -139,6 +139,6 @@ def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None, vm
     ax.scatter(xs, ys, **kwargs)
 
     if colorbar and (colormap != None):
-        colorbar_hack(ax, vmin, vmax, colormap)
+        colorbar_hack(ax, vmin, vmax, colormap, cbarlabel=cbarlabel)
 
     return ax
