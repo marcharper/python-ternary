@@ -74,14 +74,14 @@ Alternatively you can clone the repository and run `setup.py` in the usual manne
     sudo python setup.py install
 ```
 
-Though there are releases available through pip and anaconda, the master branch should be stable enough for most purposes.
+The master branch is kept in a good working state and should be fine for general usage.
 
 # Usage, Examples, Plotting Functions
 
 You can explore some of these examples with [this Jupyter notebook](Ternary-Examples.ipynb).
 
 The easiest way to use python-ternary is with the wrapper class `TernaryAxesSubplot`,
-which mimics Matplotlib's AxesSubplot. Start with
+which mimics Matplotlib's AxesSubplot. Start with:
 
 ```python
     figure, tax = ternary.figure()
@@ -106,14 +106,14 @@ If you need to act directly on the underyling matplotlib axes, you can access th
     ax = tax.get_axes()
 ```
 
-You can also wrap a Matplotlib AxesSubplot object:
+You can also wrap an existing Matplotlib AxesSubplot object:
 
 ```
     figure, ax = pyplot.subplots()
     tax = ternary.TernaryAxesSubplot(ax=ax)
 ```
 
-This is useful if you want to use ternary as part of another figure, such as
+This is useful if you want to use ternary as a part of another figure, such as
 
 ```python
     from matplotlib import pyplot, gridspec
@@ -126,7 +126,7 @@ This is useful if you want to use ternary as part of another figure, such as
 ```
 
 Some ternary functions expect the simplex to be partititioned into some number of steps,
-determined by the scale parameter. A few functions will do this partitioning automatically
+determined by the `scale` parameter. A few functions will do this partitioning automatically
 for you, but when working with real data or simulation output, you may have partitioned
 already. If you are working with probability distributions, just use `scale=1` (the default).
 Otherwise the scale parameter effectively controls the resolution of many plot types (e.g. heatmaps).
@@ -269,7 +269,6 @@ Similarly, ternary can make scatter plots:
     tax.ticks(axis='lbr', linewidth=1, multiple=5)
 
     tax.show()
-
 ```
 
 ![Ternary Scatter Plot Example](/readme_images/scatter.png)
@@ -344,7 +343,7 @@ Make the heatmap as follows:
     ternary.heatmap(data, scale, ax=None, cmap=None)
 ```
 
-or on a `TernaryAxesSubplot` object
+or on a `TernaryAxesSubplot` object:
 
 ```python
     tax.heatmap(data, cmap=None)
@@ -352,13 +351,11 @@ or on a `TernaryAxesSubplot` object
 
 This can produces images such as:
 
-
 ![Ternary Heatmap Examples](/readme_images/heatmap-dual_vs_triangular.png)
 
 ![Ternary Heatmap Examples](/readme_images/heatmap_rsp.png)
 
 There is a large set of heatmap examples [here](http://www.marcharper.net/stationary_examples/index.html).
-
 
 # Axes Ticks and Orientations
 
@@ -374,10 +371,9 @@ There is a [more detailed discussion](https://github.com/marcharper/python-terna
 
 # RGBA colors
 
-You can alternatively specify colors as rgba
-tuples `(r,g,b,a)` (all between zero and one). To use this feature, pass
-`colormap=False` to `heatmap()` so that the library will not attempt to map the
-tuple to a value with a matplotlib colormap. Note that this disables the
+You can alternatively specify colors as rgba tuples `(r,g,b,a)` (all between zero and one).
+To use this feature, pass `colormap=False` to `heatmap()` so that the library will not attempt
+to map the tuple to a value with a matplotlib colormap. Note that this disables the
 inclusion of a colorbar. Here is an example:
 
 ```python
@@ -409,7 +405,6 @@ inclusion of a colorbar. Here is an example:
     tax.boundary()
     tax.set_title("RGBA Heatmap")
     pyplot.show()
-
 ```
 
 This produces the following image:
