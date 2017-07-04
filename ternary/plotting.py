@@ -136,7 +136,7 @@ def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None, cb
     if not ax:
         fig, ax = pyplot.subplots()
     xs, ys = project_sequence(points, permutation=permutation)
-    ax.scatter(xs, ys, **kwargs)
+    ax.scatter(xs, ys, vmin=vmin, vmax=vmax, **kwargs)
 
     if colorbar and (colormap != None):
         colorbar_hack(ax, vmin, vmax, colormap, cbarlabel=cbarlabel)
