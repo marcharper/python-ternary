@@ -179,7 +179,7 @@ def polygon_generator(data, scale, style, permutation=None):
 
 def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
             scientific=False, style='triangular', colorbar=True,
-            permutation=None, colormap=True, cbarlabel=None):
+            permutation=None, colormap=True, cbarlabel=None, cb_kwargs=None):
     """
     Plots heatmap of given color values.
 
@@ -206,6 +206,8 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
         Show colorbar.
     permutation: string, None
         A permutation of the coordinates
+    cb_kwargs: dict
+        dict of kwargs to pass to colorbar
 
     Returns
     -------
@@ -245,7 +247,11 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
         ax.fill(xs, ys, facecolor=color, edgecolor=color)
 
     if colorbar and colormap:
-        colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific,
+        if cb_kwargs != None:
+            colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific,
+                      cbarlabel=cbarlabel, **cb_kwargs)
+        else:
+            colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific,
                       cbarlabel=cbarlabel)
     return ax
 
@@ -253,7 +259,8 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
 
 def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
              scientific=False, style='triangular', colorbar=True,
-             permutation=None, vmin=None, vmax=None, cbarlabel=None):
+             permutation=None, vmin=None, vmax=None, cbarlabel=None,
+             cb_kwargs=None):
     """
     Computes func on heatmap partition coordinates and plots heatmap. In other
     words, computes the function on lattice points of the simplex (normalized
@@ -283,6 +290,8 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
         The minimum color value, used to normalize colors.
     vmax: float
         The maximum color value, used to normalize colors.
+    cb_kwargs: dict
+        dict of kwargs to pass to colorbar
 
     Returns
     -------
@@ -297,7 +306,7 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
     ax = heatmap(data, scale, cmap=cmap, ax=ax, style=style,
                  scientific=scientific, colorbar=colorbar,
                  permutation=permutation, vmin=vmin, vmax=vmax, 
-                 cbarlabel=cbarlabel)
+                 cbarlabel=cbarlabel, cb_kwargs=cb_kwargs)
     return ax
 
 def svg_polygon(coordinates, color):

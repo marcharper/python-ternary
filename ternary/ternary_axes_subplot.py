@@ -316,7 +316,7 @@ class TernaryAxesSubplot(object):
 
     def heatmap(self, data, scale=None, cmap=None, scientific=False,
                 style='triangular', colorbar=True, colormap=True,
-                vmin=None, vmax=None, cbarlabel=None):
+                vmin=None, vmax=None, cbarlabel=None, cb_kwargs=None):
         permutation = self._permutation
         if not scale:
             scale = self.get_scale()
@@ -326,11 +326,12 @@ class TernaryAxesSubplot(object):
         heatmapping.heatmap(data, scale, cmap=cmap, style=style, ax=ax,
                             scientific=scientific, colorbar=colorbar,
                             permutation=permutation, colormap=colormap,
-                            vmin=vmin, vmax=vmax, cbarlabel=cbarlabel)
+                            vmin=vmin, vmax=vmax, cbarlabel=cbarlabel,
+                            cb_kwargs=cb_kwargs)
 
     def heatmapf(self, func, scale=None, cmap=None, boundary=True,
                  style='triangular', colorbar=True, scientific=True,
-                 vmin=None, vmax=None, cbarlabel=None):
+                 vmin=None, vmax=None, cbarlabel=None, cb_kwargs=None):
         if not scale:
             scale = self.get_scale()
         if style.lower()[0] == 'd':
@@ -340,4 +341,5 @@ class TernaryAxesSubplot(object):
         heatmapping.heatmapf(func, scale, cmap=cmap, style=style,
                              boundary=boundary, ax=ax, scientific=scientific,
                              colorbar=colorbar, permutation=permutation,
-                             vmin=vmin, vmax=vmax, cbarlabel=cbarlabel)
+                             vmin=vmin, vmax=vmax, cbarlabel=cbarlabel,
+                             cb_kwargs=cb_kwargs)

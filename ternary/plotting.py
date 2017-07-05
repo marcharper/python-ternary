@@ -113,8 +113,12 @@ def plot_colored_trajectory(points, cmap=None, ax=None, permutation=None,
 
     return ax
 
-def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None, cbarlabel=None, vmin=0, vmax = 1, **kwargs):
-    """Plots trajectory points where each point satisfies x + y + z = scale. First argument is a list or numpy array of tuples of length 3.
+def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None,\
+                                        vmin=0, vmax=1, scientific=False, \
+                                    cbarlabel=None, cb_kwargs=None, **kwargs):
+    """
+    Plots trajectory points where each point satisfies x + y + z = scale.
+    First argument is a list or numpy array of tuples of length 3.
 
     Parameters
     ----------
@@ -130,6 +134,8 @@ def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None, cb
         Minimum value for colorbar.
     vmax: int, 1
         Maximum value for colorbar.
+    cb_kwargs: dict
+        Any additional kwargs to pass to colorbar
     kwargs:
         Any kwargs to pass through to matplotlib.
     """
@@ -139,6 +145,11 @@ def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None, cb
     ax.scatter(xs, ys, vmin=vmin, vmax=vmax, **kwargs)
 
     if colorbar and (colormap != None):
-        colorbar_hack(ax, vmin, vmax, colormap, cbarlabel=cbarlabel)
+        if cb_kwargs != None:
+            colorbar_hack(ax, vmin, vmax, colormap, scientific=scientific,\
+                                              cbarlabel=cbarlabel, **cb_kwargs)
+        else:
+            colorbar_hack(ax, vmin, vmax, colormap, scientific=scientific,\
+                                                          cbarlabel=cbarlabel)
 
     return ax
