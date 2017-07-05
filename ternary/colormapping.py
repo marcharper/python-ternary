@@ -68,7 +68,8 @@ def colormapper(value, lower=0, upper=1, cmap=None):
     hex_ = rgb2hex(rgba)
     return hex_
 
-def colorbar_hack(ax, vmin, vmax, cmap, scientific=False, cbarlabel=None):
+def colorbar_hack(ax, vmin, vmax, cmap, scientific=False, cbarlabel=None,\
+                                                                  **kwargs):
     """
     Colorbar hack to insert colorbar on ternary plot. 
     
@@ -89,7 +90,7 @@ def colorbar_hack(ax, vmin, vmax, cmap, scientific=False, cbarlabel=None):
     sm = pyplot.cm.ScalarMappable(cmap=cmap, norm=norm)
     # Fake up the array of the scalar mappable. Urgh...
     sm._A = []
-    cb = pyplot.colorbar(sm, ax=ax)
+    cb = pyplot.colorbar(sm, ax=ax, **kwargs)
     if cbarlabel is not None:
         cb.set_label(cbarlabel)
     if scientific:
