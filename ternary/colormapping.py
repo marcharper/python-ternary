@@ -68,8 +68,8 @@ def colormapper(value, lower=0, upper=1, cmap=None):
     hex_ = rgb2hex(rgba)
     return hex_
 
-def colorbar_hack(ax, vmin, vmax, cmap, scientific=False, cbarlabel=None,\
-                                                                  **kwargs):
+def colorbar_hack(ax, vmin, vmax, cmap, scientific=False, cbarlabel=None,
+                  **kwargs):
     """
     Colorbar hack to insert colorbar on ternary plot. 
     

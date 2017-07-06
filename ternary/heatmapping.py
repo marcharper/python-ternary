@@ -249,10 +249,10 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
     if colorbar and colormap:
         if cb_kwargs != None:
             colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific,
-                      cbarlabel=cbarlabel, **cb_kwargs)
+                          cbarlabel=cbarlabel, **cb_kwargs)
         else:
             colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific,
-                      cbarlabel=cbarlabel)
+                          cbarlabel=cbarlabel)
     return ax
 
 ## User Convenience Functions ##

@@ -32,10 +32,9 @@ cb_kwargs = {"shrink" : 0.6,
              "pad" : 0.05,
              "aspect" : 30}
 
-tax.scatter(points,marker='s',c=c,edgecolor='k',s=40,linewidths=0.5,\
-                                    vmin=0,vmax=100,colorbar=True,\
-                                colormap='jet',cbarlabel='Farmers',\
-                                            cb_kwargs=cb_kwargs,zorder=3)
+tax.scatter(points,marker='s',c=c,edgecolor='k',s=40,linewidths=0.5,
+            vmin=0,vmax=100,colorbar=True,colormap='jet',cbarlabel='Farmers',
+            cb_kwargs=cb_kwargs,zorder=3)
 
 
 tax._redraw_labels()

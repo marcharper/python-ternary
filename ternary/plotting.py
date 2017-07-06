@@ -113,9 +113,9 @@ def plot_colored_trajectory(points, cmap=None, ax=None, permutation=None,
 
     return ax
 
-def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None,\
-                                        vmin=0, vmax=1, scientific=False, \
-                                    cbarlabel=None, cb_kwargs=None, **kwargs):
+def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None,
+            vmin=0, vmax=1, scientific=False, cbarlabel=None, cb_kwargs=None,
+            **kwargs):
     """
     Plots trajectory points where each point satisfies x + y + z = scale.
     First argument is a list or numpy array of tuples of length 3.
@@ -146,10 +146,10 @@ def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None,\
 
     if colorbar and (colormap != None):
         if cb_kwargs != None:
-            colorbar_hack(ax, vmin, vmax, colormap, scientific=scientific,\
-                                              cbarlabel=cbarlabel, **cb_kwargs)
+            colorbar_hack(ax, vmin, vmax, colormap, scientific=scientific,
+                          cbarlabel=cbarlabel, **cb_kwargs)
         else:
-            colorbar_hack(ax, vmin, vmax, colormap, scientific=scientific,\
-                                                          cbarlabel=cbarlabel)
+            colorbar_hack(ax, vmin, vmax, colormap, scientific=scientific,
+                          cbarlabel=cbarlabel)
 
     return ax
