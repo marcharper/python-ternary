@@ -184,7 +184,7 @@ class TernaryAxesSubplot(object):
         """
 
         if not position:
-            position = (1./2, offset, 1./2)
+            position = (1./2, -offset, 1./2)
         self._labels["bottom"] = (label, position, rotation, kwargs)
 
     def annotate(self, text, position, **kwargs):
