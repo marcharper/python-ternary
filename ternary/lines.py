@@ -186,7 +186,8 @@ def gridlines(ax, scale, multiple=None, horizontal_kwargs=None, left_kwargs=None
     return ax
 
 def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
-          offset=0.01, clockwise=False, axes_colors=None, fsize = 10, **kwargs):
+          offset=0.01, clockwise=False, axes_colors=None, fsize = 10,
+          tick_formats=None, **kwargs):
     """
     Sets tick marks and labels.
 
@@ -213,6 +214,12 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
     axes_colors: Dict, None
         Option to color ticks differently for each axis, 'l', 'r', 'b'
         e.g. {'l': 'g', 'r':'b', 'b': 'y'}
+    tick_formats: None, Dict, Str
+        If None, all axes will be labelled with ints. If Dict, the keys are
+        'b', 'l' and 'r' and the values are format strings e.g. "%.3f" for
+        a float with 3 decimal places or "%.3e" for scientific format with
+        3 decimal places or "%d" for ints. If tick_formats is a string, it
+        is assumed that this is a format string to be applied to all axes.
     kwargs:
         Any kwargs to pass through to matplotlib.
 
@@ -258,7 +265,16 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
                 tick = ticks[index]
             line(ax, loc1, loc2, color=axes_colors['r'], **kwargs)
             x, y = project_point(text_location)
-            ax.text(x, y, str(tick), horizontalalignment="center", 
+            if tick_formats == None:
+                if type(tick) == int:
+                    s = str(tick)
+                else:
+                    s = str(int(tick))
+            elif type(tick_formats) == str:
+                s = tick_formats %(tick)
+            elif type(tick_formats == dict):
+                s = tick_formats['r'] %(tick)
+            ax.text(x, y, s, horizontalalignment="center", 
                 color=axes_colors['r'], fontsize=fsize)
 
     if 'l' in axis:
@@ -276,7 +292,16 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
                 tick = ticks[-(index+1)]
             line(ax, loc1, loc2, color=axes_colors['l'], **kwargs)
             x, y = project_point(text_location)
-            ax.text(x, y, str(tick), horizontalalignment="center",
+            if tick_formats == None:
+                if type(tick) == int:
+                    s = str(tick)
+                else:
+                    s = str(int(tick))
+            elif type(tick_formats) == str:
+                s = tick_formats %(tick)
+            elif type(tick_formats == dict):
+                s = tick_formats['l'] %(tick)
+            ax.text(x, y, s, horizontalalignment="center",
                 color=axes_colors['l'], fontsize=fsize)
 
     if 'b' in axis:
@@ -294,5 +319,14 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
                 tick = ticks[index]
             line(ax, loc1, loc2, color=axes_colors['b'], **kwargs)
             x, y = project_point(text_location)
-            ax.text(x, y, str(tick), horizontalalignment="center",
+            if tick_formats == None:
+                if type(tick) == int:
+                    s = str(tick)
+                else:
+                    s = str(int(tick))
+            elif type(tick_formats) == str:
+                s = tick_formats %(tick)
+            elif type(tick_formats == dict):
+                s = tick_formats['b'] %(tick)
+            ax.text(x, y, s, horizontalalignment="center",
                 color=axes_colors['b'], fontsize=fsize)
