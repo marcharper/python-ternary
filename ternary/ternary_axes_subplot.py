@@ -10,7 +10,7 @@ from matplotlib import pyplot
 from . import heatmapping
 from . import lines
 from . import plotting
-from .helpers import project_point
+from .helpers import project_point, convert_coordinates_sequence
 
 
 def figure(ax=None, scale=None, permutation=None):
@@ -101,6 +101,20 @@ class TernaryAxesSubplot(object):
 
     def get_scale(self):
         return self._scale
+
+    def set_axis_limits(self, axis_limits=None):
+        """
+        Set min and max data limits for each of the three axes.
+
+        axis_limits = dict
+                keys are 'b','l' and 'r' for the three axes
+                vals are lists of the min and max values for the axis in
+                data units.
+        """
+        self._axis_limits = axis_limits
+
+    def get_axis_limits(self):
+        return self._axis_limits
 
     # Title and Axis Labels
 
@@ -255,13 +269,42 @@ class TernaryAxesSubplot(object):
         ax = self.get_axes()
         plotting.clear_matplotlib_ticks(ax=ax, axis=axis)
 
+
+    def get_ticks_from_axis_limits(self,multiple=1):
+        """
+        Taking self._axis_limits and self._boundary_scale get the scaled
+        ticks for all three axes and store them in self._ticks under the
+        keys 'b' for bottom, 'l' for left and 'r' for right axes.
+        """
+        for k in ['b','l','r']:
+            self._ticks[k] = numpy.linspace(self._axis_limits[k][0],
+                                            self._axis_limits[k][1],
+                                            (self._boundary_scale/float(multiple)+1)).tolist()
+
+
+
+    def set_custom_ticks(self, locations=None,clockwise=False,multiple=1,
+                         axes_colors=None, tick_formats=None, **kwargs):
+        """
+        Having called get_ticks_from_axis_limits, set the custom ticks on the
+        plot.
+        """
+        for k in ['b','l','r']:
+            self.ticks(ticks=self._ticks[k],locations=locations,
+                       axis=k,clockwise=clockwise, multiple=multiple,
+                       axes_colors=axes_colors, tick_formats=tick_formats,
+                       **kwargs)
+
+
     def ticks(self, ticks=None, locations=None, multiple=1, axis='blr',
-              clockwise=False, axes_colors=None, **kwargs):
+              clockwise=False, axes_colors=None, tick_formats=None,
+              **kwargs):
         ax = self.get_axes()
         scale = self.get_scale()
         lines.ticks(ax, scale, ticks=ticks, locations=locations,
                     multiple=multiple, clockwise=clockwise, axis=axis, 
-                    axes_colors=axes_colors, **kwargs)
+                    axes_colors=axes_colors, tick_formats=tick_formats,
+                    **kwargs)
 
     # Redrawing and resizing
 
@@ -292,6 +335,17 @@ class TernaryAxesSubplot(object):
                         horizontalalignment="center", **kwargs)
             text.set_rotation_mode("anchor")
             self._to_remove.append(text)
+
+
+            
+    def convert_coordinates(self,points,axisorder='blr'):
+        """
+        Convert data coords to simplex coords for plotting
+        in the case that axis limits have been applied
+        """
+        return convert_coordinates_sequence(points,self._boundary_scale,
+                                            self._axis_limits,axisorder)
+
 
     ## Various Plots
 

@@ -114,3 +114,86 @@ def project_sequence(s, permutation=None):
 
     xs, ys = unzip([project_point(p, permutation=permutation) for p in s])
     return xs, ys
+
+
+## Convert coordinates for custom plots with limits ##
+
+def convert_coordinates(q,conversion,axisorder):
+    """
+    Convert a 3-tuple in data coordinates into to simplex data
+    coordinates for plotting.
+
+    Parameters
+    ----------
+    q, 3-tuple
+       the point to be plotted in data coordinates
+
+    conversion, dict
+                keys = ['b','l','r']
+                vals = lambda function giving the conversion
+
+    axisorder, str giving the order of the axes for
+               the coordinate tuple e.g. 'blr' for bottom, left,
+               right coordinates.
+
+    Returns
+    -------
+    p, 3-tuple
+       the point converted to simplex coordinates
+    """
+    p = []
+    for k in range(3):
+        p.append(conversion[axisorder[k]](q[k]))
+
+    return tuple(p)
+
+
+def get_conversion(scale,limits):
+    """
+    Get the converion equations for each axis.
+
+    limits: dict  of min and max values for the axes in the order blr.
+    """
+    fb = float(scale)/float(limits['b'][1]-limits['b'][0])
+    fl = float(scale)/float(limits['l'][1]-limits['l'][0])
+    fr = float(scale)/float(limits['r'][1]-limits['r'][0])
+
+    conversion = {"b" : lambda x: (x-limits['b'][0])*fb,
+                  "l" : lambda x: (x-limits['l'][0])*fl,
+                  "r" : lambda x: (x-limits['r'][0])*fr
+                  }
+
+    return conversion
+    
+
+def convert_coordinates_sequence(qs,scale,limits,axisorder):
+    """
+    Take a sequence of 3-tuples in data coordinates and convert them
+    to simplex coordinates for plotting. This is needed for custom
+    plots where the scale of the simplex axes is set within limits rather
+    than being defined by the scale parameter.
+
+    Parameters
+    ----------
+    qs, sequence of 3-tuples
+       the points to be plotted in data coordinates
+
+    scale, int
+                the scale parameter for the plot
+    
+    limits, dict
+                keys = ['b','l','r']
+                vals = min,max data values for this axis
+
+    axisorder, str giving the order of the axes for
+               the coordinate tuple e.g. 'blr' for bottom, left,
+               right coordinates.
+
+    Returns
+    -------
+    s, list of 3-tuples
+       the points converted to simplex coordinates
+    """
+    conversion = get_conversion(scale,limits)
+    
+    return [convert_coordinates(q,conversion,axisorder) for q in qs]
