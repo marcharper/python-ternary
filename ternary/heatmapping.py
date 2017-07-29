@@ -6,15 +6,13 @@ import functools
 import numpy
 from matplotlib import pyplot
 
-from .helpers import SQRT3, SQRT3OVER2, unzip, normalize, simplex_iterator, project_point
+from .helpers import unzip, normalize, simplex_iterator, project_point
 from .colormapping import get_cmap, colormapper, colorbar_hack
 
+### Heatmap Triangulation Coordinates
 
-#from matplotlib.colors import rgb2hex
+## Triangular Heatmaps
 
-### Heatmap Triangulation Coordinates ###
-
-## Triangular Heatmaps ##
 
 def blend_value(data, i, j, k, keys=None):
     """Computes the average value of the three vertices of a triangule in the
@@ -35,6 +33,7 @@ def blend_value(data, i, j, k, keys=None):
         value = None
     return value
 
+
 def alt_blend_value(data, i, j, k):
     """Computes the average value of the three vertices of a triangule in the
     simplex triangulation, where two of the vertices are on the upper
@@ -42,6 +41,7 @@ def alt_blend_value(data, i, j, k):
 
     keys = alt_triangle_coordinates(i, j, k)
     return blend_value(data, i, j, k, keys=keys)
+
 
 def triangle_coordinates(i, j, k):
     """
@@ -59,6 +59,7 @@ def triangle_coordinates(i, j, k):
 
     return [(i, j, k), (i + 1, j, k - 1), (i, j + 1, k - 1)]
 
+
 def alt_triangle_coordinates(i, j, k):
     """
     Computes coordinates of the constituent triangles of a triangulation for the
@@ -74,6 +75,7 @@ def alt_triangle_coordinates(i, j, k):
     """
 
     return [(i, j + 1, k - 1), (i + 1, j, k - 1), (i + 1, j + 1, k - 2)]
+
 
 ## Hexagonal Heatmaps ##
 
@@ -105,7 +107,9 @@ def generate_hexagon_deltas():
 
     return d
 
+
 hexagon_deltas = generate_hexagon_deltas()
+
 
 def hexagon_coordinates(i, j, k):
     """
@@ -129,6 +133,7 @@ def hexagon_coordinates(i, j, k):
     deltas = hexagon_deltas[signature]
     center = numpy.array([i, j, k])
     return numpy.array([center + x for x in deltas])
+
 
 ## Heatmaps ##
 
@@ -176,6 +181,7 @@ def polygon_generator(data, scale, style, permutation=None):
                 vertices = alt_triangle_coordinates(i, j, k)
                 value = alt_blend_value(data, i, j, k)
                 yield (map(project, vertices), value)
+
 
 def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
             scientific=False, style='triangular', colorbar=True,
@@ -257,6 +263,7 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
 
 ## User Convenience Functions ##
 
+
 def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
              scientific=False, style='triangular', colorbar=True,
              permutation=None, vmin=None, vmax=None, cbarlabel=None,
@@ -309,6 +316,7 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
                  cbarlabel=cbarlabel, cb_kwargs=cb_kwargs)
     return ax
 
+
 def svg_polygon(coordinates, color):
     """
     Create an svg triangle for the stationary heatmap.
@@ -331,6 +339,7 @@ def svg_polygon(coordinates, color):
     coord_str = " ".join(coord_str)
     polygon = '<polygon points="%s" style="fill:%s;stroke:%s;stroke-width:0"/>\n' % (coord_str, color, color)
     return polygon
+
 
 def svg_heatmap(data, scale, filename, vmax=None, vmin=None, style='h',
                 permutation=None, cmap=None):
@@ -387,7 +396,7 @@ def svg_heatmap(data, scale, filename, vmax=None, vmin=None, style='h',
 
 
     vertices_values = polygon_generator(data, scale, style,
-                                       permutation=permutation)
+                                        permutation=permutation)
 
     # Draw the polygons and color them
     for vertices, value in vertices_values:

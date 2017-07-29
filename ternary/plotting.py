@@ -2,14 +2,13 @@
 Plotting functions: scatter, plot (curves), axis labelling.
 """
 
-from functools import partial
-
 import matplotlib
 from matplotlib import pyplot
 import numpy as np
 
-from .helpers import project_sequence, project_point
+from .helpers import project_sequence
 from .colormapping import get_cmap, colorbar_hack
+
 
 ### Drawing Helpers ###
 
@@ -27,6 +26,7 @@ def resize_drawing_canvas(ax, scale=1.):
     """
     ax.set_ylim((-0.10 * scale, .90 * scale))
     ax.set_xlim((-0.05 * scale, 1.05 * scale))
+
 
 def clear_matplotlib_ticks(ax=None, axis="both"):
     """
@@ -46,6 +46,7 @@ def clear_matplotlib_ticks(ax=None, axis="both"):
         ax.set_xticks([], [])
     if axis.lower() in ["both", "y", "vertical"]:
         ax.set_yticks([], [])
+
 
 ## Curve Plotting ##
 
@@ -69,6 +70,7 @@ def plot(points, ax=None, permutation=None, **kwargs):
     xs, ys = project_sequence(points, permutation=permutation)
     ax.plot(xs, ys, **kwargs)
     return ax
+
 
 def plot_colored_trajectory(points, cmap=None, ax=None, permutation=None,
                             **kwargs):
@@ -112,6 +114,7 @@ def plot_colored_trajectory(points, cmap=None, ax=None, permutation=None,
     ax.add_collection(line_segments)
 
     return ax
+
 
 def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None,
             vmin=0, vmax=1, scientific=False, cbarlabel=None, cb_kwargs=None,
