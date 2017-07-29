@@ -154,7 +154,7 @@ def get_conversion(scale, limits):
     """
     Get the conversion equations for each axis.
 
-    limits: dict  of min and max values for the axes in the order blr.
+    limits: dict of min and max values for the axes in the order blr.
     """
     fb = float(scale) / float(limits['b'][1] - limits['b'][0])
     fl = float(scale) / float(limits['l'][1] - limits['l'][0])

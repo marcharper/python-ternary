@@ -281,7 +281,7 @@ class TernaryAxesSubplot(object):
             self._ticks[k] = numpy.linspace(
                 self._axis_limits[k][0],
                 self._axis_limits[k][1],
-                (self._boundary_scale/float(multiple) + 1)
+                (self._boundary_scale / float(multiple) + 1)
             ).tolist()
 
     def set_custom_ticks(self, locations=None, clockwise=False, multiple=1,
@@ -337,9 +337,9 @@ class TernaryAxesSubplot(object):
             text.set_rotation_mode("anchor")
             self._to_remove.append(text)
             
-    def convert_coordinates(self,points,axisorder='blr'):
+    def convert_coordinates(self, points, axisorder='blr'):
         """
-        Convert data coords to simplex coords for plotting
+        Convert data coordinates to simplex coordinates for plotting
         in the case that axis limits have been applied
         """
         return convert_coordinates_sequence(points,self._boundary_scale,
