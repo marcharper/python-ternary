@@ -18,7 +18,7 @@ def get_cmap(cmap=None):
 
     Parameters
     ----------
-    cmap, string or matplotlib.colors.Colormap instance
+    cmap: string or matplotlib.colors.Colormap instance
         The name of the Matplotlib colormap to look up.
 
     Returns
@@ -46,11 +46,11 @@ def colormapper(value, lower=0, upper=1, cmap=None):
 
     Parameters
     ----------
-    x: float
+    value: float
         The value to be colormapped
-    a: float
+    lower: float
         Lower bound of colors
-    b: float
+    upper: float
         Upper bound of colors
     cmap: String or matplotlib.colors.Colormap (optional)
         Colormap object to prevent repeated lookup
