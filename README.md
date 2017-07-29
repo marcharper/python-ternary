@@ -166,7 +166,7 @@ The following code draws a boundary for the simplex and gridlines.
     ternary.plt.show()
 ```
 <p align="center">
-<img src="/readme_images/boundary_and_gridlines.png" width="500" height="375"/>
+<img src="/readme_images/boundary_and_gridlines.png" width="600" height="450"/>
 </p>
 
 ## Drawing lines
@@ -251,7 +251,7 @@ You can also color the curves with a Matplotlib heatmap using:
 ```
 
 <p align="center">
-<img src="/readme_images/colored_trajectory.png" width="500" height="375"/>
+<img src="/readme_images/colored_trajectory.png" width="600" height="450"/>
 </p>
 
 ## Scatter Plots
@@ -365,7 +365,7 @@ or on a `TernaryAxesSubplot` object:
 This can produces images such as:
 
 <p align="center">
-<img src="/readme_images/heatmap-dual_vs_triangular.png" width="1200" height="300"/> <br/>
+<img src="/readme_images/heatmap-dual_vs_triangular.png" width="1200" height="260"/> <br/>
 <img src="/readme_images/heatmap_rsp.png" width="500" height="375"/>
 </p>
 
