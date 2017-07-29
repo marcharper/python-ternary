@@ -165,8 +165,9 @@ The following code draws a boundary for the simplex and gridlines.
 
     ternary.plt.show()
 ```
-
-![Ternary Plot -- Boundary and Gridlines](/readme_images/boundary_and_gridlines.png)
+<p align="center">
+<img src="/readme_images/boundary_and_gridlines.png" width="500" height="375"/>
+</p>
 
 ## Drawing lines
 
@@ -205,7 +206,9 @@ You can draw individual lines between any two points with `line` and lines paral
 
 The line drawing functions accept the matplotlib keyword arguments of [Line2D](http://matplotlib.org/api/lines_api.html).
 
-![Ternary Plot -- Various Lines](/readme_images/various_lines.png)
+<p align="center">
+<img src="/readme_images/various_lines.png" width="500" height="375"/>
+</p>
 
 ## Curves
 
@@ -236,7 +239,9 @@ Points is a list of tuples or numpy arrays, such as [(0.5, 0.25, 0.25), (1./3, 1
     tax.show()
 ```
 
-![Ternary Curve Plot](/readme_images/trajectory.png)
+<p align="center">
+<img src="/readme_images/trajectory.png" width="500" height="375"/>
+</p>
 
 There are many more examples in [this paper](http://arxiv.org/abs/1210.5539).
 
@@ -245,7 +250,9 @@ You can also color the curves with a Matplotlib heatmap using:
     plot_colored_trajectory(points, cmap="hsv", linewidth=2.0)
 ```
 
-![Ternary Curve Plot](/readme_images/colored_trajectory.png)
+<p align="center">
+<img src="/readme_images/colored_trajectory.png" width="500" height="375"/>
+</p>
 
 ## Scatter Plots
 
@@ -271,7 +278,9 @@ Similarly, ternary can make scatter plots:
     tax.show()
 ```
 
-![Ternary Scatter Plot Example](/readme_images/scatter.png)
+<p align="center">
+<img src="/readme_images/scatter.png" width="500" height="375"/>
+</p>
 
 ## Heatmaps
 
@@ -294,9 +303,11 @@ mapping ternary coordinates to upright triangles otherwise. The `triangular` sty
 maps ternary coordinates to vertices and computes the triangle color based on the
 values at the vertices.
 
-<img src ="/readme_images/heatmap-grids.png" width="500" height="250"/>
+<p align="center">
+<img src="/readme_images/heatmap-grids.png" width="500" height="250"/><br/>
+<img src="/readme_images/heatmap_styles_cubehelix.png"/><br/>
+</p>
 
-![](/readme_images/heatmap_styles_cubehelix.png)
 
 Thanks to [chebee7i](https://github.com/chebee7i) for the above images.
 
@@ -332,7 +343,9 @@ In this case the keyword argument *boundary* indicates whether you wish to evalu
 
 You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/colormaps_reference.html) (an instance or the colormap name) in the cmap argument.
 
+<p style="text-align:center">
 ![Ternary Heatmap Examples](/readme_images/heatmap_shannon.png)
+</p>
 
 Ternary can also make heatmaps from data. In this case you need to supply a dictionary
 mapping `(i, j)` or `(i, j, k)` for `i + j + k = scale` to a float as input for a heatmap. It is not necessary to include `k` in the dictionary keys since it can be determined from `scale`, `i`, and `j`. This reduces the memory requirements when the partition is very fine (significant when `scale` is in the hundreds).
@@ -351,9 +364,10 @@ or on a `TernaryAxesSubplot` object:
 
 This can produces images such as:
 
-![Ternary Heatmap Examples](/readme_images/heatmap-dual_vs_triangular.png)
-
-![Ternary Heatmap Examples](/readme_images/heatmap_rsp.png)
+<p align="center">
+<img src="/readme_images/heatmap-dual_vs_triangular.png" width="1200" height="300"/> <br/>
+<img src="/readme_images/heatmap_rsp.png" width="500" height="375"/>
+</p>
 
 There is a large set of heatmap examples [here](http://www.marcharper.net/stationary_examples/index.html).
 
@@ -364,7 +378,9 @@ corresponding to the clockwise and counterclockwise orientations. However note
 that the axes labels need to be adjusted accordingly, and `ternary` does not
 do so automatically when you pass `clockwise=True` to `tax.ticks()`.
 
-![](/readme_images/orientations.png)
+<p align="center">
+<img src="/readme_images/orientations.png"/>
+</p>
 
 There is a [more detailed discussion](https://github.com/marcharper/python-ternary/issues/18) on issue #18 (closed).
 
@@ -409,8 +425,9 @@ inclusion of a colorbar. Here is an example:
 
 This produces the following image:
 
-![Ternary Heatmap Examples](/readme_images/rgba_example.png)
-
+<p align="center">
+<img src="/readme_images/rgba_example.png" width="450" height="450"/>
+</p>
 
 # Unittests
 
