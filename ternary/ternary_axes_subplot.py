@@ -29,6 +29,7 @@ def figure(ax=None, scale=None, permutation=None):
     ternary_ax = TernaryAxesSubplot(ax=ax, scale=scale, permutation=permutation)
     return ternary_ax.get_figure(), ternary_ax
 
+
 def mpl_redraw_callback(event, tax):
     """
     Callback to properly rotate and redraw text labels when the plot is drawn 
@@ -42,6 +43,7 @@ def mpl_redraw_callback(event, tax):
     """
 
     tax._redraw_labels()
+
 
 class TernaryAxesSubplot(object):
     """
@@ -61,9 +63,9 @@ class TernaryAxesSubplot(object):
         self.set_scale(scale=scale)
         self._permutation = permutation
         self._boundary_scale = scale
-        self._labels = dict() # Container for the axis labels supplied by the user
+        self._labels = dict()  # Container for the axis labels supplied by the user
         self._ticks = dict()
-        self._to_remove = [] # Container for the redrawing of labels
+        self._to_remove = []  # Container for the redrawing of labels
         self._connect_callbacks()
 
     def _connect_callbacks(self):
@@ -198,7 +200,7 @@ class TernaryAxesSubplot(object):
         """
 
         if not position:
-            position = (1./2, -offset, 1./2)
+            position = (1./2, -offset / 2., 1./2)
         self._labels["bottom"] = (label, position, rotation, kwargs)
 
     def annotate(self, text, position, **kwargs):
@@ -211,7 +213,7 @@ class TernaryAxesSubplot(object):
     def boundary(self, scale=None, axes_colors=None, **kwargs):
         # Sometimes you want to draw a bigger boundary
         if not scale:
-            scale = self._boundary_scale # defaults to self._scale
+            scale = self._boundary_scale  # defaults to self._scale
         ax = self.get_axes()
         self.resize_drawing_canvas(scale)
         lines.boundary(scale=scale, ax=ax, axes_colors=axes_colors, **kwargs)
@@ -269,36 +271,33 @@ class TernaryAxesSubplot(object):
         ax = self.get_axes()
         plotting.clear_matplotlib_ticks(ax=ax, axis=axis)
 
-
-    def get_ticks_from_axis_limits(self,multiple=1):
+    def get_ticks_from_axis_limits(self, multiple=1):
         """
         Taking self._axis_limits and self._boundary_scale get the scaled
         ticks for all three axes and store them in self._ticks under the
         keys 'b' for bottom, 'l' for left and 'r' for right axes.
         """
         for k in ['b','l','r']:
-            self._ticks[k] = numpy.linspace(self._axis_limits[k][0],
-                                            self._axis_limits[k][1],
-                                            (self._boundary_scale/float(multiple)+1)).tolist()
+            self._ticks[k] = numpy.linspace(
+                self._axis_limits[k][0],
+                self._axis_limits[k][1],
+                (self._boundary_scale/float(multiple) + 1)
+            ).tolist()
 
-
-
-    def set_custom_ticks(self, locations=None,clockwise=False,multiple=1,
+    def set_custom_ticks(self, locations=None, clockwise=False, multiple=1,
                          axes_colors=None, tick_formats=None, **kwargs):
         """
         Having called get_ticks_from_axis_limits, set the custom ticks on the
         plot.
         """
         for k in ['b','l','r']:
-            self.ticks(ticks=self._ticks[k],locations=locations,
-                       axis=k,clockwise=clockwise, multiple=multiple,
+            self.ticks(ticks=self._ticks[k], locations=locations,
+                       axis=k, clockwise=clockwise, multiple=multiple,
                        axes_colors=axes_colors, tick_formats=tick_formats,
                        **kwargs)
 
-
     def ticks(self, ticks=None, locations=None, multiple=1, axis='blr',
-              clockwise=False, axes_colors=None, tick_formats=None,
-              **kwargs):
+              clockwise=False, axes_colors=None, tick_formats=None, **kwargs):
         ax = self.get_axes()
         scale = self.get_scale()
         lines.ticks(ax, scale, ticks=ticks, locations=locations,
@@ -329,14 +328,14 @@ class TernaryAxesSubplot(object):
             transform = ax.transAxes
             x, y = project_point(position)
             # Calculate the new angle.
-            position = numpy.array([x,y])
-            new_rotation = ax.transData.transform_angles(numpy.array((rotation,)), position.reshape((1,2)))[0]
-            text = ax.text(x, y, label, rotation=new_rotation, transform=transform,
-                        horizontalalignment="center", **kwargs)
+            position = numpy.array([x, y])
+            new_rotation = ax.transData.transform_angles(
+                numpy.array((rotation,)), position.reshape((1, 2)))[0]
+            text = ax.text(x, y, label, rotation=new_rotation,
+                           transform=transform, horizontalalignment="center",
+                           **kwargs)
             text.set_rotation_mode("anchor")
             self._to_remove.append(text)
-
-
             
     def convert_coordinates(self,points,axisorder='blr'):
         """
@@ -344,10 +343,9 @@ class TernaryAxesSubplot(object):
         in the case that axis limits have been applied
         """
         return convert_coordinates_sequence(points,self._boundary_scale,
-                                            self._axis_limits,axisorder)
+                                            self._axis_limits, axisorder)
 
-
-    ## Various Plots
+    # Various Plots
 
     def scatter(self, points, **kwargs):
         ax = self.get_axes()
