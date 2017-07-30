@@ -41,7 +41,6 @@ def mpl_redraw_callback(event, tax):
     tax: TernaryAxesSubplot
          the TernaryAxesSubplot 
     """
-
     tax._redraw_labels()
 
 
@@ -255,9 +254,11 @@ class TernaryAxesSubplot(object):
         ax.legend(*args, **kwargs)
 
     def savefig(self, filename, dpi=200, format=None):
+        self._redraw_labels()
         figure = self.get_figure()
         figure.savefig(filename, format=format, dpi=dpi)
 
+    @staticmethod
     def show(self):
         pyplot.show()
 
