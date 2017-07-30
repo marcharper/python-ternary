@@ -32,14 +32,14 @@ def figure(ax=None, scale=None, permutation=None):
 
 def mpl_redraw_callback(event, tax):
     """
-    Callback to properly rotate and redraw text labels when the plot is drawn 
+    Callback to properly rotate and redraw text labels when the plot is drawn
     or resized.
 
     Parameters:
     event: a matplotlib event
         either 'resize_event' or 'draw_event'
     tax: TernaryAxesSubplot
-         the TernaryAxesSubplot 
+         the TernaryAxesSubplot
     """
     tax._redraw_labels()
 
@@ -235,7 +235,7 @@ class TernaryAxesSubplot(object):
     def horizontal_line(self, i, **kwargs):
         ax = self.get_axes()
         scale = self.get_scale()
-        lines.horizontal_line(ax, scale, i, **kwargs) 
+        lines.horizontal_line(ax, scale, i, **kwargs)
 
     def left_parallel_line(self, i, **kwargs):
         ax = self.get_axes()
@@ -249,17 +249,21 @@ class TernaryAxesSubplot(object):
 
     # Matplotlib passthroughs
 
+    def close(self):
+        fig = self.get_figure()
+        pyplot.close(fig)
+
     def legend(self, *args, **kwargs):
         ax = self.get_axes()
         ax.legend(*args, **kwargs)
 
     def savefig(self, filename, dpi=200, format=None):
         self._redraw_labels()
-        figure = self.get_figure()
-        figure.savefig(filename, format=format, dpi=dpi)
+        fig = self.get_figure()
+        fig.savefig(filename, format=format, dpi=dpi)
 
-    @staticmethod
     def show(self):
+        self._redraw_labels()
         pyplot.show()
 
     # Axis ticks
@@ -302,7 +306,7 @@ class TernaryAxesSubplot(object):
         ax = self.get_axes()
         scale = self.get_scale()
         lines.ticks(ax, scale, ticks=ticks, locations=locations,
-                    multiple=multiple, clockwise=clockwise, axis=axis, 
+                    multiple=multiple, clockwise=clockwise, axis=axis,
                     axes_colors=axes_colors, tick_formats=tick_formats,
                     **kwargs)
 
@@ -337,7 +341,7 @@ class TernaryAxesSubplot(object):
                            **kwargs)
             text.set_rotation_mode("anchor")
             self._to_remove.append(text)
-            
+
     def convert_coordinates(self, points, axisorder='blr'):
         """
         Convert data coordinates to simplex coordinates for plotting
