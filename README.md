@@ -298,10 +298,7 @@ triangles &#9661;
 the simplex up into hexagonal regions
 
 The two triangular heatmap styles and the hexagonal heatmap style can be visualized
-as follows. The `dual-triangular` style plots the true values on the upright triangles,
-mapping ternary coordinates to upright triangles otherwise. The `triangular` style
-maps ternary coordinates to vertices and computes the triangle color based on the
-values at the vertices.
+as follows: left is triangular, right is dual triangular.
 
 <p align="center">
 <img src="/readme_images/heatmap-grids.png" width="500" height="250"/><br/>
