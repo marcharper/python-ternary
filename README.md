@@ -341,7 +341,7 @@ In this case the keyword argument *boundary* indicates whether you wish to evalu
 You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/colormaps_reference.html) (an instance or the colormap name) in the cmap argument.
 
 <p style="text-align:center">
-![Ternary Heatmap Examples](/readme_images/heatmap_shannon.png)
+<img src="/readme_images/heatmap_shannon.png"/> <br/>
 </p>
 
 Ternary can also make heatmaps from data. In this case you need to supply a dictionary
