@@ -8,7 +8,7 @@
 This is a plotting library for use with [matplotlib](http://matplotlib.org/index.html) to make [ternary plots](http://en.wikipedia.org/wiki/Ternary_plot)
 plots in the two dimensional simplex projected onto a two dimensional plane.
 
-The library provides functions for plotting projected lines, curves (trajectories), scatter plots, and heatmaps. There are [several examples](https://github.com/marcharper/python-ternary/blob/master/examples.py) and a short tutorial below.
+The library provides functions for plotting projected lines, curves (trajectories), scatter plots, and heatmaps. There are [several examples](examples/) and a short tutorial below.
 
 # Gallery
 
@@ -78,7 +78,7 @@ The master branch is kept in a good working state and should be fine for general
 
 # Usage, Examples, Plotting Functions
 
-You can explore some of these examples with [this Jupyter notebook](Ternary-Examples.ipynb).
+You can explore some of these examples with [this Jupyter notebook](examples/Ternary-Examples.ipynb).
 
 The easiest way to use python-ternary is with the wrapper class `TernaryAxesSubplot`,
 which mimics Matplotlib's AxesSubplot. Start with:
@@ -434,7 +434,7 @@ You can run the test suite as follows:
 python -m unittest discover tests
 ```
 
-The included script of [examples](https://github.com/marcharper/python-ternary/blob/master/examples.py) is intended to act as a series of extended tests.
+The included script of [examples](/examples/examples.py) is intended to act as a series of extended tests.
 
 # Contributing
 
