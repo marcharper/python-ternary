@@ -366,8 +366,6 @@ This can produces images such as:
 <img src="/readme_images/heatmap_rsp.png" width="500" height="375"/>
 </p>
 
-There is a large set of heatmap examples [here](http://www.marcharper.net/stationary_examples/index.html).
-
 # Axes Ticks and Orientations
 
 For a given ternary plot there are two valid ways to label the axes ticks
