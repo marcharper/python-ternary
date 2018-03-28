@@ -35,6 +35,7 @@ See the citations below for more example images.
 
 Have you used python-ternary in a publication? Open a PR or issue to include your citations or example plots!
 
+- [Enhanced CO2 selectivity within the cavity of gmelinite frameworks](https://link.springer.com/article/10.1007%2Fs10450-018-9945-2) Gotzias, A., Kainourgiakis, M. & Stubos, A. Adsorption (2018). https://doi.org/10.1007/s10450-018-9945-2
 - [Genetic Drift and Selection in Many-Allele Range Expansions](http://biorxiv.org/content/early/2017/06/07/145631) by [Bryan T. Weinstein](https://github.com/btweinstein), Maxim O. Lavrentovich, Wolfram Möbius, Andrew W. Murray, and David R. Nelson (2017)
 - [Gibbs Sampler-Based λ-Dynamics and Rao–Blackwell Estimator for Alchemical Free Energy Calculation](http://pubs.acs.org/doi/abs/10.1021/acs.jctc.7b00204?src=recsys&journalCode=jctcce) by Xinqiang Ding, Jonah Z. Vilseck, Ryan L. Hayes, and Charles L. Brooks (2017)
 - [PREDICTD: PaRallel Epigenomics Data Imputation With Cloud-based Tensor Decomposition](http://biorxiv.org/content/early/2017/04/04/123927) by Timothy J Durham, Maxwell W Libbrecht, Jeffry Howbert, Jeffrey Bilmes, William S Noble (2017)
