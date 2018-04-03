@@ -15,7 +15,7 @@ from .colormapping import get_cmap, colormapper, colorbar_hack
 
 
 def blend_value(data, i, j, k, keys=None):
-    """Computes the average value of the three vertices of a triangule in the
+    """Computes the average value of the three vertices of a triangle in the
     simplex triangulation, where two of the vertices are on the lower
     horizontal."""
 
@@ -35,7 +35,7 @@ def blend_value(data, i, j, k, keys=None):
 
 
 def alt_blend_value(data, i, j, k):
-    """Computes the average value of the three vertices of a triangule in the
+    """Computes the average value of the three vertices of a triangle in the
     simplex triangulation, where two of the vertices are on the upper
     horizontal."""
 
@@ -253,13 +253,14 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
         ax.fill(xs, ys, facecolor=color, edgecolor=color)
 
     if colorbar and colormap:
-        if cb_kwargs != None:
+        if cb_kwargs:
             colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific,
                           cbarlabel=cbarlabel, **cb_kwargs)
         else:
             colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific,
                           cbarlabel=cbarlabel)
     return ax
+
 
 ## User Convenience Functions ##
 
@@ -393,7 +394,6 @@ def svg_heatmap(data, scale, filename, vmax=None, vmin=None, style='h',
 
     output_file = open(filename, 'w')
     output_file.write('<svg height="%s" width="%s">\n' % (height, scale))
-
 
     vertices_values = polygon_generator(data, scale, style,
                                         permutation=permutation)

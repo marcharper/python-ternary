@@ -147,7 +147,8 @@ def merge_dicts(base, updates):
     return z
 
 
-def gridlines(ax, scale, multiple=None, horizontal_kwargs=None, left_kwargs=None, right_kwargs=None, **kwargs):
+def gridlines(ax, scale, multiple=None, horizontal_kwargs=None,
+              left_kwargs=None, right_kwargs=None, **kwargs):
     """
     Plots grid lines excluding boundary.
 
@@ -189,6 +190,19 @@ def gridlines(ax, scale, multiple=None, horizontal_kwargs=None, left_kwargs=None
         left_parallel_line(ax, scale, i, **left_kwargs)
         right_parallel_line(ax, scale, i, **right_kwargs)
     return ax
+
+
+def normalize_tick_formats(tick_formats):
+    if type(tick_formats) == dict:
+        return tick_formats
+    if tick_formats is None:
+        s = '%d'
+    elif type(tick_formats) == str:
+        s = tick_formats
+    else:
+        raise TypeError("tick_formats must be a dictionary of strings"
+                        " a string, or None.")
+    return {'b': s, 'l': s, 'r': s}
 
 
 def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
@@ -247,6 +261,8 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
         locations = arange(0, scale + multiple, multiple)
         ticks = locations
 
+    tick_formats = normalize_tick_formats(tick_formats)
+
     # Default color: black
     if axes_colors is None:
         axes_colors = dict()
@@ -271,15 +287,7 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
                 tick = ticks[index]
             line(ax, loc1, loc2, color=axes_colors['r'], **kwargs)
             x, y = project_point(text_location)
-            if tick_formats is None:
-                if type(tick) == int:
-                    s = str(tick)
-                else:
-                    s = str(int(tick))
-            elif type(tick_formats) == str:
-                s = tick_formats % (tick)
-            elif type(tick_formats == dict):
-                s = tick_formats['r'] % (tick)
+            s = tick_formats['r'] % tick
             ax.text(x, y, s, horizontalalignment="center",
                     color=axes_colors['r'], fontsize=fontsize)
 
@@ -298,15 +306,7 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
                 tick = ticks[-(index+1)]
             line(ax, loc1, loc2, color=axes_colors['l'], **kwargs)
             x, y = project_point(text_location)
-            if tick_formats is None:
-                if type(tick) == int:
-                    s = str(tick)
-                else:
-                    s = str(int(tick))
-            elif type(tick_formats) == str:
-                s = tick_formats % (tick)
-            elif type(tick_formats == dict):
-                s = tick_formats['l'] % (tick)
+            s = tick_formats['l'] % tick
             ax.text(x, y, s, horizontalalignment="center",
                     color=axes_colors['l'], fontsize=fontsize)
 
@@ -321,18 +321,10 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
             else:
                 # Left parallel
                 loc2 = (i, -offset, 0)
-                text_location = (i + 0.5 * offset, - 3.5 * offset, 0)
+                text_location = (i + 0.5 * offset, -3.5 * offset, 0)
                 tick = ticks[index]
             line(ax, loc1, loc2, color=axes_colors['b'], **kwargs)
             x, y = project_point(text_location)
-            if tick_formats is None:
-                if type(tick) == int:
-                    s = str(tick)
-                else:
-                    s = str(int(tick))
-            elif type(tick_formats) == str:
-                s = tick_formats % (tick)
-            elif type(tick_formats == dict):
-                s = tick_formats['b'] % (tick)
+            s = tick_formats['b'] % tick
             ax.text(x, y, s, horizontalalignment="center",
                     color=axes_colors['b'], fontsize=fontsize)

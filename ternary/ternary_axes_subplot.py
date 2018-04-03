@@ -62,9 +62,11 @@ class TernaryAxesSubplot(object):
         self.set_scale(scale=scale)
         self._permutation = permutation
         self._boundary_scale = scale
-        self._labels = dict()  # Container for the axis labels supplied by the user
+        # Container for the axis labels supplied by the user
+        self._labels = dict()
         self._ticks = dict()
-        self._to_remove = []  # Container for the redrawing of labels
+        # Container for the redrawing of labels
+        self._to_remove = []
         self._connect_callbacks()
 
     def _connect_callbacks(self):
@@ -108,9 +110,9 @@ class TernaryAxesSubplot(object):
         Set min and max data limits for each of the three axes.
 
         axis_limits = dict
-                keys are 'b','l' and 'r' for the three axes
-                vals are lists of the min and max values for the axis in
-                data units.
+            keys are 'b','l' and 'r' for the three axes
+            vals are lists of the min and max values for the axis in
+            data units.
         """
         self._axis_limits = axis_limits
 
@@ -282,11 +284,11 @@ class TernaryAxesSubplot(object):
         ticks for all three axes and store them in self._ticks under the
         keys 'b' for bottom, 'l' for left and 'r' for right axes.
         """
-        for k in ['b','l','r']:
+        for k in ['b', 'l', 'r']:
             self._ticks[k] = numpy.linspace(
                 self._axis_limits[k][0],
                 self._axis_limits[k][1],
-                (self._boundary_scale / float(multiple) + 1)
+                self._boundary_scale / float(multiple) + 1
             ).tolist()
 
     def set_custom_ticks(self, locations=None, clockwise=False, multiple=1,
@@ -295,7 +297,7 @@ class TernaryAxesSubplot(object):
         Having called get_ticks_from_axis_limits, set the custom ticks on the
         plot.
         """
-        for k in ['b','l','r']:
+        for k in ['b', 'l', 'r']:
             self.ticks(ticks=self._ticks[k], locations=locations,
                        axis=k, clockwise=clockwise, multiple=multiple,
                        axes_colors=axes_colors, tick_formats=tick_formats,

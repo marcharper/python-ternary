@@ -1,7 +1,7 @@
 import ternary
 
 # Simple example:
-##Boundary and Gridlines
+## Boundary and Gridlines
 scale = 9
 figure, tax = ternary.figure(scale=scale)
 
