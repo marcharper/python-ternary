@@ -55,7 +55,7 @@ def random_points(num_points=25, scale=40):
         x = random.randint(1, scale)
         y = random.randint(0, scale - x)
         z = scale - x - y
-        points.append((x,y,z))
+        points.append((x, y, z))
     return points
 
 
@@ -192,7 +192,7 @@ if __name__ == '__main__':
     # Careful -- these can use a lot of RAM!
     scale = 30
     function = shannon_entropy
-    plt.fig()
+    plt.figure()
     gs = gridspec.GridSpec(2, 3)
 
     ax = plt.subplot(gs[0, 0])
@@ -235,7 +235,7 @@ if __name__ == '__main__':
     # Careful -- these can use a lot of RAM!
     scale = 60
     data = load_sample_heatmap_data()
-    plt.fig()
+    plt.figure()
     gs = gridspec.GridSpec(1, 3)
     ax = plt.subplot(gs[0, 0])
     fig, tax = ternary.figure(ax=ax, scale=scale)

@@ -12,9 +12,11 @@ SQRT3OVER2 = SQRT3 / 2.
 
 ### Auxilliary Functions ###
 
+
 def unzip(l):
     """[(a1, b1), ..., (an, bn)] ----> ([a1, ..., an], [b1, ..., bn])"""
     return list(zip(*l))
+
 
 def normalize(l):
     """
@@ -90,7 +92,7 @@ def project_point(p, permutation=None):
     ----------
     p: 3-tuple
         The point to be projected p = (x, y, z)
-    coordinate_order, string, None, equivalent to "012"
+    permutation: string, None, equivalent to "012"
         The order of the coordinates, counterclockwise from the origin
     """
     permuted = permute_point(p, permutation=permutation)
@@ -162,8 +164,7 @@ def get_conversion(scale, limits):
 
     conversion = {"b": lambda x: (x - limits['b'][0]) * fb,
                   "l": lambda x: (x - limits['l'][0]) * fl,
-                  "r": lambda x: (x - limits['r'][0]) * fr
-                  }
+                  "r": lambda x: (x - limits['r'][0]) * fr}
 
     return conversion
     
