@@ -35,7 +35,8 @@ def mpl_redraw_callback(event, tax):
     Callback to properly rotate and redraw text labels when the plot is drawn
     or resized.
 
-    Parameters:
+    Parameters
+    ----------
     event: a matplotlib event
         either 'resize_event' or 'draw_event'
     tax: TernaryAxesSubplot
@@ -64,16 +65,14 @@ class TernaryAxesSubplot(object):
         self._boundary_scale = scale
         # Container for the axis labels supplied by the user
         self._labels = dict()
+        self._corner_labels = dict()
         self._ticks = dict()
         # Container for the redrawing of labels
         self._to_remove = []
         self._connect_callbacks()
 
     def _connect_callbacks(self):
-        """
-        Connect resize matplotlib callbacks.
-        """
-
+        """Connect resize matplotlib callbacks."""
         figure = self.get_figure()
         callback = partial(mpl_redraw_callback, tax=self)
         event_names = ('resize_event', 'draw_event')
@@ -84,17 +83,11 @@ class TernaryAxesSubplot(object):
         return "TernaryAxesSubplot: %s" % self.ax.__hash__()
 
     def get_axes(self):
-        """
-        Return the underlying matplotlib AxesSubplot object
-        """
-
+        """Returns the underlying matplotlib AxesSubplot object."""
         return self.ax
 
     def get_figure(self):
-        """
-        Return the underlying matplotlib figure object.
-        """
-
+        """Return the underlying matplotlib figure object."""
         ax = self.get_axes()
         return ax.get_figure()
 
@@ -122,10 +115,7 @@ class TernaryAxesSubplot(object):
     # Title and Axis Labels
 
     def set_title(self, title, **kwargs):
-        """
-        Sets the title on the underlying matplotlib AxesSubplot
-        """
-
+        """Sets the title on the underlying matplotlib AxesSubplot."""
         ax = self.get_axes()
         ax.set_title(title, **kwargs)
 
@@ -136,8 +126,6 @@ class TernaryAxesSubplot(object):
 
         Parameters
         ----------
-        ax: Matplotlib AxesSubplot, None
-            The subplot to draw on.
         label: String
             The axis label
         position: 3-Tuple of floats, None
@@ -154,15 +142,13 @@ class TernaryAxesSubplot(object):
             position = (-offset, 3./5, 2./5)
         self._labels["left"] = (label, position, rotation, kwargs)
 
-    def right_corner_label(self, label, position=None,  rotation=0, offset=0.08,
-                        **kwargs):
+    def right_corner_label(self, label, position=None, rotation=0, offset=0.08,
+                           **kwargs):
         """
         Sets the label on the right corner (complements left axis).
 
         Parameters
         ----------
-        ax: Matplotlib AxesSubplot, None
-            The subplot to draw on.
         label: String
             The axis label
         position: 3-Tuple of floats, None
@@ -186,8 +172,6 @@ class TernaryAxesSubplot(object):
 
         Parameters
         ----------
-        ax: Matplotlib AxesSubplot, None
-            The subplot to draw on.
         label: String
             The axis label
         position: 3-Tuple of floats, None
@@ -204,16 +188,14 @@ class TernaryAxesSubplot(object):
             position = (2./5 + offset, 3./5, 0)
         self._labels["right"] = (label, position, rotation, kwargs)
 
-    def left_corner_label(self, label, position=None, rotation=-0, offset=0.08,
-                         **kwargs):
+    def left_corner_label(self, label, position=None, rotation=0, offset=0.08,
+                          **kwargs):
         """
         Sets the label on the left corner (complements right axis.)
 
         Parameters
         ----------
-        ax: Matplotlib AxesSubplot, None
-            The subplot to draw on.
-        label: String
+        label: string
             The axis label
         position: 3-Tuple of floats, None
             The position of the text label
@@ -226,8 +208,8 @@ class TernaryAxesSubplot(object):
         """
 
         if not position:
-            position = (-offset, offset, -offset/2)
-        self._labels["right"] = (label, position, rotation, kwargs)
+            position = (-offset, offset, -offset / 2.)
+        self._corner_labels["right"] = (label, position, rotation, kwargs)
 
     def bottom_axis_label(self, label, position=None, rotation=0, offset=0.02,
                           **kwargs):
@@ -236,8 +218,6 @@ class TernaryAxesSubplot(object):
 
         Parameters
         ----------
-        ax: Matplotlib AxesSubplot, None
-            The subplot to draw on.
         label: String
             The axis label
         position: 3-Tuple of floats, None
@@ -251,18 +231,16 @@ class TernaryAxesSubplot(object):
         """
 
         if not position:
-            position = (1./2, -offset / 2., 1./2)
-        self._labels["bottom"] = (label, position, rotation, kwargs)
+            position = (0.5, -offset / 2., 0.5)
+        self._corner_labels["bottom"] = (label, position, rotation, kwargs)
 
     def top_corner_label(self, label, position=None, rotation=0, offset=0.2,
-                          **kwargs):
+                         **kwargs):
         """
         Sets the label on the bottom axis.
 
         Parameters
         ----------
-        ax: Matplotlib AxesSubplot, None
-            The subplot to draw on.
         label: String
             The axis label
         position: 3-Tuple of floats, None
@@ -276,8 +254,8 @@ class TernaryAxesSubplot(object):
         """
 
         if not position:
-            position = (-offset/2,1+offset,0)
-        self._labels["bottom"] = (label, position, rotation, kwargs)
+            position = (-offset / 2, 1 + offset, 0)
+        self._corner_labels["bottom"] = (label, position, rotation, kwargs)
 
     def annotate(self, text, position, **kwargs):
         ax = self.get_axes()
@@ -346,10 +324,7 @@ class TernaryAxesSubplot(object):
     # Axis ticks
 
     def clear_matplotlib_ticks(self, axis="both"):
-        """
-        Clears the default matplotlib ticks.
-        """
-
+        """Clears the default matplotlib ticks."""
         ax = self.get_axes()
         plotting.clear_matplotlib_ticks(ax=ax, axis=axis)
 
@@ -396,17 +371,16 @@ class TernaryAxesSubplot(object):
         plotting.resize_drawing_canvas(ax, scale=scale)
 
     def _redraw_labels(self):
-        """
-        Redraw axis labels, typically after draw or resize events.
-        """
-
+        """Redraw axis labels, typically after draw or resize events."""
         ax = self.get_axes()
         # Remove any previous labels
         for mpl_object in self._to_remove:
             mpl_object.remove()
         self._to_remove = []
         # Redraw the labels with the appropriate angles
-        for (label, position, rotation, kwargs) in self._labels.values():
+        label_data = list(self._labels.values())
+        label_data.extend(self._corner_labels.values())
+        for (label, position, rotation, kwargs) in label_data:
             transform = ax.transAxes
             x, y = project_point(position)
             # Calculate the new angle.
@@ -422,7 +396,7 @@ class TernaryAxesSubplot(object):
     def convert_coordinates(self, points, axisorder='blr'):
         """
         Convert data coordinates to simplex coordinates for plotting
-        in the case that axis limits have been applied
+        in the case that axis limits have been applied.
         """
         return convert_coordinates_sequence(points,self._boundary_scale,
                                             self._axis_limits, axisorder)
