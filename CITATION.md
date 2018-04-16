@@ -5,5 +5,5 @@
 Please cite as follows:
 
 ```
-Marc Harper et al.. (2015). python-ternary: Ternary Plots in Python. Zenodo. 10.5281/zenodo.34938
+Marc Harper et al. (2015). python-ternary: Ternary Plots in Python. Zenodo. 10.5281/zenodo.34938
 ```
