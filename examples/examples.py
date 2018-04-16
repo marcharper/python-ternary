@@ -91,7 +91,7 @@ if __name__ == '__main__':
 
     ## Boundary and Gridlines
     scale = 40
-    fig, tax= ternary.figure(scale=scale)
+    fig, tax = ternary.figure(scale=scale)
 
     left_kwargs = {'color': 'blue'}
     right_kwargs = {'color': 'red'}
@@ -99,7 +99,7 @@ if __name__ == '__main__':
     # Draw Boundary and Gridlines
     tax.boundary(linewidth=2.0)
     tax.gridlines(color="blue", multiple=5, left_kwargs=left_kwargs,
-                         right_kwargs=right_kwargs)
+                  right_kwargs=right_kwargs)
 
     # Draw Boundary and Gridlines
     tax.boundary(linewidth=2.0)
@@ -114,10 +114,10 @@ if __name__ == '__main__':
     tax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$",
                           fontsize=fontsize)
     tax.get_axes().axis('off')
-
     tax.ticks(axis='lbr', clockwise=True, multiple=5, linewidth=1)
 
     # Remove default Matplotlib Axes
+    tax.get_axes().axis('off')
     tax.clear_matplotlib_ticks()
 
     ### Plot Various lines
@@ -130,11 +130,9 @@ if __name__ == '__main__':
 
     # Set Axis labels and Title
     fontsize = 20
-    tax.set_title("Various Lines", fontsize=20)
-    tax.left_axis_label("Left label $\\alpha^2$", fontsize=fontsize)
-    tax.right_axis_label("Right label $\\beta^2$", fontsize=fontsize)
-    tax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$",
-                          fontsize=fontsize)
+    tax.top_corner_label("X", fontsize=fontsize)
+    tax.left_corner_label("Y", fontsize=fontsize)
+    tax.right_corner_label("Z", fontsize=fontsize)
 
     # Draw lines parallel to the axes
     tax.horizontal_line(16)
@@ -161,8 +159,9 @@ if __name__ == '__main__':
     points = random_points(30, scale=scale)
     tax.scatter(points, marker='D', color='green', label="Green Diamonds")
     tax.legend()
-    tax.clear_matplotlib_ticks()
     tax.ticks(axis='lbr', multiple=5, linewidth=1)
+    tax.get_axes().axis('off')
+    tax.clear_matplotlib_ticks()
 
     ## Sample trajectory plot
     fig, tax = ternary.figure(scale=1.0)
@@ -172,6 +171,8 @@ if __name__ == '__main__':
     tax.gridlines(multiple=0.2, color="black")
     tax.plot(points, linewidth=2.0, label="Curve")
     tax.legend()
+    tax.get_axes().axis('off')
+    tax.clear_matplotlib_ticks()
 
     ## Sample colored trajectory plot
     fig, tax = ternary.figure(scale=1.0)
@@ -180,9 +181,10 @@ if __name__ == '__main__':
     points = load_sample_trajectory_data()
     tax.gridlines(multiple=0.2, color="black")
     tax.plot_colored_trajectory(points, linewidth=2.0)
-    points = [(y,z,x) for (x,y,z) in points]
+    points = [(y, z, x) for (x, y, z) in points]
     tax.plot_colored_trajectory(points, cmap="hsv", linewidth=2.0)
     tax.legend()
+    tax.get_axes().axis('off')
     tax.clear_matplotlib_ticks()
     tax.ticks(axis='lbr', linewidth=1, multiple=0.1)
 
