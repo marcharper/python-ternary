@@ -10,9 +10,9 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 2.7",
     "Programming Language :: Python :: 3.5",
     "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
     "Topic :: Scientific/Engineering :: Visualization"
 ]
 
@@ -20,17 +20,14 @@ setup(
     name="python-ternary",
     version="1.0.4",
     packages=['ternary'],
-
     install_requires=["matplotlib>=1.4"],
-
-    author="Marc Harper",
+    author="Marc Harper and contributors",
     author_email="marc.harper@gmail.com",
     classifiers=classifiers,
     description="Make ternary plots in python with matplotlib",
     long_description=long_description,
     keywords="matplotlib ternary plotting",
     license="MIT",
-
     url="https://github.com/marcharper/python-ternary",
-    download_url="https://github.com/marcharper/python-ternary/tarball/1.0.3",
+    download_url="https://github.com/marcharper/python-ternary/tarball/1.0.4",
 )
