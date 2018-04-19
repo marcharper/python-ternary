@@ -142,31 +142,9 @@ class TernaryAxesSubplot(object):
             position = (-offset, 3./5, 2./5)
         self._labels["left"] = (label, position, rotation, kwargs)
 
-    def right_corner_label(self, label, position=None, rotation=0, offset=0.08,
-                           **kwargs):
-        """
-        Sets the label on the right corner (complements left axis).
-
-        Parameters
-        ----------
-        label: String
-            The axis label
-        position: 3-Tuple of floats, None
-            The position of the text label
-        rotation: float, 0
-            The angle of rotation of the label
-        offset: float,
-            Used to compute the distance of the label from the axis
-        kwargs:
-            Any kwargs to pass through to matplotlib.
-        """
-
-        if not position:
-            position = (1, offset, 0)
-        self._labels["left"] = (label, position, rotation, kwargs)
-
     def right_axis_label(self, label, position=None, rotation=-60, offset=0.08,
                          **kwargs):
+
         """
         Sets the label on the right axis.
 
@@ -185,31 +163,8 @@ class TernaryAxesSubplot(object):
         """
 
         if not position:
-            position = (2./5 + offset, 3./5, 0)
+            position = (2. / 5 + offset, 3. / 5, 0)
         self._labels["right"] = (label, position, rotation, kwargs)
-
-    def left_corner_label(self, label, position=None, rotation=0, offset=0.08,
-                          **kwargs):
-        """
-        Sets the label on the left corner (complements right axis.)
-
-        Parameters
-        ----------
-        label: string
-            The axis label
-        position: 3-Tuple of floats, None
-            The position of the text label
-        rotation: float, 0
-            The angle of rotation of the label
-        offset: float,
-            Used to compute the distance of the label from the axis
-        kwargs:
-            Any kwargs to pass through to matplotlib.
-        """
-
-        if not position:
-            position = (-offset, offset, -offset / 2.)
-        self._corner_labels["right"] = (label, position, rotation, kwargs)
 
     def bottom_axis_label(self, label, position=None, rotation=0, offset=0.02,
                           **kwargs):
@@ -233,6 +188,52 @@ class TernaryAxesSubplot(object):
         if not position:
             position = (0.5, -offset / 2., 0.5)
         self._corner_labels["bottom"] = (label, position, rotation, kwargs)
+
+    def right_corner_label(self, label, position=None, rotation=0, offset=0.08,
+                           **kwargs):
+        """
+        Sets the label on the right corner (complements left axis).
+
+        Parameters
+        ----------
+        label: String
+            The axis label
+        position: 3-Tuple of floats, None
+            The position of the text label
+        rotation: float, 0
+            The angle of rotation of the label
+        offset: float,
+            Used to compute the distance of the label from the axis
+        kwargs:
+            Any kwargs to pass through to matplotlib.
+        """
+
+        if not position:
+            position = (1, offset / 2, 0)
+        self._labels["right"] = (label, position, rotation, kwargs)
+
+    def left_corner_label(self, label, position=None, rotation=0, offset=0.08,
+                          **kwargs):
+        """
+        Sets the label on the left corner (complements right axis.)
+
+        Parameters
+        ----------
+        label: string
+            The axis label
+        position: 3-Tuple of floats, None
+            The position of the text label
+        rotation: float, 0
+            The angle of rotation of the label
+        offset: float,
+            Used to compute the distance of the label from the axis
+        kwargs:
+            Any kwargs to pass through to matplotlib.
+        """
+
+        if not position:
+            position = (-offset / 2, offset / 2, 0)
+        self._corner_labels["left"] = (label, position, rotation, kwargs)
 
     def top_corner_label(self, label, position=None, rotation=0, offset=0.2,
                          **kwargs):
