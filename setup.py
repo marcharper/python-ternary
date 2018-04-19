@@ -18,7 +18,7 @@ classifiers = [
 
 setup(
     name="python-ternary",
-    version="1.0.3",
+    version="1.0.4",
     packages=['ternary'],
 
     install_requires=["matplotlib>=1.4"],
