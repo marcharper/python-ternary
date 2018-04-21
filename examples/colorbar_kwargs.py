@@ -12,7 +12,6 @@ tax.gridlines(color="black", multiple=1, linewidth=0.5,ls='-')
 
 # Set Axis labels and Title
 fontsize = 15
-#tax.set_title("Custom Ticklabels", fontsize=fontsize)
 tax.left_axis_label("Barleygrow", fontsize=fontsize, offset=0.12)
 tax.right_axis_label("Beans", fontsize=fontsize, offset=0.12)
 tax.bottom_axis_label("Oats", fontsize=fontsize, offset=0.025)
@@ -39,11 +38,10 @@ tax.scatter(points,marker='s',c=c,edgecolor='k',s=40,linewidths=0.5,
 
 tax._redraw_labels()
 
-
-
 # Color coded heatmap example with colorbar kwargs
 # Slight modification so that we don't have to re-import pyplot
 # but make use of ternary.plt
+
 
 # Function to visualize for heat map
 def f(x):
@@ -83,8 +81,6 @@ tax.ticks(ticks=ticks, axis='rlb', linewidth=1, clockwise=True,
           axes_colors=axes_colors, offset=0.03)
 
 tax.clear_matplotlib_ticks()
-
 tax._redraw_labels()
 ternary.plt.tight_layout()
-
 ternary.plt.show()

@@ -2,6 +2,7 @@
 import ternary
 import matplotlib.pyplot as plt
 
+
 def _en_to_enth(energy,concs,A,B,C):
     """Converts an energy to an enthalpy.
 
@@ -30,8 +31,8 @@ def _en_to_enth(energy,concs,A,B,C):
     """
 
     enth = abs(energy - concs[0]*A -concs[1]*B -concs[2]*C)
-
     return enth
+
 
 def _energy_to_enthalpy(energy):
     """Converts energy to enthalpy.
@@ -61,10 +62,10 @@ def _energy_to_enthalpy(energy):
         VASP = _en_to_enth(en[1],conc,pureA[1],pureB[1],pureC[1])
 
         enthalpy.append([CE,VASP,c])
-        
 
     return enthalpy
-    
+
+
 def _find_error(vals):
     """Find the errors in the energy values.
 
@@ -83,13 +84,13 @@ def _find_error(vals):
     for en in vals:
         c = en[2]
         conc = [float(i)/sum(c) for i in c]
-        
 
         err = abs(en[0]-en[1])
 
         err_vals.append([conc,err])
 
     return err_vals
+
 
 def _read_data(fname):
     """Reads data from file.
@@ -127,7 +128,8 @@ def _read_data(fname):
                     conc_f.append(int(c))
             energy.append([CE,VASP,conc_f])
     return energy
-                    
+
+
 def conc_err_plot(fname):
     """Plots the error in the CE data.
     
@@ -158,4 +160,5 @@ def conc_err_plot(fname):
 
     tax.show()
 
-conc_err_plot('../sample_data/scatter_colorbar.txt')
+if __name__ == "__main__":
+    conc_err_plot('../sample_data/scatter_colorbar.txt')
