@@ -185,7 +185,7 @@ def polygon_generator(data, scale, style, permutation=None):
 
 def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
             scientific=False, style='triangular', colorbar=True,
-            permutation=None, colormap=True, cbarlabel=None, cb_kwargs=None):
+            permutation=None, use_rgba=False, cbarlabel=None, cb_kwargs=None):
     """
     Plots heatmap of given color values.
 
@@ -212,6 +212,10 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
         Show colorbar.
     permutation: string, None
         A permutation of the coordinates
+    use_rgba: bool, False
+        Use rgba color values
+    cbarlabel: string, None
+        Text label for the colorbar
     cb_kwargs: dict
         dict of kwargs to pass to colorbar
 
@@ -222,9 +226,9 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
 
     if not ax:
         fig, ax = pyplot.subplots()
-    # If not colormap, then make the RGBA values numpy arrays so that they can
+    # If use_rgba, make the RGBA values numpy arrays so that they can
     # be averaged.
-    if not colormap:
+    if use_rgba:
         for k, v in data.items():
             data[k] = numpy.array(v)
     else:
@@ -238,27 +242,25 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
         raise ValueError("Heatmap style must be 'triangular', 'dual-triangular', or 'hexagonal'")
 
     vertices_values = polygon_generator(data, scale, style,
-                                       permutation=permutation)
+                                        permutation=permutation)
 
     # Draw the polygons and color them
     for vertices, value in vertices_values:
         if value is None:
             continue
-        if colormap:
+        if not use_rgba:
             color = colormapper(value, vmin, vmax, cmap=cmap)
         else:
-            color = value # rgba tuple (r,g,b,a) all in [0,1]
+            color = value  # rgba tuple (r,g,b,a) all in [0,1]
         # Matplotlib wants a list of xs and a list of ys
         xs, ys = unzip(vertices)
         ax.fill(xs, ys, facecolor=color, edgecolor=color)
 
-    if colorbar and colormap:
-        if cb_kwargs:
-            colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific,
-                          cbarlabel=cbarlabel, **cb_kwargs)
-        else:
-            colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific,
-                          cbarlabel=cbarlabel)
+    if not cb_kwargs:
+        cb_kwargs = dict()
+    if colorbar:
+        colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific,
+                      cbarlabel=cbarlabel, **cb_kwargs)
     return ax
 
 
