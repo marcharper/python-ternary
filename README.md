@@ -23,10 +23,12 @@ The library provides functions for plotting projected lines, curves (trajectorie
 <img src="/readme_images/rgba_example.png" width="150" height="150"/>
 <img src="/readme_images/various_lines.png" width="150" height="150"/>
 <img src="/readme_images/colored_trajectory.png" width="150" height="150"/>
-<img src="/readme_images/scatter.png" width="150" height="150"/>
+<img src="/readme_images/scatter.png" width="150" height="150"/><br/>
 <br/>
-From <a href="http://biorxiv.org/content/early/2017/06/07/145631">Genetic Drift and Selection in Many-Allele Range Expansions</a>:<br/>
+<img src="/readme_images/btweinstein_example2.png" width="300" height="150"/>
 <img src="/readme_images/btweinstein_example.png" width="300" height="150"/>
+<br/>
+Last image from: <a href="http://biorxiv.org/content/early/2017/06/07/145631">Genetic Drift and Selection in Many-Allele Range Expansions</a>.<br/>
 <br/>
 See the citations below for more example images.
 </div>
