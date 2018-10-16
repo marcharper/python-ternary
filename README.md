@@ -385,9 +385,9 @@ to map the tuple to a value with a matplotlib colormap. Note that this disables 
 inclusion of a colorbar. Here is an example:
 
 ```python
-    import math
-    from matplotlib import pyplot as plt
-    import ternary
+import math
+from matplotlib import pyplot as plt
+import ternary
 
 def color_point(x, y, z, scale):
     w = 255
