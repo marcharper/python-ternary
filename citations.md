@@ -2,6 +2,7 @@
 
 See these publications for various examples of ternary plots created with the library.
 
+- [Insights into photovoltaic properties of ternary organic solar cells from phase diagrams](https://www.tandfonline.com/doi/abs/10.1080/14686996.2018.1509275) Makha, Mohammed, et al. Science and technology of advanced materials 19.1 (2018): 669-682.
 - [A Universe's Worth of Electrons to Probe Long-Range Interactions of High-Energy Astrophysical Neutrinos](https://arxiv.org/abs/1808.02042) Mauricio Bustamante and Sanjib Kumar Agarwalla. arXiv preprint arXiv:1808.02042 (2018)
 - [Inclusive Displaced Vertex Searches for Heavy Neutral Leptons at the LHC.](https://arxiv.org/abs/1807.10024) Abada, Asmaa, et al. arXiv preprint arXiv:1807.10024 (2018).
 - [Paleoenvironmental conditions and sedimentation dynamics in Central Europe inferred from geochemical data of the loess-paleosol sequence at Süttő (Hungary)](https://www.sciencedirect.com/science/article/pii/S027737911730834X). Profe, Jörn, et al. Quaternary Science Reviews 196 (2018): 21-37.
