@@ -1,5 +1,7 @@
 from matplotlib import pyplot as plt
 
+__version__ = "1.0.4"
+
 from .plotting import (
     clear_matplotlib_ticks,
     plot,
