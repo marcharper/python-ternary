@@ -1,4 +1,4 @@
-
+import setuptools
 from distutils.core import setup
 
 with open('README.txt') as file:
@@ -18,7 +18,7 @@ classifiers = [
 
 setup(
     name="python-ternary",
-    version="1.0.4",
+    version="1.0.5",
     packages=['ternary'],
     install_requires=["matplotlib>=1.4"],
     author="Marc Harper and contributors",
