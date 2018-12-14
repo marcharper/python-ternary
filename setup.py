@@ -29,5 +29,5 @@ setup(
     keywords="matplotlib ternary plotting",
     license="MIT",
     url="https://github.com/marcharper/python-ternary",
-    download_url="https://github.com/marcharper/python-ternary/tarball/1.0.4",
+    download_url="https://github.com/marcharper/python-ternary/tarball/1.0.5",
 )
