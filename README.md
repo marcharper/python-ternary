@@ -56,7 +56,7 @@ See [here](https://github.com/conda-forge/python-ternary-feedstock) for more inf
 
 ### Pip
 
-You can install the current release (1.0.4) with pip (you may need to use sudo):
+You can install the current release (1.0.5) with pip (you may need to use sudo):
 ```bash
     pip install python-ternary
 ```
