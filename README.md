@@ -71,8 +71,6 @@ Alternatively you can clone the repository and run `setup.py` in the usual manne
     sudo python setup.py install
 ```
 
-The master branch is kept in a good working state and should be fine for general usage.
-
 # Usage, Examples, Plotting Functions
 
 You can explore some of these examples with [this Jupyter notebook](examples/Ternary-Examples.ipynb).
@@ -81,7 +79,7 @@ The easiest way to use python-ternary is with the wrapper class `TernaryAxesSubp
 which mimics Matplotlib's AxesSubplot. Start with:
 
 ```python
-    figure, tax = ternary.figure()
+    fig, tax = ternary.figure()
 ```
 
 With a ternary axes object `tax` you can use many of the usual matplotlib
@@ -116,8 +114,8 @@ This is useful if you want to use ternary as a part of another figure, such as
     from matplotlib import pyplot, gridspec
 
     pyplot.figure()
-    gs = gridspec.GridSpec(2,2)
-    ax = pyplot.subplot(gs[0,0])
+    gs = gridspec.GridSpec(2, 2)
+    ax = pyplot.subplot(gs[0, 0])
     figure, tax = ternary.figure(ax=ax)
     ...
 ```
@@ -232,6 +230,7 @@ Points is a list of tuples or numpy arrays, such as [(0.5, 0.25, 0.25), (1./3, 1
             points.append(list(map(float, line.split(' '))))
     # Plot the data
     tax.plot(points, linewidth=2.0, label="Curve")
+    tax.ticks(axis='lbr', multiple=0.2, linewidth=1, tick_formats="%.1f")
     tax.legend()
     tax.show()
 ```
@@ -241,15 +240,6 @@ Points is a list of tuples or numpy arrays, such as [(0.5, 0.25, 0.25), (1./3, 1
 </p>
 
 There are many more examples in [this paper](http://arxiv.org/abs/1210.5539).
-
-You can also color the curves with a Matplotlib heatmap using:
-```
-    plot_colored_trajectory(points, cmap="hsv", linewidth=2.0)
-```
-
-<p align="center">
-<img src="/readme_images/colored_trajectory.png" width="600" height="450"/>
-</p>
 
 ## Scatter Plots
 
