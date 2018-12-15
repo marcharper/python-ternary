@@ -37,9 +37,11 @@ See the citations below for more example images.
 
 [![DOI](https://zenodo.org/badge/19505/marcharper/python-ternary.svg)](https://zenodo.org/badge/latestdoi/19505/marcharper/python-ternary)
 
-Have you used python-ternary in a publication? Open a PR or issue to include your citations or example plots!
+Have you used python-ternary in a publication? Open a PR or issue to include
+your citations or example plots!
 
-See the [partial list of citations](citations.md) and [instructions on how to cite](CITATION.md).
+See the [partial list of citations](citations.md) and
+[instructions on how to cite](CITATION.md).
 
 # Installation
 
@@ -52,7 +54,8 @@ conda config --add channels conda-forge
 conda install python-ternary
 ```
 
-See [here](https://github.com/conda-forge/python-ternary-feedstock) for more information.
+See [here](https://github.com/conda-forge/python-ternary-feedstock) for more
+information.
 
 ### Pip
 
@@ -63,7 +66,8 @@ You can install the current release (1.0.5) with pip (you may need to use sudo):
 
 ### With setup.py
 
-Alternatively you can clone the repository and run `setup.py` in the usual manner:
+Alternatively you can clone the repository and run `setup.py` in the usual
+manner:
 
 ```bash
     git clone git@github.com:marcharper/python-ternary.git
@@ -73,10 +77,11 @@ Alternatively you can clone the repository and run `setup.py` in the usual manne
 
 # Usage, Examples, Plotting Functions
 
-You can explore some of these examples with [this Jupyter notebook](examples/Ternary-Examples.ipynb).
+You can explore some of these examples with
+[this Jupyter notebook](examples/Ternary-Examples.ipynb).
 
-The easiest way to use python-ternary is with the wrapper class `TernaryAxesSubplot`,
-which mimics Matplotlib's AxesSubplot. Start with:
+The easiest way to use python-ternary is with the wrapper class
+`TernaryAxesSubplot`, which mimics Matplotlib's AxesSubplot. Start with:
 
 ```python
     fig, tax = ternary.figure()
@@ -95,7 +100,8 @@ Most drawing functions can take standard matplotlib keyword arguments such as
 [linestyle](http://matplotlib.org/api/lines_api.html#matplotlib.lines.Line2D.set_linestyle)
 and linewidth. You can use LaTeX in titles and labels.
 
-If you need to act directly on the underyling matplotlib axes, you can access them:
+If you need to act directly on the underyling matplotlib axes, you can access
+them easily:
 
 ```python
     ax = tax.get_axes()
@@ -120,14 +126,16 @@ This is useful if you want to use ternary as a part of another figure, such as
     ...
 ```
 
-Some ternary functions expect the simplex to be partititioned into some number of steps,
-determined by the `scale` parameter. A few functions will do this partitioning automatically
-for you, but when working with real data or simulation output, you may have partitioned
-already. If you are working with probability distributions, just use `scale=1` (the default).
-Otherwise the scale parameter effectively controls the resolution of many plot types (e.g. heatmaps).
+Some ternary functions expect the simplex to be partititioned into some number
+of steps, determined by the `scale` parameter. A few functions will do this
+partitioning automatically for you, but when working with real data or
+simulation output, you may have partitioned already. If you are working with
+probability distributions, just use `scale=1` (the default). Otherwise the scale
+parameter effectively controls the resolution of many plot types
+(e.g. heatmaps).
 
-`TernaryAxesSubplot` objects keep track of the scale, axes, and other parameters,
-supplying them as needed to other functions.
+`TernaryAxesSubplot` objects keep track of the scale, axes, and other
+parameters, supplying them as needed to other functions.
 
 ## Simplex Boundary and Gridlines
 
@@ -166,7 +174,9 @@ The following code draws a boundary for the simplex and gridlines.
 
 ## Drawing lines
 
-You can draw individual lines between any two points with `line` and lines parallel to the axes with `horizonal_line`, `left_parallel_line`, and `right_parallel_line`:
+You can draw individual lines between any two points with `line` and lines
+parallel to the axes with `horizonal_line`, `left_parallel_line`, and
+`right_parallel_line`:
 
 ```python
     import ternary
@@ -199,7 +209,8 @@ You can draw individual lines between any two points with `line` and lines paral
     tax.show()
 ```
 
-The line drawing functions accept the matplotlib keyword arguments of [Line2D](http://matplotlib.org/api/lines_api.html).
+The line drawing functions accept the matplotlib keyword arguments of
+[Line2D](http://matplotlib.org/api/lines_api.html).
 
 <p align="center">
 <img src="/readme_images/various_lines.png" width="500" height="375"/>
@@ -207,13 +218,15 @@ The line drawing functions accept the matplotlib keyword arguments of [Line2D](h
 
 ## Curves
 
-Curves can be plotted by specifying the points of the curve, just like matplotlib's plot. Simply use:
+Curves can be plotted by specifying the points of the curve, just like
+matplotlib's plot. Simply use:
 
 ```
     ternary.plot(points)
 ```
 
-Points is a list of tuples or numpy arrays, such as [(0.5, 0.25, 0.25), (1./3, 1./3, 1./3)],
+Points is a list of tuples or numpy arrays, such as
+`[(0.5, 0.25, 0.25), (1./3, 1./3, 1./3)]`,
 
 ```python
     import ternary
@@ -323,16 +336,24 @@ We can get a heatmap of this function as follows:
     tax.show()
 ```
 
-In this case the keyword argument *boundary* indicates whether you wish to evaluate points on the boundary of the partition (which is sometimes undesirable). Specify `style="hexagonal"` for hexagons. Large scalings can use a lot of RAM since the number of polygons rendered is O(n^2).
+In this case the keyword argument *boundary* indicates whether you wish to
+evaluate points on the boundary of the partition (which is sometimes
+undesirable). Specify `style="hexagonal"` for hexagons. Large scalings can use
+a lot of RAM since the number of polygons rendered is O(n^2).
 
-You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/colormaps_reference.html) (an instance or the colormap name) in the cmap argument.
+You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/colormaps_reference.html)
+(an instance or the colormap name) in the cmap argument.
 
 <p style="text-align:center">
 <img src="/readme_images/heatmap_shannon.png"/> <br/>
 </p>
 
-Ternary can also make heatmaps from data. In this case you need to supply a dictionary
-mapping `(i, j)` or `(i, j, k)` for `i + j + k = scale` to a float as input for a heatmap. It is not necessary to include `k` in the dictionary keys since it can be determined from `scale`, `i`, and `j`. This reduces the memory requirements when the partition is very fine (significant when `scale` is in the hundreds).
+Ternary can also make heatmaps from data. In this case you need to supply a
+dictionary mapping `(i, j)` or `(i, j, k)` for `i + j + k = scale` to a float
+as input for a heatmap. It is not necessary to include `k` in the dictionary
+keys since it can be determined from `scale`, `i`, and `j`. This reduces the
+memory requirements when the partition is very fine (significant when `scale`
+is in the hundreds).
 
 Make the heatmap as follows:
 
@@ -364,15 +385,17 @@ do so automatically when you pass `clockwise=True` to `tax.ticks()`.
 <img src="/readme_images/orientations.png"/>
 </p>
 
-There is a [more detailed discussion](https://github.com/marcharper/python-ternary/issues/18) on issue #18 (closed).
+There is a [more detailed discussion](https://github.com/marcharper/python-ternary/issues/18)
+on issue #18 (closed).
 
 
 # RGBA colors
 
-You can alternatively specify colors as rgba tuples `(r,g,b,a)` (all between zero and one).
-To use this feature, pass `colormap=False` to `heatmap()` so that the library will not attempt
-to map the tuple to a value with a matplotlib colormap. Note that this disables the
-inclusion of a colorbar. Here is an example:
+You can alternatively specify colors as rgba tuples `(r, g, b, a)`
+(all between zero and one). To use this feature, pass `colormap=False` to
+`heatmap()` so that the library will not attempt to map the tuple to a value
+with a matplotlib colormap. Note that this disables the inclusion of a colorbar.
+Here is an example:
 
 ```python
 import math
@@ -429,16 +452,17 @@ The included script of [examples](/examples/examples.py) is intended to act as a
 Contributions are welcome! Please share any nice example plots, contribute
 features, and add unit tests! Use the pull request and issue systems to contribute.
 
-# Contributors
+# Selected Contributors
 
-- Marc Harper [marcharper](https://github.com/marcharper)
+- Marc Harper [marcharper](https://github.com/marcharper): maintainer
 - Bryan Weinstein [btweinstein](https://github.com/btweinstein): Hexagonal heatmaps, colored trajectory plots
 - [chebee7i](https://github.com/chebee7i): Docs and figures, triangular heatmapping
 - [Cory Simon](https://github.com/CorySimon): Axis Colors, colored heatmap example
 
 # Known-Issues
 
-There appears to be an issue with anaconda on macs that causes the axes labels not to render. The workaround is to manually call
+At one point there was an issue with anaconda on macs that causes the axes
+labels not to render. The workaround is to manually call
 ```
 tax._redraw_labels()
 ```
