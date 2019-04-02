@@ -200,8 +200,8 @@ parallel to the axes with `horizonal_line`, `left_parallel_line`, and
     tax.left_parallel_line(10, linewidth=2., color='red', linestyle="--")
     tax.right_parallel_line(20, linewidth=3., color='blue')
     # Draw an arbitrary line, ternary will project the points for you
-    p1 = (12,8,10)
-    p2 = (2, 26, 2)
+    p1 = (12, 8, 20)
+    p2 = (2, 26, 12)
     tax.line(p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
 
     tax.ticks(axis='lbr', multiple=5, linewidth=1)
