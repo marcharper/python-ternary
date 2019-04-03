@@ -1,6 +1,8 @@
 import setuptools
 from distutils.core import setup
 
+version = "1.0.6"
+
 with open('README.txt') as file:
     long_description = file.read()
 
@@ -18,9 +20,9 @@ classifiers = [
 
 setup(
     name="python-ternary",
-    version="1.0.5",
+    version=version,
     packages=['ternary'],
-    install_requires=["matplotlib>=1.4"],
+    install_requires=["matplotlib>=2"],
     author="Marc Harper and contributors",
     author_email="marc.harper@gmail.com",
     classifiers=classifiers,
@@ -29,5 +31,5 @@ setup(
     keywords="matplotlib ternary plotting",
     license="MIT",
     url="https://github.com/marcharper/python-ternary",
-    download_url="https://github.com/marcharper/python-ternary/tarball/1.0.5",
+    download_url="https://github.com/marcharper/python-ternary/tarball/{}".format(version),
 )

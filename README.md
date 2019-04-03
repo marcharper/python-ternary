@@ -59,7 +59,7 @@ information.
 
 ### Pip
 
-You can install the current release (1.0.5) with pip:
+You can install the current release (1.0.6) with pip:
 ```bash
     pip install python-ternary
 ```
