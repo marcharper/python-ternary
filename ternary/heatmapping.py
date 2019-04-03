@@ -82,7 +82,7 @@ def alt_triangle_coordinates(i, j, k):
 def generate_hexagon_deltas():
     """
     Generates a dictionary of the necessary additive vectors to generate the
-    heaxagon points for the haxagonal heatmap.
+    hexagon points for the hexagonal heatmap.
     """
 
     zero = numpy.array([0, 0, 0])
@@ -113,7 +113,7 @@ hexagon_deltas = generate_hexagon_deltas()
 
 def hexagon_coordinates(i, j, k):
     """
-    Computes coordinates of the constituent hexagons of a heaxagonal heatmap.
+    Computes coordinates of the constituent hexagons of a hexagonal heatmap.
 
     Parameters
     ----------

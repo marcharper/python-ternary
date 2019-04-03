@@ -1,7 +1,5 @@
 from matplotlib import pyplot as plt
 
-__version__ = "1.0.5"
-
 from .plotting import (
     clear_matplotlib_ticks,
     plot,
@@ -19,8 +17,8 @@ from .lines import (
 )
 
 from .helpers import project_point
-
 from .colormapping import get_cmap
 from .heatmapping import heatmap, heatmapf, svg_heatmap
-
 from .ternary_axes_subplot import figure, TernaryAxesSubplot
+
+__version__ = "1.0.6"
