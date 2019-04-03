@@ -180,32 +180,38 @@ parallel to the axes with `horizonal_line`, `left_parallel_line`, and
 
 ```python
     import ternary
-
+    
     scale = 40
     figure, tax = ternary.figure(scale=scale)
-
+    
     # Draw Boundary and Gridlines
     tax.boundary(linewidth=2.0)
     tax.gridlines(color="blue", multiple=5)
-
+    
     # Set Axis labels and Title
-    fontsize = 20
-    tax.set_title("Various Lines", fontsize=20)
-    tax.left_axis_label("Left label $\\alpha^2$", fontsize=fontsize)
-    tax.right_axis_label("Right label $\\beta^2$", fontsize=fontsize)
-    tax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$", fontsize=fontsize)
-
+    fontsize = 12
+    offset = 0.14
+    tax.set_title("Various Lines\n", fontsize=fontsize)
+    tax.right_corner_label("X", fontsize=fontsize)
+    tax.top_corner_label("Y", fontsize=fontsize)
+    tax.left_corner_label("Z", fontsize=fontsize)
+    tax.left_axis_label("Left label $\\alpha^2$", fontsize=fontsize, offset=offset)
+    tax.right_axis_label("Right label $\\beta^2$", fontsize=fontsize, offset=offset)
+    tax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$", fontsize=fontsize, offset=offset)
+    
     # Draw lines parallel to the axes
     tax.horizontal_line(16)
     tax.left_parallel_line(10, linewidth=2., color='red', linestyle="--")
     tax.right_parallel_line(20, linewidth=3., color='blue')
+
     # Draw an arbitrary line, ternary will project the points for you
-    p1 = (12, 8, 20)
-    p2 = (2, 26, 12)
+    p1 = (22, 8, 10)
+    p2 = (2, 22, 16)
     tax.line(p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
-
-    tax.ticks(axis='lbr', multiple=5, linewidth=1)
-
+    
+    tax.ticks(axis='lbr', multiple=5, linewidth=1, offset=0.025)
+    tax.get_axes().axis('off')
+    tax.clear_matplotlib_ticks()
     tax.show()
 ```
 

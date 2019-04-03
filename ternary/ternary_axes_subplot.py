@@ -187,7 +187,7 @@ class TernaryAxesSubplot(object):
 
         if not position:
             position = (0.5, -offset / 2., 0.5)
-        self._corner_labels["bottom"] = (label, position, rotation, kwargs)
+        self._labels["bottom"] = (label, position, rotation, kwargs)
 
     def right_corner_label(self, label, position=None, rotation=0, offset=0.08,
                            **kwargs):
@@ -210,7 +210,7 @@ class TernaryAxesSubplot(object):
 
         if not position:
             position = (1, offset / 2, 0)
-        self._labels["right"] = (label, position, rotation, kwargs)
+        self._corner_labels["right"] = (label, position, rotation, kwargs)
 
     def left_corner_label(self, label, position=None, rotation=0, offset=0.08,
                           **kwargs):
@@ -256,7 +256,7 @@ class TernaryAxesSubplot(object):
 
         if not position:
             position = (-offset / 2, 1 + offset, 0)
-        self._corner_labels["bottom"] = (label, position, rotation, kwargs)
+        self._corner_labels["top"] = (label, position, rotation, kwargs)
 
     def annotate(self, text, position, **kwargs):
         ax = self.get_axes()
