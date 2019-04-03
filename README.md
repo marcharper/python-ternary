@@ -219,7 +219,7 @@ The line drawing functions accept the matplotlib keyword arguments of
 [Line2D](http://matplotlib.org/api/lines_api.html).
 
 <p align="center">
-<img src="/readme_images/various_lines.png" width="500" height="375"/>
+<img src="/readme_images/various_lines.png" width="500" height="500"/>
 </p>
 
 ## Curves
