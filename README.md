@@ -59,7 +59,7 @@ information.
 
 ### Pip
 
-You can install the current release (1.0.5) with pip (you may need to use sudo):
+You can install the current release (1.0.5) with pip:
 ```bash
     pip install python-ternary
 ```
@@ -72,7 +72,7 @@ manner:
 ```bash
     git clone git@github.com:marcharper/python-ternary.git
     cd python-ternary
-    sudo python setup.py install
+    python setup.py install
 ```
 
 # Usage, Examples, Plotting Functions
@@ -100,7 +100,7 @@ Most drawing functions can take standard matplotlib keyword arguments such as
 [linestyle](http://matplotlib.org/api/lines_api.html#matplotlib.lines.Line2D.set_linestyle)
 and linewidth. You can use LaTeX in titles and labels.
 
-If you need to act directly on the underyling matplotlib axes, you can access
+If you need to act directly on the underlying matplotlib axes, you can access
 them easily:
 
 ```python
@@ -126,7 +126,7 @@ This is useful if you want to use ternary as a part of another figure, such as
     ...
 ```
 
-Some ternary functions expect the simplex to be partititioned into some number
+Some ternary functions expect the simplex to be partitioned into some number
 of steps, determined by the `scale` parameter. A few functions will do this
 partitioning automatically for you, but when working with real data or
 simulation output, you may have partitioned already. If you are working with
@@ -451,12 +451,11 @@ You can run the test suite as follows:
 python -m unittest discover tests
 ```
 
-The included script of [examples](/examples/examples.py) is intended to act as a series of extended tests.
-
 # Contributing
 
 Contributions are welcome! Please share any nice example plots, contribute
-features, and add unit tests! Use the pull request and issue systems to contribute.
+features, and add unit tests! Use the pull request and issue systems to
+contribute.
 
 # Selected Contributors
 
