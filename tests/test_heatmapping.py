@@ -1,15 +1,15 @@
-
 import unittest
 
 from numpy.testing import assert_array_almost_equal
 
-from ternary.heatmapping import triangle_coordinates, alt_triangle_coordinates, hexagon_coordinates
+from ternary.heatmapping import (
+    triangle_coordinates, alt_triangle_coordinates, hexagon_coordinates)
 from ternary.helpers import SQRT3OVER2
 
-class FunctionCases(unittest.TestCase):
 
+class FunctionCases(unittest.TestCase):
     def test_coordinates(self):
-        # Should be an equalilateral triangle
+        # Should be an equilateral triangle
         coords = triangle_coordinates(1, 1, 1)
         expected = [(1, 1, 1), (2, 1, 0), (1, 2, 0)]
         self.assertEqual(coords, expected)

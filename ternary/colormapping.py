@@ -2,12 +2,7 @@ import matplotlib
 from matplotlib import pyplot as plt
 from matplotlib.colors import rgb2hex
 
-## Default colormap, other options here: http://www.scipy.org/Cookbook/Matplotlib/Show_colormaps
-s = matplotlib.__version__.split('.')
-if int(s[0]) >= 2 or (int(s[0]) >= 1 and int(s[1]) >= 5):
-    DEFAULT_COLOR_MAP_NAME = "viridis"
-else:
-    DEFAULT_COLOR_MAP_NAME = "jet"
+DEFAULT_COLOR_MAP_NAME = "viridis"
 
 
 ## Matplotlib Colormapping ##
@@ -71,11 +66,10 @@ def colormapper(value, lower=0, upper=1, cmap=None):
 
 
 def colorbar_hack(ax, vmin, vmax, cmap, scientific=False, cbarlabel=None,
-                  **kwargs):
+                  norm=None, **kwargs):
     """
-    Colorbar hack to insert colorbar on ternary plot. 
-    
-    Called by heatmap, not intended for direct usage.
+    Colorbar hack to insert colorbar on ternary plot, not intended for direct
+    usage.
     
     Parameters
     ----------
@@ -85,10 +79,15 @@ def colorbar_hack(ax, vmin, vmax, cmap, scientific=False, cbarlabel=None,
         Maximum value to portray in colorbar
     cmap: Matplotlib colormap
         Matplotlib colormap to use
+    scientific: bool, False
+        Use scientific notation for the colorbar ticks
+    cbarlabel: str, None
+        Label to set on the colorbar
 
     """
     # http://stackoverflow.com/questions/8342549/matplotlib-add-colorbar-to-a-sequence-of-line-plots
-    norm = plt.Normalize(vmin=vmin, vmax=vmax)
+    if not norm:
+        norm = plt.Normalize(vmin=vmin, vmax=vmax)
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
     sm._A = []
     cb = plt.colorbar(sm, ax=ax, **kwargs)
@@ -99,3 +98,4 @@ def colorbar_hack(ax, vmin, vmax, cmap, scientific=False, cbarlabel=None,
         cb.formatter = matplotlib.ticker.ScalarFormatter()
         cb.formatter.set_powerlimits((0, 0))
         cb.update_ticks()
+    return cb

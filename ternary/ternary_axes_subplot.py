@@ -1,12 +1,13 @@
 """
 Wrapper class for all ternary plotting functions.
 """
-
+from collections import OrderedDict
 from functools import partial
 
 import numpy
 from matplotlib import pyplot
 
+from . import colormapping
 from . import heatmapping
 from . import lines
 from . import plotting
@@ -17,6 +18,9 @@ def figure(ax=None, scale=None, permutation=None):
     """
     Wraps a Matplotlib AxesSubplot or generates a new one. Emulates matplotlib's
     > figure, ax = pyplot.subplots()
+
+    Usage:
+    > fig, tax = ternary.figure()
 
     Parameters
     ----------
@@ -64,8 +68,8 @@ class TernaryAxesSubplot(object):
         self._permutation = permutation
         self._boundary_scale = scale
         # Container for the axis labels supplied by the user
-        self._labels = dict()
-        self._corner_labels = dict()
+        self._labels = OrderedDict()
+        self._corner_labels = OrderedDict()
         self._ticks = dict()
         # Container for the redrawing of labels
         self._to_remove = []
@@ -80,7 +84,7 @@ class TernaryAxesSubplot(object):
             figure.canvas.mpl_connect(event_name, callback)
 
     def __repr__(self):
-        return "TernaryAxesSubplot: %s" % self.ax.__hash__()
+        return "TernaryAxesSubplot: {}".format(self.ax.__hash__())
 
     def get_axes(self):
         """Returns the underlying matplotlib AxesSubplot object."""
@@ -90,6 +94,10 @@ class TernaryAxesSubplot(object):
         """Return the underlying matplotlib figure object."""
         ax = self.get_axes()
         return ax.get_figure()
+
+    def get_colorbar(self):
+        """Returns the underlying matplotlib AxesSubplot object."""
+        return self._colorbar
 
     def set_scale(self, scale=None):
         self._scale = scale
@@ -119,7 +127,7 @@ class TernaryAxesSubplot(object):
         ax = self.get_axes()
         ax.set_title(title, **kwargs)
 
-    def left_axis_label(self, label, position=None,  rotation=60, offset=0.08,
+    def left_axis_label(self, label, position=None, rotation=60, offset=0.08,
                         **kwargs):
         """
         Sets the label on the left axis.
@@ -423,32 +431,34 @@ class TernaryAxesSubplot(object):
         plotting.plot_colored_trajectory(points, cmap=cmap, ax=ax,
                                          permutation=permutation, **kwargs)
 
-    def heatmap(self, data, scale=None, cmap=None, scientific=False,
-                style='triangular', colorbar=True, use_rgba=False,
-                vmin=None, vmax=None, cbarlabel=None, cb_kwargs=None):
+    def heatmap(self, data, scale=None, cmap=None, style='triangular',
+                use_rgba=False, vmin=None, vmax=None):
         permutation = self._permutation
         if not scale:
             scale = self.get_scale()
         if style.lower()[0] == 'd':
             self._boundary_scale = scale + 1
         ax = self.get_axes()
-        heatmapping.heatmap(data, scale, cmap=cmap, style=style, ax=ax,
-                            scientific=scientific, colorbar=colorbar,
-                            permutation=permutation, use_rgba=use_rgba,
-                            vmin=vmin, vmax=vmax, cbarlabel=cbarlabel,
-                            cb_kwargs=cb_kwargs)
+        heatmapping.heatmap(
+            data, scale, cmap=cmap, style=style, ax=ax, permutation=permutation,
+            use_rgba=use_rgba, vmin=vmin, vmax=vmax)
 
     def heatmapf(self, func, scale=None, cmap=None, boundary=True,
-                 style='triangular', colorbar=True, scientific=True,
-                 vmin=None, vmax=None, cbarlabel=None, cb_kwargs=None):
+                 style='triangular', vmin=None, vmax=None):
         if not scale:
             scale = self.get_scale()
         if style.lower()[0] == 'd':
             self._boundary_scale = scale + 1
         permutation = self._permutation
         ax = self.get_axes()
-        heatmapping.heatmapf(func, scale, cmap=cmap, style=style,
-                             boundary=boundary, ax=ax, scientific=scientific,
-                             colorbar=colorbar, permutation=permutation,
-                             vmin=vmin, vmax=vmax, cbarlabel=cbarlabel,
-                             cb_kwargs=cb_kwargs)
+        heatmapping.heatmapf(
+            func, scale, cmap=cmap, style=style, boundary=boundary, ax=ax,
+            permutation=permutation, vmin=vmin, vmax=vmax)
+
+    def colorbar(self, ax, vmin, vmax, cmap, scientific=False,
+                 cbarlabel=None, norm=None, **kwargs):
+        cb = colormapping.colorbar_hack(
+            ax, vmin, vmax, cmap, scientific=scientific,
+            cbarlabel=cbarlabel, norm=norm, **kwargs)
+        self._colorbar = cb
+

@@ -184,8 +184,7 @@ def polygon_generator(data, scale, style, permutation=None):
 
 
 def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
-            scientific=False, style='triangular', colorbar=True,
-            permutation=None, use_rgba=False, cbarlabel=None, cb_kwargs=None):
+            style='triangular', permutation=None, use_rgba=False):
     """
     Plots heatmap of given color values.
 
@@ -204,20 +203,12 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
         The name of the Matplotlib colormap to use.
     ax: Matplotlib AxesSubplot, None
         The subplot to draw on.
-    scientific: Bool, False
-        Whether to use scientific notation for colorbar numbers.
     style: String, "triangular"
         The style of the heatmap, "triangular", "dual-triangular" or "hexagonal"
-    colorbar: bool, True
-        Show colorbar.
     permutation: string, None
         A permutation of the coordinates
     use_rgba: bool, False
         Use rgba color values
-    cbarlabel: string, None
-        Text label for the colorbar
-    cb_kwargs: dict
-        dict of kwargs to pass to colorbar
 
     Returns
     -------
@@ -239,7 +230,9 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
             vmax = max(data.values())
     style = style.lower()[0]
     if style not in ["t", "h", 'd']:
-        raise ValueError("Heatmap style must be 'triangular', 'dual-triangular', or 'hexagonal'")
+        raise ValueError(
+            "Heatmap style must be 'triangular', 'dual-triangular',"
+            "or 'hexagonal'")
 
     vertices_values = polygon_generator(data, scale, style,
                                         permutation=permutation)
@@ -256,11 +249,6 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
         xs, ys = unzip(vertices)
         ax.fill(xs, ys, facecolor=color, edgecolor=color)
 
-    if not cb_kwargs:
-        cb_kwargs = dict()
-    if colorbar:
-        colorbar_hack(ax, vmin, vmax, cmap, scientific=scientific,
-                      cbarlabel=cbarlabel, **cb_kwargs)
     return ax
 
 
@@ -268,9 +256,7 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
 
 
 def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
-             scientific=False, style='triangular', colorbar=True,
-             permutation=None, vmin=None, vmax=None, cbarlabel=None,
-             cb_kwargs=None):
+             style='triangular', permutation=None, vmin=None, vmax=None):
     """
     Computes func on heatmap partition coordinates and plots heatmap. In other
     words, computes the function on lattice points of the simplex (normalized
@@ -290,18 +276,12 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
         The axis to draw the colormap on
     style: String, "triangular"
         The style of the heatmap, "triangular", "dual-triangular" or "hexagonal"
-    scientific: Bool, False
-        Whether to use scientific notation for colorbar numbers.
-    colorbar: bool, True
-        Show colorbar.
     permutation: string, None
         A permutation of the coordinates
     vmin: float
         The minimum color value, used to normalize colors.
     vmax: float
         The maximum color value, used to normalize colors.
-    cb_kwargs: dict
-        dict of kwargs to pass to colorbar
 
     Returns
     -------
@@ -314,9 +294,7 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
         data[(i, j)] = func(normalize([i, j, k]))
     # Pass everything to the heatmapper
     ax = heatmap(data, scale, cmap=cmap, ax=ax, style=style,
-                 scientific=scientific, colorbar=colorbar,
-                 permutation=permutation, vmin=vmin, vmax=vmax, 
-                 cbarlabel=cbarlabel, cb_kwargs=cb_kwargs)
+                 permutation=permutation, vmin=vmin, vmax=vmax)
     return ax
 
 
@@ -340,7 +318,7 @@ def svg_polygon(coordinates, color):
     for c in coordinates:
         coord_str.append(",".join(map(str, c)))
     coord_str = " ".join(coord_str)
-    polygon = '<polygon points="%s" style="fill:%s;stroke:%s;stroke-width:0"/>\n' % (coord_str, color, color)
+    polygon = '<polygon points="{}" style="fill:{};stroke:{};stroke-width:0"/>\n'.format(coord_str, color, color)
     return polygon
 
 
@@ -377,13 +355,18 @@ def svg_heatmap(data, scale, filename, vmax=None, vmin=None, style='h',
 
     style = style.lower()[0]
     if style not in ["t", "h", 'd']:
-        raise ValueError("Heatmap style must be 'triangular', 'dual-triangular', or 'hexagonal'")
+        raise ValueError(
+            "Heatmap style must be 'triangular', 'dual-triangular',"
+            "or 'hexagonal'")
 
     if not isinstance(data, dict):
         if not style == 'h':
-            raise ValueError("Data can only be given as a generator for hexagonal style heatmaps because of blending for adjacent polygons.")
+            raise ValueError(
+                "Data can only be given as a generator for hexagonal style"
+                "heatmaps because of blending for adjacent polygons.")
         elif vmax is None or vmin is None:
-            raise ValueError("vmax and vmin must be supplied for data given as a generator.")
+            raise ValueError(
+                "vmax and vmin must be supplied for data given as a generator.")
 
     cmap = get_cmap(cmap)
 

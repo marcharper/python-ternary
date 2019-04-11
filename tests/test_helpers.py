@@ -3,13 +3,14 @@ import unittest
 
 from numpy.testing import assert_array_equal
 
-from ternary.helpers import normalize, project_point, simplex_iterator, SQRT3OVER2
+from ternary.helpers import (
+    normalize, project_point, simplex_iterator, SQRT3OVER2)
 
 
 class FunctionCases(unittest.TestCase):
 
     def test_normalize(self):
-        l = [1,2,3]
+        l = [1, 2, 3]
         normalized = normalize(l)
         expected = [1./6, 2./6, 3./6]
         self.assertEqual(normalized, expected)
@@ -28,12 +29,14 @@ class FunctionCases(unittest.TestCase):
         self.assertEqual(points, expected)
 
         scale = 2
-        expected = [(0, 0, 2), (0, 1, 1), (0, 2, 0), (1, 0, 1), (1, 1, 0), (2, 0, 0)]
+        expected = [(0, 0, 2), (0, 1, 1), (0, 2, 0), (1, 0, 1), (1, 1, 0),
+                    (2, 0, 0)]
         points = list(simplex_iterator(scale=scale))
         self.assertEqual(points, expected)
 
         scale = 3
-        expected = [(0, 0, 3), (0, 1, 2), (0, 2, 1), (0, 3, 0), (1, 0, 2), (1, 1, 1), (1, 2, 0), (2, 0, 1), (2, 1, 0), (3, 0, 0)]
+        expected = [(0, 0, 3), (0, 1, 2), (0, 2, 1), (0, 3, 0), (1, 0, 2),
+                    (1, 1, 1), (1, 2, 0), (2, 0, 1), (2, 1, 0), (3, 0, 0)]
         points = list(simplex_iterator(scale=scale))
         self.assertEqual(points, expected)
 
