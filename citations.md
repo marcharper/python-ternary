@@ -2,9 +2,16 @@
 
 The library has been cited in a variety of high-quality journals (list may be incomplete). Entries are roughly in reverse chronological order.
 
+## Journal Articles
+
+1. Nelson, James, and Stefano Sanvito. Predicting the Curie temperature of ferromagnets using machine learning. [arXiv:1906.08534](https://arxiv.org/abs/1906.08534) (2019).
+1. Qian, Jimmy J., and Erol Akçay. "The balance of interaction types determines the assembly and stability of ecological communities." [BioRxiv](https://www.biorxiv.org/content/10.1101/643478v1.full) (2019): 643478.
+1. Kirchner, Philipp, et al. [Proteome-wide analysis of chaperone-mediated autophagy targeting motifs.](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3000301) PLoS biology 17.5 (2019): e3000301.
+1. Gariazzo, S., P. F. de Salas, and S. Pastor Carpi. "Thermalisation of sterile neutrinos in the early Universe in the 3+ 1 scheme with full mixing matrix." [arXiv:1905.11290](https://arxiv.org/abs/1905.11290) (2019).
+1. Keniley, Shane, and Davide Curreli. "CRANE: A MOOSE-based Open Source Tool for Plasma Chemistry Applications." [arXiv:1905.10004](https://arxiv.org/abs/1905.10004) (2019).
 1. Abada, Asmaa, et al. [Inclusive displaced vertex searches for heavy neutral leptons at the LHC.](https://link.springer.com/article/10.1007/JHEP01(2019)093) Journal of High Energy Physics 2019.1 (2019): 93. [ArXiv](https://arxiv.org/abs/1807.10024).
 1. Bustamante, Mauricio, and Sanjib Kumar Agarwalla. [Universe’s Worth of Electrons to Probe Long-Range Interactions of High-Energy Astrophysical Neutrinos.](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.122.061103) Physical review letters 122.6 (2019): 061103. [ArXiv](https://arxiv.org/abs/1808.02042).
-1. [Diffusive properties of the system water/ethanol/triethylene glycol in microgravity and ground conditions](https://d-nb.info/1168324432/34). Triller, Thomas. (Disseration, 2018) 
+1. Hamilton, Nicholas E., and Michael Ferry. [ggtern: Ternary diagrams using ggplot2](https://www.jstatsoft.org/article/view/v087c03). Journal of Statistical Software 87.1 (2018): 1-17.
 1. [Insights into photovoltaic properties of ternary organic solar cells from phase diagrams](https://www.tandfonline.com/doi/abs/10.1080/14686996.2018.1509275). Makha, Mohammed, et al. Science and Technology of Advanced Materials 19.1 (2018): 669-682.
 1. [Entropic Equilibria Selection of Stationary Extrema in Finite Populations](https://doi.org/10.3390/e20090631). Marc Harper
 and Dashiell Fryer. Entropy 2018, 20(9), 631.
@@ -22,6 +29,11 @@ and Dashiell Fryer. Entropy 2018, 20(9), 631.
 1. [Stationary Stability for Evolutionary Dynamics in Finite Populations](http://www.mdpi.com/1099-4300/18/9/316/htm). Marc Harper and Dashiell Fryer. Entropy 18.9 (2016): 316.
 1. [pyIAST: Ideal adsorbed solution theory (IAST) Python package](http://www.sciencedirect.com/science/article/pii/S0010465515004403). [Cory Simon](https://github.com/CorySimon). Computer Physics Communications (2016)
 1. [Lyapunov Functions for Time-Scale Dynamics on Riemannian Geometries of the Simplex](https://link.springer.com/article/10.1007/s13235-014-0124-0). Marc Harper and Dashiell Fryer. Dynamic Games and Applications (2015)
+
+## Dissertations
+1. Cremer, Pascal. [Algorithms for Cell Layout](http://hss.ulb.uni-bonn.de/2019/5428/5428.pdf). PhD Dissertation. Universitäts-und Landesbibliothek Bonn, 2019.
+1. Weinstein, Bryan T. [Microbial Evolutionary Dynamics and Transport on Solid and Liquid Substrates](https://dash.harvard.edu/handle/1/40050028). Diss. 2018.
+1. Triller, Thomas. [Diffusive properties of the system water/ethanol/triethylene glycol in microgravity and ground conditions](https://d-nb.info/1168324432/34). (Disseration, 2018) 
 
 # How to Cite
 
