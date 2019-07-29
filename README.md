@@ -466,7 +466,7 @@ contribute.
 
 # Known-Issues
 
-At one point there was an issue with anaconda on macs that causes the axes
+At one point there was an issue on macs that causes the axes
 labels not to render. The workaround is to manually call
 ```
 tax._redraw_labels()
