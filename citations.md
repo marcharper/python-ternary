@@ -3,7 +3,7 @@
 The library has been cited in a variety of high-quality journals (list may be incomplete). Entries are roughly in reverse chronological order.
 
 ## Journal Articles
-
+1. Bragman, Felix JS, et al. Stochastic Filter Groups for Multi-Task CNNs: Learning Specialist and Generalist Convolution Kernels. [arXiv:1908.09597](https://arxiv.org/abs/1908.09597) (2019).
 1. Nelson, James, and Stefano Sanvito. Predicting the Curie temperature of ferromagnets using machine learning. [arXiv:1906.08534](https://arxiv.org/abs/1906.08534) (2019).
 1. Qian, Jimmy J., and Erol Akçay. "The balance of interaction types determines the assembly and stability of ecological communities." [BioRxiv](https://www.biorxiv.org/content/10.1101/643478v1.full) (2019): 643478.
 1. Kirchner, Philipp, et al. [Proteome-wide analysis of chaperone-mediated autophagy targeting motifs.](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3000301) PLoS biology 17.5 (2019): e3000301.
