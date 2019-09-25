@@ -287,7 +287,10 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
                 tick = ticks[index]
             line(ax, loc1, loc2, color=axes_colors['r'], **kwargs)
             x, y = project_point(text_location)
-            s = tick_formats['r'] % tick
+            if isinstance(tick, str):
+                s = tick
+            else:
+                s = tick_formats['r'] % tick
             ax.text(x, y, s, horizontalalignment="center",
                     color=axes_colors['r'], fontsize=fontsize)
 
@@ -306,6 +309,10 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
                 tick = ticks[-(index+1)]
             line(ax, loc1, loc2, color=axes_colors['l'], **kwargs)
             x, y = project_point(text_location)
+            if isinstance(tick, str):
+                s = tick
+            else:
+                s = tick_formats['r'] % tick
             s = tick_formats['l'] % tick
             ax.text(x, y, s, horizontalalignment="center",
                     color=axes_colors['l'], fontsize=fontsize)
@@ -325,6 +332,9 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
                 tick = ticks[index]
             line(ax, loc1, loc2, color=axes_colors['b'], **kwargs)
             x, y = project_point(text_location)
-            s = tick_formats['b'] % tick
+            if isinstance(tick, str):
+                s = tick
+            else:
+                s = tick_formats['r'] % tick
             ax.text(x, y, s, horizontalalignment="center",
                     color=axes_colors['b'], fontsize=fontsize)
