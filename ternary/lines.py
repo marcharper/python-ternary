@@ -312,7 +312,7 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
             if isinstance(tick, str):
                 s = tick
             else:
-                s = tick_formats['r'] % tick
+                s = tick_formats['l'] % tick
             s = tick_formats['l'] % tick
             ax.text(x, y, s, horizontalalignment="center",
                     color=axes_colors['l'], fontsize=fontsize)
@@ -335,6 +335,6 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
             if isinstance(tick, str):
                 s = tick
             else:
-                s = tick_formats['r'] % tick
+                s = tick_formats['b'] % tick
             ax.text(x, y, s, horizontalalignment="center",
                     color=axes_colors['b'], fontsize=fontsize)
