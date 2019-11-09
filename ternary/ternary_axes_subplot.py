@@ -313,10 +313,10 @@ class TernaryAxesSubplot(object):
         ax = self.get_axes()
         ax.legend(*args, **kwargs)
 
-    def savefig(self, filename, dpi=200, format=None):
+    def savefig(self, filename, dpi=200, format=None, **kwargs):
         self._redraw_labels()
         fig = self.get_figure()
-        fig.savefig(filename, format=format, dpi=dpi)
+        fig.savefig(filename, format=format, dpi=dpi, **kwargs)
 
     def show(self):
         self._redraw_labels()
