@@ -1,2 +1,7 @@
+include *.md
 include *.txt
-include README.md
+include LICENSE
+
+graft examples
+graft readme_images
+graft tests
