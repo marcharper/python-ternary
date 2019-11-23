@@ -2,8 +2,10 @@
 
 The library has been cited in a variety of high-quality journals (list may be incomplete). Entries are roughly in reverse chronological order.
 
+Choi, Kwangbom, Narayanan Raghupathy, and Gary A. Churchill. "A Bayesian mixture model for the analysis of allelic expression in single cells." Nature Communications 10.1 (2019): 1-1
+
 ## Journal Articles
-1. Choi, Kwangbom, Narayanan Raghupathy, and Gary A. Churchill. [scBASE: A Bayesian mixture model for the analysis of allelic expression in single cells.](https://www.biorxiv.org/content/10.1101/383224v3.full) bioRxiv (2019): 383224.
+1. Choi, Kwangbom, Narayanan Raghupathy, and Gary A. Churchill. [scBASE: A Bayesian mixture model for the analysis of allelic expression in single cells.](https://www.nature.com/articles/s41467-019-13099-0) Nature Communications 10.1 (2019): 1-1. [bioRxiv](https://www.biorxiv.org/content/10.1101/383224v3.full) (2019): 383224.
 1. Campbell, Ian Jackson, George Nelson Bennett, and Jonathan J. Silberg. [Evolutionary relationships between low potential ferredoxin and flavodoxin electron carriers.](https://www.frontiersin.org/articles/10.3389/fenrg.2019.00079/full) Frontiers in Energy Research 7 (2019): 79.
 1. Bragman, Felix JS, et al. [Stochastic Filter Groups for Multi-Task CNNs: Learning Specialist and Generalist Convolution Kernels](http://openaccess.thecvf.com/content_ICCV_2019/html/Bragman_Stochastic_Filter_Groups_for_Multi-Task_CNNs_Learning_Specialist_and_Generalist_ICCV_2019_paper.html). Proceedings of the IEEE International Conference on Computer Vision. [arXiv:1908.09597](https://arxiv.org/abs/1908.09597) (2019).
 1. Nelson, James, and Stefano Sanvito. Predicting the Curie temperature of ferromagnets using machine learning. [arXiv:1906.08534](https://arxiv.org/abs/1906.08534) (2019).
