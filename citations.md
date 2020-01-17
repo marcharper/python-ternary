@@ -2,7 +2,9 @@
 
 The library has been cited in a variety of high-quality journals (list may be incomplete). Entries are roughly in reverse chronological order.
 
-## Journal Articles
+## Journal Articles, Conference Proceedings, and Preprints
+1. Bucalo, Maria Soledad, et al. [A Constellation of Horrors: Analysis and Visualization of the #Cuéntalo Movement.](https://dl.acm.org/doi/abs/10.1145/3308560.3316459) Companion Proceedings of The 2019 World Wide Web Conference. 2019.
+1. Broquet, Adrien Pierre Michel, Mark A. Wieczorek, and Wenzhe Fa. [Flexure of the lithosphere beneath the north polar cap of Mars, with implication for ice compositions and heat flow.](https://www.essoar.org/doi/abs/10.1002/essoar.10501496.1) (2019). [Preprint]
 1. Ke, Huibin, and Christopher D. Taylor. [Design of Corrosion Resistant Alloys Using Density Functional Theory: Part I. O and Cl Adsorption Energy.](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3491237). O and Cl Adsorption Energy (November 27, 2019) (2019).
 1. Choi, Kwangbom, Narayanan Raghupathy, and Gary A. Churchill. [scBASE: A Bayesian mixture model for the analysis of allelic expression in single cells.](https://www.nature.com/articles/s41467-019-13099-0) Nature Communications 10.1 (2019): 1-1. [bioRxiv](https://www.biorxiv.org/content/10.1101/383224v3.full) (2019): 383224.
 1. Campbell, Ian Jackson, George Nelson Bennett, and Jonathan J. Silberg. [Evolutionary relationships between low potential ferredoxin and flavodoxin electron carriers.](https://www.frontiersin.org/articles/10.3389/fenrg.2019.00079/full) Frontiers in Energy Research 7 (2019): 79.
