@@ -43,9 +43,9 @@ def clear_matplotlib_ticks(ax=None, axis="both"):
     if not ax:
         return
     if axis.lower() in ["both", "x", "horizontal"]:
-        ax.set_xticks([], [])
+        ax.set_xticks([], minor=False)
     if axis.lower() in ["both", "y", "vertical"]:
-        ax.set_yticks([], [])
+        ax.set_yticks([], minor=False)
 
 
 ## Curve Plotting ##
