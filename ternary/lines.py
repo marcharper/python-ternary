@@ -313,7 +313,6 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
                 s = tick
             else:
                 s = tick_formats['l'] % tick
-            s = tick_formats['l'] % tick
             ax.text(x, y, s, horizontalalignment="center",
                     color=axes_colors['l'], fontsize=fontsize)
 
