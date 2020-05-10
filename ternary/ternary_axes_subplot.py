@@ -341,7 +341,7 @@ class TernaryAxesSubplot(object):
             self._ticks[k] = numpy.linspace(
                 self._axis_limits[k][0],
                 self._axis_limits[k][1],
-                self._boundary_scale / float(multiple) + 1
+                int(self._boundary_scale / float(multiple) + 1)
             ).tolist()
 
     def set_custom_ticks(self, locations=None, clockwise=False, multiple=1,
