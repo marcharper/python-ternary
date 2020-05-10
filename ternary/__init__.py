@@ -21,4 +21,4 @@ from .colormapping import get_cmap
 from .heatmapping import heatmap, heatmapf, svg_heatmap
 from .ternary_axes_subplot import figure, TernaryAxesSubplot
 
-__version__ = "1.0.6"
+__version__ = "1.0.7"

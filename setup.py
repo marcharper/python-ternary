@@ -1,7 +1,7 @@
 import setuptools
 from distutils.core import setup
 
-version = "1.0.6"
+version = "1.0.7"
 
 with open('README.txt') as file:
     long_description = file.read()
