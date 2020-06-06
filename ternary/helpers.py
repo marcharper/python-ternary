@@ -103,6 +103,26 @@ def project_point(p, permutation=None):
     return numpy.array([x, y])
 
 
+def planar_to_coordinates(p,scale):
+    """
+    Planar simplex (regular x,y) to maps (x,y,z) ternary coordinates. The order of the coordinates is counterclockwise from the origin.
+
+    Parameters
+    ----------
+    p: 2-tuple
+        The planar simplex (x, y) point to be transformed to maps (x,y,z) coordinates
+    
+    scale: Int
+        The normalized scale of the simplex, i.e. N such that points (x,y,z)
+        satisify x + y + z == N
+
+    """
+    x = p[0] - y/2
+    y = p[1] /  SQRT3OVER2
+    z = scale - (x + y)
+    return numpy.array([x, y, z])
+    
+    
 def project_sequence(s, permutation=None):
     """
     Projects a point or sequence of points using `project_point` to lists xs, ys
