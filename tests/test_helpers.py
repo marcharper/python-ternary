@@ -3,7 +3,7 @@ import unittest
 
 from numpy.testing import assert_array_equal
 
-from ternary.helpers import normalize, project_point, simplex_iterator, SQRT3OVER2
+from ternary.helpers import normalize, project_point, planar_to_coordinates, simplex_iterator, SQRT3OVER2
 
 
 class FunctionCases(unittest.TestCase):
@@ -83,6 +83,32 @@ class FunctionCases(unittest.TestCase):
         projected = project_point(point)
         expected = (1.5, SQRT3OVER2)
         assert_array_equal(projected, expected)
+
+    def test_planar_to_coordinates(self):
+        projected = (0.0, 0.0)
+        point = planar_to_coordinates(projected, scale = 100)
+        expected = (0.0, 0.0, 100.0)
+        assert_array_equal(point, expected)
+
+        projected = (100.0, 0.0)
+        point = planar_to_coordinates(projected, scale = 100)
+        expected = (100.0, 0.0, 0.0)
+        assert_array_equal(point, expected)
+
+        projected = (40.0,0)
+        point = planar_to_coordinates(projected, scale = 100)
+        expected = (40.0,  0.0 , 60.0)
+        assert_array_equal(point, expected)
+
+        projected = (10.0, SQRT3OVER2)
+        point = planar_to_coordinates(projected, scale = 100)
+        expected = (9.5,  1.0 , 89.5)
+        assert_array_equal(point, expected)
+
+        projected = (10.0, SQRT3OVER2)
+        point = planar_to_coordinates(projected, scale = 100)
+        expected = (9.5,  1.0 , 89.5)
+        assert_array_equal(point, expected)
 
 
 if __name__ == "__main__":
