@@ -441,7 +441,7 @@ class TernaryAxesSubplot(object):
                             cb_kwargs=cb_kwargs)
 
     def heatmapf(self, func, scale=None, cmap=None, boundary=True,
-                 style='triangular', colorbar=True, scientific=True,
+                 style='triangular', colorbar=True, scientific=False,
                  vmin=None, vmax=None, cbarlabel=None, cb_kwargs=None):
         if not scale:
             scale = self.get_scale()
