@@ -70,13 +70,13 @@ def colormapper(value, lower=0, upper=1, cmap=None):
     return hex_
 
 
-def colorbar_hack(ax, vmin, vmax, cmap, scientific=False, cbarlabel=None,
+def colorbar_hack(ax, vmin, vmax, cmap, scientific=False, cbarlabel=None, norm=None,
                   **kwargs):
     """
-    Colorbar hack to insert colorbar on ternary plot. 
-    
+    Colorbar hack to insert colorbar on ternary plot.
+
     Called by heatmap, not intended for direct usage.
-    
+
     Parameters
     ----------
     vmin: float
@@ -88,7 +88,8 @@ def colorbar_hack(ax, vmin, vmax, cmap, scientific=False, cbarlabel=None,
 
     """
     # http://stackoverflow.com/questions/8342549/matplotlib-add-colorbar-to-a-sequence-of-line-plots
-    norm = plt.Normalize(vmin=vmin, vmax=vmax)
+    if norm is None:
+        norm = plt.Normalize(vmin=vmin, vmax=vmax)
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
     sm._A = []
     cb = plt.colorbar(sm, ax=ax, **kwargs)
