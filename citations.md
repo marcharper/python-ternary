@@ -2,11 +2,15 @@
 
 The library has been cited in a variety of high-quality journals (list may be incomplete). Entries are roughly in reverse chronological order.
 
-## Journal Articles, Conference Proceedings, and Preprints
+## Journal Articles, Conference Proceedings, and Preprints  
+
+
+1. Marc Harper and Joshua Safyan. [Momentum Accelerates Evolutionary Dynamics](https://arxiv.org/abs/2007.02449). ArXiv preprint. (2020)
+1. Karkaria, Behzad D., Alex JH Fedorec, and Chris P. Barnes. [Automated design of synthetic microbial communities.](https://www.biorxiv.org/content/10.1101/2020.06.30.180281v1.abstract) bioRxiv (2020).
 1. Broquet, A., Mark A. Wieczorek, and Wenzhe Fa. [Flexure of the lithosphere beneath the north polar cap of Mars: Implications for ice composition and heat flow](https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1029/2019GL086746). Geophysical Research Letters (2020).
 1. Choubisa, Hitarth, et al. [Crystal Site Feature Embedding Enables Exploration of Large Chemical Spaces.](https://www.sciencedirect.com/science/article/pii/S2590238520301879). Matter (2020).
 1. Daly, Clyde A., and Rigoberto Hernandez. [Learning from the Machine: Uncovering Sustainable Nanoparticle Design Rules.](https://pubs.acs.org/doi/abs/10.1021/acs.jpcc.0c01195) The Journal of Physical Chemistry C (2020).
-1. Qian, Jimmy J., and Erol Akçay. [The balance of interaction types determines the assembly and stability of ecological communities](https://www.nature.com/articles/s41559-020-1121-x). Nature Ecology & Evolution (2020): 1-10. [BioRxiv](https://www.biorxiv.org/content/10.1101/643478v1.full) (2019): 643478.
+1. Qian, Jimmy J., and Erol Akçay. [The balance of interaction types determines the assembly and stability of ecological communities](https://www.nature.com/articles/s41559-020-1121-x). Nature Ecology & Evolution 4.3 (2020): 356-365. [BioRxiv](https://www.biorxiv.org/content/10.1101/643478v1.full) (2019): 643478.
 1. Bucalo, Maria Soledad, et al. [A Constellation of Horrors: Analysis and Visualization of the #Cuéntalo Movement.](https://dl.acm.org/doi/abs/10.1145/3308560.3316459) Companion Proceedings of The 2019 World Wide Web Conference. 2019.
 1. Ke, Huibin, and Christopher D. Taylor. [Design of Corrosion Resistant Alloys Using Density Functional Theory: Part I. O and Cl Adsorption Energy](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3491237). O and Cl Adsorption Energy (November 27, 2019) (2019).
 1. Choi, Kwangbom, Narayanan Raghupathy, and Gary A. Churchill. [scBASE: A Bayesian mixture model for the analysis of allelic expression in single cells.](https://www.nature.com/articles/s41467-019-13099-0) Nature Communications 10.1 (2019): 1-1. [bioRxiv](https://www.biorxiv.org/content/10.1101/383224v3.full) (2019): 383224.
@@ -17,6 +21,7 @@ The library has been cited in a variety of high-quality journals (list may be in
 1. Gariazzo, S., P. F. de Salas, and S. Pastor Carpi. [Thermalisation of sterile neutrinos in the early Universe in the 3+ 1 scheme with full mixing matrix](https://iopscience.iop.org/article/10.1088/1475-7516/2019/07/014).  Journal of Cosmology and Astroparticle Physics, Volume 2019, July 2019. [arXiv:1905.11290](https://arxiv.org/abs/1905.11290) (2019).
 1. Keniley, Shane, and Davide Curreli. "CRANE: A MOOSE-based Open Source Tool for Plasma Chemistry Applications." [arXiv:1905.10004](https://arxiv.org/abs/1905.10004) (2019).
 1. Abada, Asmaa, et al. [Inclusive displaced vertex searches for heavy neutral leptons at the LHC.](https://link.springer.com/article/10.1007/JHEP01(2019)093) Journal of High Energy Physics 2019.1 (2019): 93. [ArXiv](https://arxiv.org/abs/1807.10024).
+
 1. Bustamante, Mauricio, and Sanjib Kumar Agarwalla. [Universe’s Worth of Electrons to Probe Long-Range Interactions of High-Energy Astrophysical Neutrinos.](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.122.061103) Physical review letters 122.6 (2019): 061103. [ArXiv](https://arxiv.org/abs/1808.02042).
 1. Hamilton, Nicholas E., and Michael Ferry. [ggtern: Ternary diagrams using ggplot2](https://www.jstatsoft.org/article/view/v087c03). Journal of Statistical Software 87.1 (2018): 1-17.
 1. Makha, Mohammed, et al. [Insights into photovoltaic properties of ternary organic solar cells from phase diagrams](https://www.tandfonline.com/doi/abs/10.1080/14686996.2018.1509275).  Science and Technology of Advanced Materials 19.1 (2018): 669-682.
