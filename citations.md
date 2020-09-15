@@ -8,15 +8,17 @@ The library has been cited in a variety of high-quality journals (list may be in
 [Citation Instructions](CITATION.md)
 
 
-## Journal Articles, Conference Proceedings, and Preprints  
+## Journal Articles, Conference Proceedings, and Preprints
+1. Graziani, Carlo. [A Behavioral Multispread Epidemic Model](https://www.medrxiv.org/content/10.1101/2020.08.24.20181107v1.abstract). medRxiv (2020).
+1. Tran, Xuan Quy, et al. [Statistical evaluation of the solid-solution state in ternary nanoalloys](https://pubs.acs.org/doi/abs/10.1021/acs.jpcc.0c06813). The Journal of Physical Chemistry C (2020).
 1. McNally, Joshua S., et al. [Solute displacement in the aqueous phase of water–NaCl–organic ternary mixtures relevant to solvent-driven water treatment](https://pubs.rsc.org/en/content/articlelanding/2020/RA/D0RA06361D) RSC Advances 10.49 (2020)
 1. Chung, Wesley, et al. [Beyond variance reduction: Understanding the true impact of baselines on policy optimization](https://arxiv.org/abs/2008.13773). arXiv preprint arXiv:2008.13773 (2020).
 1. Marc Harper and Joshua Safyan. [Momentum Accelerates Evolutionary Dynamics](https://arxiv.org/abs/2007.02449). ArXiv preprint. (2020)
 1. Karkaria, Behzad D., Alex JH Fedorec, and Chris P. Barnes. [Automated design of synthetic microbial communities.](https://www.biorxiv.org/content/10.1101/2020.06.30.180281v1.abstract) bioRxiv (2020).
 1. Broquet, A., Mark A. Wieczorek, and Wenzhe Fa. [Flexure of the lithosphere beneath the north polar cap of Mars: Implications for ice composition and heat flow](https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1029/2019GL086746). Geophysical Research Letters (2020).
-1. Choubisa, Hitarth, et al. [Crystal Site Feature Embedding Enables Exploration of Large Chemical Spaces.](https://www.sciencedirect.com/science/article/pii/S2590238520301879). Matter (2020).
+1. Choubisa, Hitarth, et al. [Crystal Site Feature Embedding Enables Exploration of Large Chemical Spaces](https://www.sciencedirect.com/science/article/pii/S2590238520301879). Matter (2020).
 1. Daly, Clyde A., and Rigoberto Hernandez. [Learning from the Machine: Uncovering Sustainable Nanoparticle Design Rules.](https://pubs.acs.org/doi/abs/10.1021/acs.jpcc.0c01195) The Journal of Physical Chemistry C (2020).
-1. Qian, Jimmy J., and Erol Akçay. [The balance of interaction types determines the assembly and stability of ecological communities](https://www.nature.com/articles/s41559-020-1121-x). Nature Ecology & Evolution 4.3 (2020): 356-365. [BioRxiv](https://www.biorxiv.org/content/10.1101/643478v1.full) (2019): 643478.
+1. Qian, Jimmy J., and Erol Akçay. [The balance of interaction types determines the assembly and stability of ecological communities](https://www.nature.com/articles/s41559-020-1121-x). Nature Ecology & Evolution 4.3 (2020): 356-365. [BioRxiv](https://www.biorxiv.org/content/10.1101/643478v1.full)
 1. Bucalo, Maria Soledad, et al. [A Constellation of Horrors: Analysis and Visualization of the #Cuéntalo Movement.](https://dl.acm.org/doi/abs/10.1145/3308560.3316459) Companion Proceedings of The 2019 World Wide Web Conference. 2019.
 1. Ke, Huibin, and Christopher D. Taylor. [Design of Corrosion Resistant Alloys Using Density Functional Theory: Part I. O and Cl Adsorption Energy](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3491237). O and Cl Adsorption Energy (November 27, 2019) (2019).
 1. Choi, Kwangbom, Narayanan Raghupathy, and Gary A. Churchill. [scBASE: A Bayesian mixture model for the analysis of allelic expression in single cells.](https://www.nature.com/articles/s41467-019-13099-0) Nature Communications 10.1 (2019): 1-1. [bioRxiv](https://www.biorxiv.org/content/10.1101/383224v3.full) (2019): 383224.
