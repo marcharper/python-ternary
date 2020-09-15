@@ -2,9 +2,15 @@
 
 The library has been cited in a variety of high-quality journals (list may be incomplete). Entries are roughly in reverse chronological order.
 
+
+## How to Cite
+
+[Citation Instructions](CITATION.md)
+
+
 ## Journal Articles, Conference Proceedings, and Preprints  
-
-
+1. McNally, Joshua S., et al. [Solute displacement in the aqueous phase of water–NaCl–organic ternary mixtures relevant to solvent-driven water treatment](https://pubs.rsc.org/en/content/articlelanding/2020/RA/D0RA06361D) RSC Advances 10.49 (2020)
+1. Chung, Wesley, et al. [Beyond variance reduction: Understanding the true impact of baselines on policy optimization](https://arxiv.org/abs/2008.13773). arXiv preprint arXiv:2008.13773 (2020).
 1. Marc Harper and Joshua Safyan. [Momentum Accelerates Evolutionary Dynamics](https://arxiv.org/abs/2007.02449). ArXiv preprint. (2020)
 1. Karkaria, Behzad D., Alex JH Fedorec, and Chris P. Barnes. [Automated design of synthetic microbial communities.](https://www.biorxiv.org/content/10.1101/2020.06.30.180281v1.abstract) bioRxiv (2020).
 1. Broquet, A., Mark A. Wieczorek, and Wenzhe Fa. [Flexure of the lithosphere beneath the north polar cap of Mars: Implications for ice composition and heat flow](https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1029/2019GL086746). Geophysical Research Letters (2020).
@@ -46,6 +52,3 @@ The library has been cited in a variety of high-quality journals (list may be in
 1. Weinstein, Bryan T. [Microbial Evolutionary Dynamics and Transport on Solid and Liquid Substrates](https://dash.harvard.edu/handle/1/40050028). Diss. 2018.
 1. Triller, Thomas. [Diffusive properties of the system water/ethanol/triethylene glycol in microgravity and ground conditions](https://d-nb.info/1168324432/34). (Disseration, 2018) 
 
-# How to Cite
-
-[Citation Instructions](CITATION.md)
