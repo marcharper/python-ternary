@@ -1,3 +1,4 @@
+#ternary in python 
 import ternary
 
 ## Boundary and Gridlines
