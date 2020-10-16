@@ -387,9 +387,9 @@ def svg_heatmap(data, scale, filename, vmax=None, vmin=None, style='h',
 
     cmap = get_cmap(cmap)
 
-    if not vmin:
+    if vmin is None:
         vmin = min(data.values())
-    if not vmax:
+    if vmax is None:
         vmax = max(data.values())
 
     height = scale * numpy.sqrt(3) / 2 + 2
