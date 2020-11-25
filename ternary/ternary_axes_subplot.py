@@ -345,7 +345,8 @@ class TernaryAxesSubplot(object):
             ).tolist()
 
     def set_custom_ticks(self, locations=None, clockwise=False, multiple=1,
-                         axes_colors=None, tick_formats=None, **kwargs):
+                         axes_colors=None, tick_formats=None, normalize_tick=False,
+                         **kwargs):
         """
         Having called get_ticks_from_axis_limits, set the custom ticks on the
         plot.
@@ -354,16 +355,17 @@ class TernaryAxesSubplot(object):
             self.ticks(ticks=self._ticks[k], locations=locations,
                        axis=k, clockwise=clockwise, multiple=multiple,
                        axes_colors=axes_colors, tick_formats=tick_formats,
-                       **kwargs)
+                       normalize_tick=normalize_tick, **kwargs)
 
     def ticks(self, ticks=None, locations=None, multiple=1, axis='blr',
-              clockwise=False, axes_colors=None, tick_formats=None, **kwargs):
+              clockwise=False, axes_colors=None, tick_formats=None,
+              normalize_tick=False, **kwargs):
         ax = self.get_axes()
         scale = self.get_scale()
         lines.ticks(ax, scale, ticks=ticks, locations=locations,
                     multiple=multiple, clockwise=clockwise, axis=axis,
                     axes_colors=axes_colors, tick_formats=tick_formats,
-                    **kwargs)
+                    normalize_tick=normalize_tick, **kwargs)
 
     # Redrawing and resizing
 
