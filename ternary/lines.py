@@ -208,7 +208,7 @@ def normalize_tick_formats(tick_formats):
 
 def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
           offset=0.01, clockwise=False, axes_colors=None, fontsize=10,
-          tick_formats=None, normalize_tick=False, **kwargs):
+          tick_formats=None, **kwargs):
     """
     Sets tick marks and labels.
 
@@ -241,9 +241,6 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
         a float with 3 decimal places or "%.3e" for scientific format with
         3 decimal places or "%d" for ints. If tick_formats is a string, it
         is assumed that this is a format string to be applied to all axes.
-    normalize_tick: Bool
-        Normalize the tick or not. If True, then the tick is normalized to [0, 1] (divide by scale)
-        If not, keep the same
     kwargs:
         Any kwargs to pass through to matplotlib.
 
@@ -264,12 +261,6 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
     if not ticks:
         locations = arange(0, scale + multiple, multiple)
         ticks = locations
-
-    if normalize_tick:
-        try:
-            ticks = [str(float(ticki)/float(scale)) for ticki in ticks]
-        except Exception as e:
-            pass
 
     tick_formats = normalize_tick_formats(tick_formats)
 
