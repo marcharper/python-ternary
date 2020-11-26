@@ -6,6 +6,7 @@ from numpy import arange
 from matplotlib.lines import Line2D
 
 from .helpers import project_point
+from .helpers import SQRT3OVER2
 
 
 ## Lines ##
@@ -281,68 +282,68 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
 
     offset *= scale
 
+    k_tick = 0.2 * fontsize
     if 'r' in axis:
         for index, i in enumerate(locations):
             loc1 = (scale - i, i, 0)
+            x, y = project_point(loc1)
             if clockwise:
-                # Right parallel
-                loc2 = (scale - i, i + offset, 0)
-                text_location = (scale - i, i + 2 * offset, 0)
+                # Left parallel
+                dx = 0.5 * offset
+                dy = SQRT3OVER2 * offset
                 tick = ticks[-(index+1)]
             else:
                 # Horizontal
-                loc2 = (scale - i + offset, i, 0)
-                text_location = (scale - i + 2.6 * offset, i - 0.5 * offset, 0)
-                tick = ticks[index]
-            line(ax, loc1, loc2, color=axes_colors['r'], **kwargs)
-            x, y = project_point(text_location)
+                dx = offset
+                dy = 0
+                tick = ticks[index]            
+            ax.add_line(Line2D((x, x + dx), (y, y + dy), color=axes_colors['r'], **kwargs))
             if isinstance(tick, str):
                 s = tick
             else:
                 s = tick_formats['r'] % tick
-            ax.text(x, y, s, horizontalalignment="center",
-                    color=axes_colors['r'], fontsize=fontsize)
+            ax.text(x + k_tick * dx, y + k_tick * dy, s, horizontalalignment="center",
+                    verticalalignment="center", color=axes_colors['r'], fontsize=fontsize, rotation=-60)
 
     if 'l' in axis:
         for index, i in enumerate(locations):
             loc1 = (0, i, 0)
+            x, y = project_point(loc1)
             if clockwise:
                 # Horizontal
-                loc2 = (-offset, i, 0)
-                text_location = (-2 * offset, i - 0.5 * offset, 0)
+                dx = -offset
+                dy = 0
                 tick = ticks[index]
             else:
                 # Right parallel
-                loc2 = (-offset, i + offset, 0)
-                text_location = (-2 * offset, i + 1.5 * offset, 0)
+                dx = -0.5 * offset
+                dy = SQRT3OVER2 * offset
                 tick = ticks[-(index+1)]
-            line(ax, loc1, loc2, color=axes_colors['l'], **kwargs)
-            x, y = project_point(text_location)
+            ax.add_line(Line2D((x, x + dx), (y, y + dy), color=axes_colors['l'], **kwargs))
             if isinstance(tick, str):
                 s = tick
             else:
                 s = tick_formats['l'] % tick
-            ax.text(x, y, s, horizontalalignment="center",
-                    color=axes_colors['l'], fontsize=fontsize)
+            ax.text(x + k_tick * dx, y + k_tick * dy, s, horizontalalignment="center",
+                    verticalalignment="center", color=axes_colors['l'], fontsize=fontsize, rotation=60)
 
     if 'b' in axis:
         for index, i in enumerate(locations):
             loc1 = (i, 0, 0)
+            x, y = project_point(loc1)
+            dy = -SQRT3OVER2 * offset
             if clockwise:
                 # Right parallel
-                loc2 = (i + offset, -offset, 0)
-                text_location = (i + 3 * offset, -3.5 * offset, 0)
+                dx = 0.5 * offset
                 tick = ticks[-(index+1)]
             else:
                 # Left parallel
-                loc2 = (i, -offset, 0)
-                text_location = (i + 0.5 * offset, -3.5 * offset, 0)
+                dx = -0.5 * offset
                 tick = ticks[index]
-            line(ax, loc1, loc2, color=axes_colors['b'], **kwargs)
-            x, y = project_point(text_location)
+            ax.add_line(Line2D((x, x + dx), (y, y + dy), color=axes_colors['l'], **kwargs))            
             if isinstance(tick, str):
                 s = tick
             else:
                 s = tick_formats['b'] % tick
-            ax.text(x, y, s, horizontalalignment="center",
-                    color=axes_colors['b'], fontsize=fontsize)
+            ax.text(x + k_tick * dx, y + k_tick * dy, s, horizontalalignment="center",
+                    verticalalignment="center", color=axes_colors['b'], fontsize=fontsize)
