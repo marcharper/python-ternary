@@ -271,9 +271,10 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
         if _axis not in axes_colors:
             axes_colors[_axis] = 'black'
 
+    k_tick = 1 + 0.002/offset * fontsize
+
     offset *= scale
 
-    k_tick = 0.2 * fontsize
     if 'r' in axis:
         for index, i in enumerate(locations):
             loc1 = (scale - i, i, 0)
