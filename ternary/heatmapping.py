@@ -6,7 +6,7 @@ import functools
 import numpy
 from matplotlib import pyplot
 
-from .helpers import unzip, normalize, simplex_iterator, project_point
+from .helpers import unzip, normalize, simplex_iterator, permute_point, project_point
 from .colormapping import get_cmap, colormapper, colorbar_hack
 
 ### Heatmap Triangulation Coordinates
@@ -46,7 +46,7 @@ def alt_blend_value(data, i, j, k):
 def triangle_coordinates(i, j, k):
     """
     Computes coordinates of the constituent triangles of a triangulation for the
-    simplex. These triangules are parallel to the lower axis on the lower side.
+    simplex. These triangles are parallel to the lower axis on the lower side.
 
     Parameters
     ----------
@@ -63,7 +63,7 @@ def triangle_coordinates(i, j, k):
 def alt_triangle_coordinates(i, j, k):
     """
     Computes coordinates of the constituent triangles of a triangulation for the
-    simplex. These triangules are parallel to the lower axis on the upper side.
+    simplex. These triangles are parallel to the lower axis on the upper side.
 
     Parameters
     ----------
@@ -158,29 +158,32 @@ def polygon_generator(data, scale, style, permutation=None):
         j = key[1]
         k = scale - i - j
         if style == 'h':
+            # Note here we permute first and then project normally, in
+            # contrast to the cases below.
+            i, j, k = list(permute_point([i, j, k], permutation=permutation))
             vertices = hexagon_coordinates(i, j, k)
-            yield (map(project, vertices), value)
+            yield map(project_point, vertices), value
         elif style == 'd':
             # Upright triangles
             if (i <= scale) and (j <= scale) and (k >= 0):
                 vertices = triangle_coordinates(i, j, k)
-                yield (map(project, vertices), value)
+                yield map(project, vertices), value
             # Upside-down triangles
             if (i < scale) and (j < scale) and (k >= 1):
                 vertices = alt_triangle_coordinates(i, j, k)
                 value = blend_value(data, i, j, k)
-                yield (map(project, vertices), value)
+                yield map(project, vertices), value
         elif style == 't':
             # Upright triangles
             if (i < scale) and (j < scale) and (k > 0):
                 vertices = triangle_coordinates(i, j, k)
                 value = blend_value(data, i, j, k)
-                yield (map(project, vertices), value)
+                yield map(project, vertices), value
             # If not on the boundary add the upside-down triangle
             if (i < scale) and (j < scale) and (k > 1):
                 vertices = alt_triangle_coordinates(i, j, k)
                 value = alt_blend_value(data, i, j, k)
-                yield (map(project, vertices), value)
+                yield map(project, vertices), value
 
 
 def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
