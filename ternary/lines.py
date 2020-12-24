@@ -283,7 +283,7 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
             else:
                 # Horizontal
                 loc2 = (scale - i + offset, i, 0)
-                text_location = (scale - i + 2.6 * offset, i - 0.5 * offset, 0)
+                text_location = (scale - i + 3.1 * offset, i - 0.5 * offset, 0)
                 tick = ticks[index]
             line(ax, loc1, loc2, color=axes_colors['r'], **kwargs)
             x, y = project_point(text_location)
