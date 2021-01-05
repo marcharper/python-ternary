@@ -9,6 +9,8 @@ The library has been cited in a variety of high-quality journals (list may be in
 
 
 ## Journal Articles, Conference Proceedings, and Preprints
+1. Evans, Matthew L., and Andrew J. Morris. [matador: a Python library for analysing, curating and performing high-throughput density-functional theory calculations](https://joss.theoj.org/papers/10.21105/joss.02563.pdf). Journal of Open Source Software 5.54 (2020): 2563.
+1. Zion, Matan Yah Ben, et al. [Cooperation in a fluid swarm of fuel-free micro-swimmers](https://arxiv.org/abs/2012.15087). arXiv preprint arXiv:2012.15087 (2020).
 1. Graziani, Carlo. [A Behavioral Multispread Epidemic Model](https://www.medrxiv.org/content/10.1101/2020.08.24.20181107v1.abstract). medRxiv (2020).
 1. Tran, Xuan Quy, et al. [Statistical evaluation of the solid-solution state in ternary nanoalloys](https://pubs.acs.org/doi/abs/10.1021/acs.jpcc.0c06813). The Journal of Physical Chemistry C (2020).
 1. McNally, Joshua S., et al. [Solute displacement in the aqueous phase of water–NaCl–organic ternary mixtures relevant to solvent-driven water treatment](https://pubs.rsc.org/en/content/articlelanding/2020/RA/D0RA06361D) RSC Advances 10.49 (2020)
