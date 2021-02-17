@@ -2,6 +2,7 @@
 Wrapper class for all ternary plotting functions.
 """
 
+from collections import namedtuple
 from functools import partial
 
 import numpy
@@ -11,6 +12,9 @@ from . import heatmapping
 from . import lines
 from . import plotting
 from .helpers import project_point, convert_coordinates_sequence
+
+
+BackgroundParameters = namedtuple('BackgroundParameters', ['color', 'alpha', 'zorder'])
 
 
 def figure(ax=None, scale=None, permutation=None):
@@ -70,6 +74,11 @@ class TernaryAxesSubplot(object):
         # Container for the redrawing of labels
         self._to_remove = []
         self._connect_callbacks()
+        # Background
+        self._background_parameters = None
+        # Cache for the background triangle object, so it can be removed and redrawn as needed.
+        self._background_triangle = None
+        self.set_background_color(color="whitesmoke", zorder=-1000, alpha=0.75)
 
     def _connect_callbacks(self):
         """Connect resize matplotlib callbacks."""
@@ -454,3 +463,20 @@ class TernaryAxesSubplot(object):
                              colorbar=colorbar, permutation=permutation,
                              vmin=vmin, vmax=vmax, cbarlabel=cbarlabel,
                              cb_kwargs=cb_kwargs)
+
+    def set_background_color(self, color="whitesmoke", zorder=-1000, alpha=0.75):
+        self._background_parameters = BackgroundParameters(color=color, alpha=alpha, zorder=zorder)
+        self._draw_background()
+
+    def _draw_background(self):
+        color, alpha, zorder = self._background_parameters
+        scale = self.get_scale()
+        ax = self.get_axes()
+
+        # Remove any existing background
+        if self._background_triangle:
+            print(self._background_triangle)
+            self._background_triangle.remove()
+
+        # Draw the background
+        self._background_triangle = heatmapping.background_color(ax, color, scale, alpha=alpha, zorder=zorder)[0]
