@@ -3,8 +3,8 @@ Various Heatmaps.
 """
 
 import functools
-import numpy
-from matplotlib import pyplot
+import numpy as np
+from matplotlib import pyplot as plt
 
 from .helpers import unzip, normalize, simplex_iterator, permute_point, project_point
 from .colormapping import get_cmap, colormapper, colorbar_hack
@@ -85,13 +85,13 @@ def generate_hexagon_deltas():
     hexagon points for the hexagonal heatmap.
     """
 
-    zero = numpy.array([0, 0, 0])
-    alpha = numpy.array([-1./3, 2./3, 0])
-    deltaup = numpy.array([1./3, 1./3, 0])
-    deltadown = numpy.array([2./3, -1./3, 0])
-    i_vec = numpy.array([0, 1./2, -1./2])
-    i_vec_down = numpy.array([1./2, -1./2, 0])
-    deltaX_vec = numpy.array([1./2, 0, -1./2])
+    zero = np.array([0, 0, 0])
+    alpha = np.array([-1./3, 2./3, 0])
+    deltaup = np.array([1./3, 1./3, 0])
+    deltadown = np.array([2./3, -1./3, 0])
+    i_vec = np.array([0, 1./2, -1./2])
+    i_vec_down = np.array([1./2, -1./2, 0])
+    deltaX_vec = np.array([1./2, 0, -1./2])
 
     d = dict()
     # Corner Points
@@ -131,8 +131,8 @@ def hexagon_coordinates(i, j, k):
         else:
             signature += "1"
     deltas = hexagon_deltas[signature]
-    center = numpy.array([i, j, k])
-    return numpy.array([center + x for x in deltas])
+    center = np.array([i, j, k])
+    return np.array([center + x for x in deltas])
 
 
 ## Heatmaps ##
@@ -228,12 +228,12 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
     """
 
     if not ax:
-        fig, ax = pyplot.subplots()
+        fig, ax = plt.subplots()
     # If use_rgba, make the RGBA values numpy arrays so that they can
     # be averaged.
     if use_rgba:
         for k, v in data.items():
-            data[k] = numpy.array(v)
+            data[k] = np.array(v)
     else:
         cmap = get_cmap(cmap)
         if vmin is None:
@@ -395,7 +395,7 @@ def svg_heatmap(data, scale, filename, vmax=None, vmin=None, style='h',
     if vmax is None:
         vmax = max(data.values())
 
-    height = scale * numpy.sqrt(3) / 2 + 2
+    height = scale * np.sqrt(3) / 2 + 2
 
     output_file = open(filename, 'w')
     output_file.write('<svg height="%s" width="%s">\n' % (height, scale))

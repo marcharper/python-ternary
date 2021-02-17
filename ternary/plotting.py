@@ -3,7 +3,7 @@ Plotting functions: scatter, plot (curves), axis labelling.
 """
 
 import matplotlib
-from matplotlib import pyplot
+from matplotlib import pyplot as plt
 import numpy as np
 
 from .helpers import project_sequence
@@ -66,7 +66,7 @@ def plot(points, ax=None, permutation=None, **kwargs):
         Any kwargs to pass through to matplotlib.
     """
     if not ax:
-        fig, ax = pyplot.subplots()
+        fig, ax = plt.subplots()
     xs, ys = project_sequence(points, permutation=permutation)
     ax.plot(xs, ys, **kwargs)
     return ax
@@ -91,7 +91,7 @@ def plot_colored_trajectory(points, cmap=None, ax=None, permutation=None,
         Any kwargs to pass through to matplotlib.
     """
     if not ax:
-        fig, ax = pyplot.subplots()
+        fig, ax = plt.subplots()
     cmap = get_cmap(cmap)
     xs, ys = project_sequence(points, permutation=permutation)
 
@@ -143,7 +143,7 @@ def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None,
         Any kwargs to pass through to matplotlib.
     """
     if not ax:
-        fig, ax = pyplot.subplots()
+        fig, ax = plt.subplots()
     xs, ys = project_sequence(points, permutation=permutation)
     ax.scatter(xs, ys, vmin=vmin, vmax=vmax, **kwargs)
 

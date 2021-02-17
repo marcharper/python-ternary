@@ -2,12 +2,12 @@
 Helper functions and utilities for projecting to the simplex and various tasks.
 """
 
-import numpy
+import numpy as np
 
 
 ### Constants ###
 
-SQRT3 = numpy.sqrt(3)
+SQRT3 = np.sqrt(3)
 SQRT3OVER2 = SQRT3 / 2.
 
 ### Auxilliary Functions ###
@@ -100,7 +100,7 @@ def project_point(p, permutation=None):
     b = permuted[1]
     x = a + b/2.
     y = SQRT3OVER2 * b
-    return numpy.array([x, y])
+    return np.array([x, y])
 
 
 def planar_to_coordinates(p, scale):
@@ -121,7 +121,7 @@ def planar_to_coordinates(p, scale):
     y = p[1] / SQRT3OVER2
     x = p[0] - y / 2.
     z = scale - x - y
-    return numpy.array([x, y, z])
+    return np.array([x, y, z])
     
     
 def project_sequence(s, permutation=None):
