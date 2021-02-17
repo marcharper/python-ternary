@@ -1,7 +1,7 @@
 import setuptools
 from distutils.core import setup
 
-version = "1.0.7"
+version = "1.0.8"
 
 with open('README.txt') as file:
     long_description = file.read()
@@ -12,9 +12,10 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.5",
     "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
     "Topic :: Scientific/Engineering :: Visualization"
 ]
 
