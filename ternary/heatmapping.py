@@ -409,3 +409,12 @@ def svg_heatmap(data, scale, filename, vmax=None, vmin=None, style='h',
         output_file.write(svg_polygon(vertices, color))
 
     output_file.write('</svg>\n')
+
+
+def background_color(ax, color, scale, zorder=-1000, alpha=None):
+    """Draws a triangle behind the plot to serve as the background color."""
+    vertices = [(scale, 0, 0), (0, scale, 0), (0, 0, scale)]
+    vertices = map(project_point, vertices)
+    xs, ys = unzip(vertices)
+    poly = ax.fill(xs, ys, facecolor=color, edgecolor=color, zorder=zorder, alpha=alpha)
+    return poly
