@@ -5,8 +5,8 @@ Wrapper class for all ternary plotting functions.
 from collections import namedtuple
 from functools import partial
 
-import numpy
-from matplotlib import pyplot
+import numpy as np
+from matplotlib import pyplot as plt
 
 from . import heatmapping
 from . import lines
@@ -20,7 +20,7 @@ BackgroundParameters = namedtuple('BackgroundParameters', ['color', 'alpha', 'zo
 def figure(ax=None, scale=None, permutation=None):
     """
     Wraps a Matplotlib AxesSubplot or generates a new one. Emulates matplotlib's
-    > figure, ax = pyplot.subplots()
+    > figure, ax = plt.subplots()
 
     Parameters
     ----------
@@ -63,7 +63,7 @@ class TernaryAxesSubplot(object):
         if ax:
             self.ax = ax
         else:
-            _, self.ax = pyplot.subplots()
+            _, self.ax = plt.subplots()
         self.set_scale(scale=scale)
         self._permutation = permutation
         self._boundary_scale = scale
@@ -316,7 +316,7 @@ class TernaryAxesSubplot(object):
 
     def close(self):
         fig = self.get_figure()
-        pyplot.close(fig)
+        plt.close(fig)
 
     def legend(self, *args, **kwargs):
         ax = self.get_axes()
@@ -331,7 +331,7 @@ class TernaryAxesSubplot(object):
 
     def show(self):
         self._redraw_labels()
-        pyplot.show()
+        plt.show()
 
     # Axis ticks
 
@@ -347,7 +347,7 @@ class TernaryAxesSubplot(object):
         keys 'b' for bottom, 'l' for left and 'r' for right axes.
         """
         for k in ['b', 'l', 'r']:
-            self._ticks[k] = numpy.linspace(
+            self._ticks[k] = np.linspace(
                 self._axis_limits[k][0],
                 self._axis_limits[k][1],
                 int(self._boundary_scale / float(multiple) + 1)
@@ -396,9 +396,9 @@ class TernaryAxesSubplot(object):
             transform = ax.transAxes
             x, y = project_point(position)
             # Calculate the new angle.
-            position = numpy.array([x, y])
+            position = np.array([x, y])
             new_rotation = ax.transData.transform_angles(
-                numpy.array((rotation,)), position.reshape((1, 2)))[0]
+                np.array((rotation,)), position.reshape((1, 2)))[0]
             text = ax.text(x, y, label, rotation=new_rotation,
                            transform=transform, horizontalalignment="center",
                            **kwargs)
@@ -475,7 +475,6 @@ class TernaryAxesSubplot(object):
 
         # Remove any existing background
         if self._background_triangle:
-            print(self._background_triangle)
             self._background_triangle.remove()
 
         # Draw the background
