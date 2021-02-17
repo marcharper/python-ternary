@@ -9,6 +9,10 @@ The library has been cited in a variety of high-quality journals (list may be in
 
 
 ## Journal Articles, Conference Proceedings, and Preprints
+1. Fink, Christoph, et al. [Mapping the online songbird trade in Indonesia](https://osf.io/preprints/socarxiv/mxkgq/). SocArxiv. (2021).
+1. Molter, Felix, et al. [Gaze-dependent evidence accumulation predicts multi-alternative risky choice behaviour](https://psyarxiv.com/x6nbf/download/?format=pdf). PsyArXiv. February 12 (2021).
+1. Karkaria, Behzad D., Alex JH Fedorec, and Chris P. Barnes. [Automated design of synthetic microbial communities](https://www.nature.com/articles/s41467-020-20756-2). Nature communications 12.1 (2021): 1-12. [BioRxiv](https://www.biorxiv.org/content/10.1101/2020.06.30.180281v1.abstract).
+1. Fatras, Kilian, et al. [Minibatch optimal transport distances; analysis and applications](https://arxiv.org/abs/2101.01792). arXiv preprint arXiv:2101.01792 (2021).
 1. Evans, Matthew L., and Andrew J. Morris. [matador: a Python library for analysing, curating and performing high-throughput density-functional theory calculations](https://joss.theoj.org/papers/10.21105/joss.02563.pdf). Journal of Open Source Software 5.54 (2020): 2563.
 1. Zion, Matan Yah Ben, et al. [Cooperation in a fluid swarm of fuel-free micro-swimmers](https://arxiv.org/abs/2012.15087). arXiv preprint arXiv:2012.15087 (2020).
 1. Graziani, Carlo. [A Behavioral Multispread Epidemic Model](https://www.medrxiv.org/content/10.1101/2020.08.24.20181107v1.abstract). medRxiv (2020).
@@ -16,7 +20,6 @@ The library has been cited in a variety of high-quality journals (list may be in
 1. McNally, Joshua S., et al. [Solute displacement in the aqueous phase of water–NaCl–organic ternary mixtures relevant to solvent-driven water treatment](https://pubs.rsc.org/en/content/articlelanding/2020/RA/D0RA06361D) RSC Advances 10.49 (2020)
 1. Chung, Wesley, et al. [Beyond variance reduction: Understanding the true impact of baselines on policy optimization](https://arxiv.org/abs/2008.13773). arXiv preprint arXiv:2008.13773 (2020).
 1. Marc Harper and Joshua Safyan. [Momentum Accelerates Evolutionary Dynamics](https://arxiv.org/abs/2007.02449). ArXiv preprint. (2020)
-1. Karkaria, Behzad D., Alex JH Fedorec, and Chris P. Barnes. [Automated design of synthetic microbial communities.](https://www.biorxiv.org/content/10.1101/2020.06.30.180281v1.abstract) bioRxiv (2020).
 1. Broquet, A., Mark A. Wieczorek, and Wenzhe Fa. [Flexure of the lithosphere beneath the north polar cap of Mars: Implications for ice composition and heat flow](https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1029/2019GL086746). Geophysical Research Letters (2020).
 1. Choubisa, Hitarth, et al. [Crystal Site Feature Embedding Enables Exploration of Large Chemical Spaces](https://www.sciencedirect.com/science/article/pii/S2590238520301879). Matter (2020).
 1. Daly, Clyde A., and Rigoberto Hernandez. [Learning from the Machine: Uncovering Sustainable Nanoparticle Design Rules.](https://pubs.acs.org/doi/abs/10.1021/acs.jpcc.0c01195) The Journal of Physical Chemistry C (2020).
@@ -31,7 +34,6 @@ The library has been cited in a variety of high-quality journals (list may be in
 1. Gariazzo, S., P. F. de Salas, and S. Pastor Carpi. [Thermalisation of sterile neutrinos in the early Universe in the 3+ 1 scheme with full mixing matrix](https://iopscience.iop.org/article/10.1088/1475-7516/2019/07/014).  Journal of Cosmology and Astroparticle Physics, Volume 2019, July 2019. [arXiv:1905.11290](https://arxiv.org/abs/1905.11290) (2019).
 1. Keniley, Shane, and Davide Curreli. "CRANE: A MOOSE-based Open Source Tool for Plasma Chemistry Applications." [arXiv:1905.10004](https://arxiv.org/abs/1905.10004) (2019).
 1. Abada, Asmaa, et al. [Inclusive displaced vertex searches for heavy neutral leptons at the LHC.](https://link.springer.com/article/10.1007/JHEP01(2019)093) Journal of High Energy Physics 2019.1 (2019): 93. [ArXiv](https://arxiv.org/abs/1807.10024).
-
 1. Bustamante, Mauricio, and Sanjib Kumar Agarwalla. [Universe’s Worth of Electrons to Probe Long-Range Interactions of High-Energy Astrophysical Neutrinos.](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.122.061103) Physical review letters 122.6 (2019): 061103. [ArXiv](https://arxiv.org/abs/1808.02042).
 1. Hamilton, Nicholas E., and Michael Ferry. [ggtern: Ternary diagrams using ggplot2](https://www.jstatsoft.org/article/view/v087c03). Journal of Statistical Software 87.1 (2018): 1-17.
 1. Makha, Mohammed, et al. [Insights into photovoltaic properties of ternary organic solar cells from phase diagrams](https://www.tandfonline.com/doi/abs/10.1080/14686996.2018.1509275).  Science and Technology of Advanced Materials 19.1 (2018): 669-682.
