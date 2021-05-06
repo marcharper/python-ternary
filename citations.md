@@ -1,6 +1,6 @@
 # Citations
 
-The library has been cited in a variety of high-quality journals (list may be incomplete). Entries are roughly in reverse chronological order.
+The python-ternary library has been cited in a variety of high-quality journals and in many fields including machine learning, statistics, particle physics, cosmology, geochemistry, biology, epidemiology, and genomics. Entries are roughly in reverse chronological order. This list may be incomplete.
 
 
 ## How to Cite
@@ -9,6 +9,9 @@ The library has been cited in a variety of high-quality journals (list may be in
 
 
 ## Journal Articles, Conference Proceedings, and Preprints
+
+1. Mikhail, Sami, et al. [A genetic metasomatic link between eclogitic and peridotitic diamond inclusions](https://research-repository.st-andrews.ac.uk/handle/10023/21754). Geochemical Perspectives Letters (2021).
+1. Asai, Kento, Takeo Moroi, and Atsuya Niki. [Leptophilic Gauge Bosons at ILC Beam Dump Experiment](https://arxiv.org/abs/2104.00888). arXiv preprint arXiv:2104.00888 (2021).
 1. Donchev, Alexander G., et al. [Quantum chemical benchmark databases of gold-standard dimer interaction energies](https://www.nature.com/articles/s41597-021-00833-x). [Nature] Scientific data 8.1 (2021): 1-9.
 1. Wang, Fengfan, et al. [Study on offshore seabed sediment classification based on particle size parameters using XGBoost algorithm](https://www.sciencedirect.com/science/article/pii/S0098300421000273). Computers & Geosciences 149 (2021): 104713.
 1. Felkl, Tobias, Juan Herrero-Garcia, and Michael A. Schmidt. [The Singly-Charged Scalar Singlet as the Origin of Neutrino Masses](https://arxiv.org/abs/2102.09898). arXiv preprint arXiv:2102.09898 (2021).
