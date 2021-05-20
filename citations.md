@@ -10,6 +10,7 @@ The python-ternary library has been cited in a variety of high-quality journals 
 
 ## Journal Articles, Conference Proceedings, and Preprints
 
+1. Hao, Weiduo, et al. [The kaolinite shuttle links the Great Oxidation and Lomagundi events](https://doi.org/10.1038/s41467-021-23304-8). Nature Communications 12 (2021): 2944.
 1. Mikhail, Sami, et al. [A genetic metasomatic link between eclogitic and peridotitic diamond inclusions](https://research-repository.st-andrews.ac.uk/handle/10023/21754). Geochemical Perspectives Letters (2021).
 1. Asai, Kento, Takeo Moroi, and Atsuya Niki. [Leptophilic Gauge Bosons at ILC Beam Dump Experiment](https://arxiv.org/abs/2104.00888). arXiv preprint arXiv:2104.00888 (2021).
 1. Donchev, Alexander G., et al. [Quantum chemical benchmark databases of gold-standard dimer interaction energies](https://www.nature.com/articles/s41597-021-00833-x). [Nature] Scientific data 8.1 (2021): 1-9.
