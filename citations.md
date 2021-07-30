@@ -10,6 +10,7 @@ The python-ternary library has been cited in a variety of high-quality journals 
 
 ## Journal Articles, Conference Proceedings, and Preprints
 
+1. Tönsmann, Max, et al. [Surface tension of binary and ternary polymer solutions: Experimental data of poly(vinyl acetate), poly(vinyl alcohol) and polyethylene glycol solutions and mixing rule evaluation over the entire concentration range](https://www.sciencedirect.com/science/article/pii/S2468023021004296) Surfaces and Interfaces 26 (2021).
 1. Maturana, Carola J., et al. [Novel tool to quantify with single-cell resolution the number of incoming AAV genomes co-expressed in the mouse nervous system.](https://www.nature.com/articles/s41434-021-00272-8) Gene Therapy (2021): 1-6.
 1. Bechtold, Andreas, et al. [Lunar meteorite Northwest Africa 11962: A regolith breccia containing records of titanium‐rich lunar volcanism and the high alkali suite](https://onlinelibrary.wiley.com/doi/abs/10.1111/maps.13659). Meteoritics & Planetary Science (2021). [(open pdf)](http://oro.open.ac.uk/75904/1/maps.13659.pdf)
 2. Asai, Kento, Takeo Moroi, and Atsuya Niki. [Leptophilic gauge bosons at ILC beam dump experiment](https://www.sciencedirect.com/science/article/pii/S0370269321003142). Physics Letters B (2021): 136374. [ArXiv](https://arxiv.org/abs/2104.00888)
