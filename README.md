@@ -295,7 +295,7 @@ will evaluate the function at the specified number of steps (determined by the
 scale, expected to be an integer in this case). The simplex can be split up into
 triangles or hexagons and colored according to one of three styles:
 
-- Triangular -- `triangular`: coloring triangles by summing the values on the
+- Triangular -- `triangular` (default): coloring triangles by summing the values on the
 vertices
 - Dual-triangular  -- `dual-triangular`: mapping (i,j,k) to the upright
 triangles &#9651; and blending the neigboring triangles for the downward
