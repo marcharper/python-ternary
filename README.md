@@ -292,7 +292,7 @@ Similarly, ternary can make scatter plots:
 
 Ternary can plot heatmaps in two ways and three styles. Given a function, ternary
 will evaluate the function at the specified number of steps (determined by the
-scale, expected to be an integer in this case). The simplex can be split up into
+scale, expected to be an integer in this case). Additional arguments can be passed to the function as an iterable throught the keyword argument 'fargs'. The simplex can be split up into
 triangles or hexagons and colored according to one of three styles:
 
 - Triangular -- `triangular` (default): coloring triangles by summing the values on the
