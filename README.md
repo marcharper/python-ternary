@@ -27,6 +27,7 @@ The library provides functions for plotting projected lines, curves (trajectorie
 <br/>
 <img src="/readme_images/btweinstein_example2.png" width="300" height="150"/>
 <img src="/readme_images/btweinstein_example.png" width="300" height="150"/>
+<img src="/readme_images/argument_order.png" width="150" height="125"/>
 <br/>
 Last image from: <a href="http://biorxiv.org/content/early/2017/06/07/145631">Genetic Drift and Selection in Many-Allele Range Expansions</a>.<br/>
 <br/>
@@ -170,6 +171,13 @@ The following code draws a boundary for the simplex and gridlines.
 ```
 <p align="center">
 <img src="/readme_images/boundary_and_gridlines.png" width="600" height="450"/>
+</p>
+
+## Order of coordinates
+
+Each position in the ternary plot can be represented by a three-tuple coordinate, the first element corresponds to the value of the ''right corner element'', the second to the ''top corner element'' and the third to the ''left corner element''. Plotting the function _f(p) = (p[0] - p[1])(1 - p[2])_ gives the resulting heatmap
+<p align="center">
+<img src="/readme_images/argument_order.png" width="500" height="400"/>
 </p>
 
 ## Drawing lines
