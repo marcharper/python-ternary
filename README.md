@@ -402,6 +402,49 @@ do so automatically when you pass `clockwise=True` to `tax.ticks()`.
 There is a [more detailed discussion](https://github.com/marcharper/python-ternary/issues/18)
 on issue #18 (closed).
 
+Setting custom values corresponding to the max and min values of the axis, rather than the `scale` parameter can be done using a combination of `tax.get_ticks_from_axis_limits()` and `tax.set_custom_ticks()`.
+
+```python
+import ternary
+from matplotlib.cm import get_cmap
+import matplotlib.pyplot as plt
+
+cmap = get_cmap('bwr')
+
+def well_behaved_func(x):
+    return (x[0] - x[1]) * (1 - x[2])
+
+scale = 60
+
+fig, tax = ternary.figure(scale=scale)
+tax.set_axis_limits({'b' : [0,1], 'l' : [0, 1], 'r' : [0, 1]})
+tax.heatmapf(well_behaved_func, boundary=True,
+             style='triangular', cmap=cmap,
+             vmin=-1, vmax=1)
+
+
+offset = 0.14
+tax.boundary(linewidth=1.0)
+tax.top_corner_label('p[1]')
+tax.right_axis_label('p[1]', offset=offset)
+tax.right_corner_label('p[0]')
+tax.bottom_axis_label('p[0]', offset=offset)
+tax.left_corner_label('p[2]', offset=offset)
+tax.left_axis_label('p[2]', offset=offset)
+tax._redraw_labels()
+
+# This part fixes the custom ticks
+tax.get_ticks_from_axis_limits(multiple=11)
+tax.set_custom_ticks(tick_formats='%.1f', offset=0.025)
+tax.get_axes().axis('off')
+tax.clear_matplotlib_ticks()
+
+plt.savefig('meaningful_ticks')
+
+```
+<p align="center">
+<img src="/readme_images/argument_order.png" width="500" height="400"/>
+</p>
 
 # RGBA colors
 
