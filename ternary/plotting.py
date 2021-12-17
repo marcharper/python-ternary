@@ -68,8 +68,7 @@ def plot(points, ax=None, permutation=None, **kwargs):
     if not ax:
         fig, ax = plt.subplots()
     xs, ys = project_sequence(points, permutation=permutation)
-    ax.plot(xs, ys, **kwargs)
-    return ax
+    return ax.plot(xs, ys, **kwargs)
 
 
 def plot_colored_trajectory(points, cmap=None, ax=None, permutation=None,
@@ -111,9 +110,7 @@ def plot_colored_trajectory(points, cmap=None, ax=None, permutation=None,
 
     line_segments = matplotlib.collections.LineCollection(segments, cmap=cmap, **kwargs)
     line_segments.set_array(np.arange(len(segments)))
-    ax.add_collection(line_segments)
-
-    return ax
+    return ax.add_collection(line_segments)
 
 
 def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None,
@@ -145,7 +142,7 @@ def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None,
     if not ax:
         fig, ax = plt.subplots()
     xs, ys = project_sequence(points, permutation=permutation)
-    ax.scatter(xs, ys, vmin=vmin, vmax=vmax, **kwargs)
+    ax_points = ax.scatter(xs, ys, vmin=vmin, vmax=vmax, **kwargs)
 
     if colorbar and (colormap != None):
         if cb_kwargs != None:
@@ -155,4 +152,4 @@ def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None,
             colorbar_hack(ax, vmin, vmax, colormap, scientific=scientific,
                           cbarlabel=cbarlabel)
 
-    return ax
+    return ax_points
