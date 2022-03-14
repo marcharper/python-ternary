@@ -186,7 +186,7 @@ def polygon_generator(data, scale, style, permutation=None):
                 yield map(project, vertices), value
 
 
-def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
+def heatmap(data, scale, vmin=None, vmax=None, adj_vlims=False, cmap=None, ax=None,
             scientific=False, style='triangular', colorbar=True,
             permutation=None, use_rgba=False, cbarlabel=None, cb_kwargs=None):
     """
@@ -203,6 +203,8 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
         The minimum color value, used to normalize colors. Computed if absent.
     vmax: float, None
         The maximum color value, used to normalize colors. Computed if absent.
+    adj_vlims: bool, False
+        Redefine min and max color values based on computed averages.
     cmap: String or matplotlib.colors.Colormap, None
         The name of the Matplotlib colormap to use.
     ax: Matplotlib AxesSubplot, None
@@ -229,6 +231,12 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
 
     if not ax:
         fig, ax = plt.subplots()
+
+    if vmax or vmin:
+        vlims_defined = True
+    else:
+        vlims_defined = False
+
     # If use_rgba, make the RGBA values numpy arrays so that they can
     # be averaged.
     if use_rgba:
@@ -243,6 +251,26 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
     style = style.lower()[0]
     if style not in ["t", "h", 'd']:
         raise ValueError("Heatmap style must be 'triangular', 'dual-triangular', or 'hexagonal'")
+
+    vertices_values = polygon_generator(data, scale, style,
+                                        permutation=permutation)
+
+    # adjust limits of the colormapper if requested,
+    # but only if user also didn't request specific vlims
+    print('hewwo')
+    print(vmax)
+    print(vmin)
+
+    if adj_vlims and not vlims_defined:
+        print('hewwo2')
+        vals = []
+        for _, val in vertices_values:
+            vals.append(val)
+        vmin = min(vals)
+        vmax = max(vals)
+
+    print(vmax)
+    print(vmin)
 
     vertices_values = polygon_generator(data, scale, style,
                                         permutation=permutation)
@@ -272,8 +300,8 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
 
 def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
              scientific=False, style='triangular', colorbar=True,
-             permutation=None, vmin=None, vmax=None, cbarlabel=None,
-             cb_kwargs=None):
+             permutation=None, vmin=None, vmax=None, adj_vlims=False,
+             cbarlabel=None, cb_kwargs=None):
     """
     Computes func on heatmap partition coordinates and plots heatmap. In other
     words, computes the function on lattice points of the simplex (normalized
@@ -303,6 +331,8 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
         The minimum color value, used to normalize colors.
     vmax: float
         The maximum color value, used to normalize colors.
+    adj_vlims: bool, False
+        Redefine min and max color values based on computed averages.
     cb_kwargs: dict
         dict of kwargs to pass to colorbar
 
@@ -318,7 +348,8 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
     # Pass everything to the heatmapper
     ax = heatmap(data, scale, cmap=cmap, ax=ax, style=style,
                  scientific=scientific, colorbar=colorbar,
-                 permutation=permutation, vmin=vmin, vmax=vmax, 
+                 permutation=permutation, vmin=vmin, vmax=vmax,
+                 adj_vlims=adj_vlims,
                  cbarlabel=cbarlabel, cb_kwargs=cb_kwargs)
     return ax
 
@@ -347,8 +378,8 @@ def svg_polygon(coordinates, color):
     return polygon
 
 
-def svg_heatmap(data, scale, filename, vmax=None, vmin=None, style='h',
-                permutation=None, cmap=None):
+def svg_heatmap(data, scale, filename, vmax=None, vmin=None, adj_vlims=False,
+    style='h', permutation=None, cmap=None):
     """
     Create a heatmap in SVG format. Intended for use with very large datasets,
     which would require large amounts of RAM using matplotlib. You can convert
@@ -370,6 +401,8 @@ def svg_heatmap(data, scale, filename, vmax=None, vmin=None, style='h',
         The minimum color value, used to normalize colors.
     vmax: float
         The maximum color value, used to normalize colors.
+    adj_vlims: bool, False
+        Redefine min and max color values based on computed averages.
     cmap: String or matplotlib.colors.Colormap, None
         The name of the Matplotlib colormap to use.
     style: String, "h"
