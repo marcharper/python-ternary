@@ -257,21 +257,13 @@ def heatmap(data, scale, vmin=None, vmax=None, adj_vlims=False, cmap=None, ax=No
 
     # adjust limits of the colormapper if requested,
     # but only if user also didn't request specific vlims
-    print('hewwo')
-    print(vmax)
-    print(vmin)
-
     if adj_vlims and not vlims_defined:
-        print('hewwo2')
         vals = []
         for _, val in vertices_values:
             vals.append(val)
         vmin = min(vals)
         vmax = max(vals)
-
-    print(vmax)
-    print(vmin)
-
+        
     vertices_values = polygon_generator(data, scale, style,
                                         permutation=permutation)
 
