@@ -295,7 +295,8 @@ class TernaryAxesSubplot(object):
 
     def line(self, p1, p2, **kwargs):
         ax = self.get_axes()
-        lines.line(ax, p1, p2, **kwargs)
+        permutation = self._permutation
+        lines.line(ax, p1, p2, permutation=permutation, **kwargs)
 
     def horizontal_line(self, i, **kwargs):
         ax = self.get_axes()
