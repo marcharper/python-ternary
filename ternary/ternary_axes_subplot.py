@@ -411,11 +411,11 @@ class TernaryAxesSubplot(object):
         for k in ['b','l','r']:
 
             gg = self._axis_min_max[k][1] - self._axis_min_max[k][0] + 1
-            self._ticklocs[k] = numpy.linspace(self._axis_min_max[k][0],
+            self._ticklocs[k] = np.linspace(self._axis_min_max[k][0],
                                                self._axis_min_max[k][1],
                                                gg).astype("int").tolist()
 
-            q = numpy.linspace(self._axis_limits[k][0],
+            q = np.linspace(self._axis_limits[k][0],
                                self._axis_limits[k][1],
                                self._boundary_scale+1).astype("int").tolist()
 
@@ -483,9 +483,9 @@ class TernaryAxesSubplot(object):
                 transform = ax.transData
             x, y = project_point(position)
             # Calculate the new angle.
-            position = numpy.array([x, y])
+            position = np.array([x, y])
             new_rotation = ax.transData.transform_angles(
-                numpy.array((rotation,)), position.reshape((1, 2)))[0]
+                np.array((rotation,)), position.reshape((1, 2)))[0]
             text = ax.text(x, y, label, rotation=new_rotation,
                            transform=transform, horizontalalignment="center",
                            **kwargs)
