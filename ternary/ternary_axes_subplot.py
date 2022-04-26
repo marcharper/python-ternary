@@ -301,22 +301,41 @@ class TernaryAxesSubplot(object):
 
     # Boundary and Gridlines
 
-    def boundary(self, scale=None, axes_colors=None, **kwargs):
+    def boundary(self, scale=None, truncation=None,
+                 axes_colors=None, **kwargs):
         # Sometimes you want to draw a bigger boundary
         if not scale:
-            scale = self._boundary_scale  # defaults to self._scale
+            scale = self._boundary_scale # defaults to self._scale
         ax = self.get_axes()
         self.resize_drawing_canvas(scale)
-        lines.boundary(scale=scale, ax=ax, axes_colors=axes_colors, **kwargs)
+        if not truncation:
+            lines.boundary(scale=scale, ax=ax, axis_min_max=None,
+                           axes_colors=axes_colors, **kwargs)
 
-    def gridlines(self, multiple=None, horizontal_kwargs=None, left_kwargs=None,
+        else:
+            lines.boundary(scale=scale, ax=ax, axis_min_max=self._axis_min_max,
+                           axes_colors=axes_colors, **kwargs)
+
+    def gridlines(self, multiple=None, truncation=None,
+                  horizontal_kwargs=None, left_kwargs=None,
                   right_kwargs=None, **kwargs):
         ax = self.get_axes()
         scale = self.get_scale()
-        lines.gridlines(scale=scale, multiple=multiple,
-                        ax=ax, horizontal_kwargs=horizontal_kwargs,
-                        left_kwargs=left_kwargs, right_kwargs=right_kwargs,
-                        **kwargs)
+        if not truncation:
+            lines.gridlines(scale=scale, axis_min_max=None,
+                            multiple=multiple, ax=ax,
+                            horizontal_kwargs=horizontal_kwargs,
+                            left_kwargs=left_kwargs,
+                            right_kwargs=right_kwargs,
+                            **kwargs)
+
+        else:
+            lines.gridlines(scale=scale, axis_min_max=self._axis_min_max,
+                            multiple=multiple, ax=ax,
+                            horizontal_kwargs=horizontal_kwargs,
+                            left_kwargs=left_kwargs,
+                            right_kwargs=right_kwargs,
+                            **kwargs)
 
     # Various Lines
 
