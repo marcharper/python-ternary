@@ -121,6 +121,33 @@ class TernaryAxesSubplot(object):
     def get_axis_limits(self):
         return self._axis_limits
 
+
+    def set_truncation(self, truncation):
+        """
+        Set one or more truncation points which will be used to truncate
+        the simplex i.e. cut the corners off to zoom in on a particular
+        region.
+
+        truncation = dict
+            keys are 'br', 'rl' and/or 'lb'
+            vals are a value in data coords giving the maximum of the
+                 first axis mentioned in the key.
+        """
+        self._truncation = {}
+        if len(self._axis_limits.keys()) > 0:
+            for k in truncation.keys():
+                step = (self._axis_limits[k[0]][1]-
+                        self._axis_limits[k[0]][0])/float(self._boundary_scale)
+                self._truncation[k] = int((truncation[k]-
+                                           self._axis_limits[k[0]][0])/step)
+
+        else:
+            self._truncation = truncation
+
+        self._axis_min_max = get_axis_min_max(self._truncation,
+                                              self._boundary_scale)
+
+        
     # Title and Axis Labels
 
     def set_title(self, title, **kwargs):
@@ -354,17 +381,51 @@ class TernaryAxesSubplot(object):
                 int(self._boundary_scale / float(multiple) + 1)
             ).tolist()
 
-    def set_custom_ticks(self, locations=None, clockwise=False, multiple=1,
-                         axes_colors=None, tick_formats=None, **kwargs):
+
+    def get_ticks_from_truncation(self):
+        """
+        Taking self._truncation and self._boundary_scale get the scaled ticks
+        for all three axes and store them in self._ticks under the keys
+        'b' for bottom, 'l' for left and 'r' for right axes.
+        """
+        self._ticklocs = {}
+        for k in ['b','l','r']:
+
+            gg = self._axis_min_max[k][1] - self._axis_min_max[k][0] + 1
+            self._ticklocs[k] = numpy.linspace(self._axis_min_max[k][0],
+                                               self._axis_min_max[k][1],
+                                               gg).astype("int").tolist()
+
+            q = numpy.linspace(self._axis_limits[k][0],
+                               self._axis_limits[k][1],
+                               self._boundary_scale+1).astype("int").tolist()
+
+            self._ticks[k] = q[self._axis_min_max[k][0]:
+                               self._axis_min_max[k][1]+1]
+
+        self._ticklocs['l'] = [self._boundary_scale - i for i in self._ticklocs['l']]
+        self._ticks['l'].reverse()
+
+        
+    def set_custom_ticks(self, locations=None, truncation=False,
+                         clockwise=False, multiple=1, axes_colors=None,
+                         tick_formats=None, **kwargs):
         """
         Having called get_ticks_from_axis_limits, set the custom ticks on the
         plot.
         """
-        for k in ['b', 'l', 'r']:
-            self.ticks(ticks=self._ticks[k], locations=locations,
-                       axis=k, clockwise=clockwise, multiple=multiple,
-                       axes_colors=axes_colors, tick_formats=tick_formats,
-                       **kwargs)
+        if not truncation:
+            for k in ['b','l','r']:
+                self.ticks(ticks=self._ticks[k], locations=locations,
+                           axis=k, clockwise=clockwise, multiple=multiple,
+                           axes_colors=axes_colors, tick_formats=tick_formats,
+                           **kwargs)
+        else:
+            for k in ['b','l','r']:
+                self.ticks(ticks=self._ticks[k], locations=self._ticklocs[k],
+                           axis=k, clockwise=clockwise, multiple=multiple,
+                           axes_colors=axes_colors, tick_formats=tick_formats,
+                           **kwargs)
 
     def ticks(self, ticks=None, locations=None, multiple=1, axis='blr',
               clockwise=False, axes_colors=None, tick_formats=None, **kwargs):
@@ -384,7 +445,10 @@ class TernaryAxesSubplot(object):
         plotting.resize_drawing_canvas(ax, scale=scale)
 
     def _redraw_labels(self):
-        """Redraw axis labels, typically after draw or resize events."""
+        """
+        Redraw axis labels, typically after draw or resize events.
+        """
+
         ax = self.get_axes()
         # Remove any previous labels
         for mpl_object in self._to_remove:
@@ -394,12 +458,15 @@ class TernaryAxesSubplot(object):
         label_data = list(self._labels.values())
         label_data.extend(self._corner_labels.values())
         for (label, position, rotation, kwargs) in label_data:
-            transform = ax.transAxes
+            if not hasattr(self,"_truncation"):
+                transform = ax.transAxes
+            else:
+                transform = ax.transData
             x, y = project_point(position)
             # Calculate the new angle.
-            position = np.array([x, y])
+            position = numpy.array([x, y])
             new_rotation = ax.transData.transform_angles(
-                np.array((rotation,)), position.reshape((1, 2)))[0]
+                numpy.array((rotation,)), position.reshape((1, 2)))[0]
             text = ax.text(x, y, label, rotation=new_rotation,
                            transform=transform, horizontalalignment="center",
                            **kwargs)
