@@ -11,7 +11,7 @@ from matplotlib import pyplot as plt
 from . import heatmapping
 from . import lines
 from . import plotting
-from .helpers import project_point, convert_coordinates_sequence
+from .helpers import project_point, convert_coordinates_sequence, get_axis_min_max
 
 
 BackgroundParameters = namedtuple('BackgroundParameters', ['color', 'alpha', 'zorder'])
@@ -71,6 +71,17 @@ class TernaryAxesSubplot(object):
         self._labels = dict()
         self._corner_labels = dict()
         self._ticks = dict()
+        # Container for data limits for the axes. Custom limits can
+        # be set by the user
+        self.set_axis_limits({"b" : [0, self._scale],
+                              "r" : [0, self._scale],
+                              "l" : [0, self._scale]})
+
+        # Container for parameters describing a possible truncation
+        self._truncation = dict()
+        self._axis_min_max = {"b" : [0, self._scale],
+                              "r" : [0, self._scale],
+                              "l" : [0, self._scale]}
         # Container for the redrawing of labels
         self._to_remove = []
         self._connect_callbacks()
@@ -111,6 +122,8 @@ class TernaryAxesSubplot(object):
         """
         Set min and max data limits for each of the three axes.
 
+        max-min for each axis must be the same as the self._scale
+
         axis_limits = dict
             keys are 'b','l' and 'r' for the three axes
             vals are lists of the min and max values for the axis in
@@ -119,35 +132,38 @@ class TernaryAxesSubplot(object):
         self._axis_limits = axis_limits
 
     def get_axis_limits(self):
+        """Get the data limits for each axis"""
         return self._axis_limits
+
+    def get_axis_min_max(self):
+        """Get the simplex limits for each axis"""
+        return self._axis_min_max
 
 
     def set_truncation(self, truncation):
         """
-        Set one or more truncation points which will be used to truncate
+        Set one or more truncation lines which will be used to truncate
         the simplex i.e. cut the corners off to zoom in on a particular
         region.
 
         truncation = dict
             keys are 'br', 'rl' and/or 'lb'
-            vals are a value in data coords giving the maximum of the
+            values are a value in data coords giving the maximum of the
                  first axis mentioned in the key.
         """
-        self._truncation = {}
-        if len(self._axis_limits.keys()) > 0:
-            for k in truncation.keys():
-                step = (self._axis_limits[k[0]][1]-
-                        self._axis_limits[k[0]][0])/float(self._boundary_scale)
-                self._truncation[k] = int((truncation[k]-
-                                           self._axis_limits[k[0]][0])/step)
-
-        else:
-            self._truncation = truncation
+        for k in truncation.keys():
+            step = (self._axis_limits[k[0]][1]-
+                    self._axis_limits[k[0]][0])/float(self._boundary_scale)
+            self._truncation[k] = int((truncation[k]-
+                                       self._axis_limits[k[0]][0])/step)
 
         self._axis_min_max = get_axis_min_max(self._truncation,
                                               self._boundary_scale)
+        self._draw_background()
 
-        
+    def get_truncation(self):
+        return self._truncation
+
     # Title and Axis Labels
 
     def set_title(self, title, **kwargs):
@@ -155,8 +171,8 @@ class TernaryAxesSubplot(object):
         ax = self.get_axes()
         ax.set_title(title, **kwargs)
 
-    def left_axis_label(self, label, position=None,  rotation=60, offset=0.08,
-                        **kwargs):
+    def left_axis_label(self, label, position=None, rotation=60, offset=0.08,
+                        transform_type="transData", **kwargs):
         """
         Sets the label on the left axis.
 
@@ -176,10 +192,12 @@ class TernaryAxesSubplot(object):
 
         if not position:
             position = (-offset, 3./5, 2./5)
-        self._labels["left"] = (label, position, rotation, kwargs)
+            transform_type = "transAxes"
+        self._labels["left"] = (label, position, rotation,
+                                transform_type, kwargs)
 
     def right_axis_label(self, label, position=None, rotation=-60, offset=0.08,
-                         **kwargs):
+                         transform_type="transData", **kwargs):
 
         """
         Sets the label on the right axis.
@@ -200,10 +218,12 @@ class TernaryAxesSubplot(object):
 
         if not position:
             position = (2. / 5 + offset, 3. / 5, 0)
-        self._labels["right"] = (label, position, rotation, kwargs)
+            transform_type = "transAxes"
+        self._labels["right"] = (label, position, rotation,
+                                 transform_type, kwargs)
 
     def bottom_axis_label(self, label, position=None, rotation=0, offset=0.02,
-                          **kwargs):
+                          transform_type="transData", **kwargs):
         """
         Sets the label on the bottom axis.
 
@@ -223,10 +243,12 @@ class TernaryAxesSubplot(object):
 
         if not position:
             position = (0.5, -offset / 2., 0.5)
-        self._labels["bottom"] = (label, position, rotation, kwargs)
+            transform_type = "transAxes"
+        self._labels["bottom"] = (label, position, rotation,
+                                  transform_type, kwargs)
 
     def right_corner_label(self, label, position=None, rotation=0, offset=0.08,
-                           **kwargs):
+                           transform_type="transData", **kwargs):
         """
         Sets the label on the right corner (complements left axis).
 
@@ -246,10 +268,12 @@ class TernaryAxesSubplot(object):
 
         if not position:
             position = (1, offset / 2, 0)
-        self._corner_labels["right"] = (label, position, rotation, kwargs)
+            transform_type = "transAxes"
+        self._corner_labels["right"] = (label, position, rotation,
+                                        transform_type, kwargs)
 
     def left_corner_label(self, label, position=None, rotation=0, offset=0.08,
-                          **kwargs):
+                          transform_type="transData", **kwargs):
         """
         Sets the label on the left corner (complements right axis.)
 
@@ -269,10 +293,12 @@ class TernaryAxesSubplot(object):
 
         if not position:
             position = (-offset / 2, offset / 2, 0)
-        self._corner_labels["left"] = (label, position, rotation, kwargs)
+            transform_type="transAxes"
+        self._corner_labels["left"] = (label, position, rotation,
+                                       transform_type, kwargs)
 
     def top_corner_label(self, label, position=None, rotation=0, offset=0.2,
-                         **kwargs):
+                         transform_type="transData", **kwargs):
         """
         Sets the label on the bottom axis.
 
@@ -292,7 +318,9 @@ class TernaryAxesSubplot(object):
 
         if not position:
             position = (-offset / 2, 1 + offset, 0)
-        self._corner_labels["top"] = (label, position, rotation, kwargs)
+            transform_type="transAxes"
+        self._corner_labels["top"] = (label, position, rotation,
+                                      transform_type, kwargs)
 
     def annotate(self, text, position, **kwargs):
         ax = self.get_axes()
@@ -301,14 +329,13 @@ class TernaryAxesSubplot(object):
 
     # Boundary and Gridlines
 
-    def boundary(self, scale=None, truncation=None,
-                 axes_colors=None, **kwargs):
+    def boundary(self, scale=None, axes_colors=None, **kwargs):
         # Sometimes you want to draw a bigger boundary
         if not scale:
             scale = self._boundary_scale # defaults to self._scale
         ax = self.get_axes()
         self.resize_drawing_canvas(scale)
-        if not truncation:
+        if not self._truncation:
             lines.boundary(scale=scale, ax=ax, axis_min_max=None,
                            axes_colors=axes_colors, **kwargs)
 
@@ -316,12 +343,11 @@ class TernaryAxesSubplot(object):
             lines.boundary(scale=scale, ax=ax, axis_min_max=self._axis_min_max,
                            axes_colors=axes_colors, **kwargs)
 
-    def gridlines(self, multiple=None, truncation=None,
-                  horizontal_kwargs=None, left_kwargs=None,
-                  right_kwargs=None, **kwargs):
+    def gridlines(self, multiple=None, horizontal_kwargs=None,
+                  left_kwargs=None, right_kwargs=None, **kwargs):
         ax = self.get_axes()
         scale = self.get_scale()
-        if not truncation:
+        if not self._truncation:
             lines.gridlines(scale=scale, axis_min_max=None,
                             multiple=multiple, ax=ax,
                             horizontal_kwargs=horizontal_kwargs,
@@ -403,8 +429,8 @@ class TernaryAxesSubplot(object):
 
     def get_ticks_from_truncation(self):
         """
-        Taking self._truncation and self._boundary_scale get the scaled ticks
-        for all three axes and store them in self._ticks under the keys
+        Taking self._axis_min_max and self._boundary_scale get the scaled
+        ticks for all three axes and store them in self._ticks under the keys
         'b' for bottom, 'l' for left and 'r' for right axes.
         """
         self._ticklocs = {}
@@ -412,12 +438,12 @@ class TernaryAxesSubplot(object):
 
             gg = self._axis_min_max[k][1] - self._axis_min_max[k][0] + 1
             self._ticklocs[k] = np.linspace(self._axis_min_max[k][0],
-                                               self._axis_min_max[k][1],
-                                               gg).astype("int").tolist()
+                                            self._axis_min_max[k][1],
+                                            gg).astype("int").tolist()
 
             q = np.linspace(self._axis_limits[k][0],
-                               self._axis_limits[k][1],
-                               self._boundary_scale+1).astype("int").tolist()
+                            self._axis_limits[k][1],
+                            self._boundary_scale+1).astype("int").tolist()
 
             self._ticks[k] = q[self._axis_min_max[k][0]:
                                self._axis_min_max[k][1]+1]
@@ -425,15 +451,14 @@ class TernaryAxesSubplot(object):
         self._ticklocs['l'] = [self._boundary_scale - i for i in self._ticklocs['l']]
         self._ticks['l'].reverse()
 
-        
-    def set_custom_ticks(self, locations=None, truncation=False,
-                         clockwise=False, multiple=1, axes_colors=None,
-                         tick_formats=None, **kwargs):
+
+    def set_custom_ticks(self, locations=None, clockwise=False, multiple=1,
+                         axes_colors=None, tick_formats=None, **kwargs):
         """
         Having called get_ticks_from_axis_limits, set the custom ticks on the
         plot.
         """
-        if not truncation:
+        if not self._truncation:
             for k in ['b','l','r']:
                 self.ticks(ticks=self._ticks[k], locations=locations,
                            axis=k, clockwise=clockwise, multiple=multiple,
@@ -454,6 +479,12 @@ class TernaryAxesSubplot(object):
                     multiple=multiple, clockwise=clockwise, axis=axis,
                     axes_colors=axes_colors, tick_formats=tick_formats,
                     **kwargs)
+
+    def add_extra_tick(self, axis, loc1, offset, scale, tick, fontsize,
+                       **kwargs):
+        ax = self.get_axes()
+        lines.add_extra_tick(ax, axis, loc1, offset, scale, tick, fontsize,
+                             **kwargs)
 
     # Redrawing and resizing
 
@@ -476,16 +507,17 @@ class TernaryAxesSubplot(object):
         # Redraw the labels with the appropriate angles
         label_data = list(self._labels.values())
         label_data.extend(self._corner_labels.values())
-        for (label, position, rotation, kwargs) in label_data:
-            if not hasattr(self,"_truncation"):
+        for (label, position, rotation, transform_type, kwargs) in label_data:
+            if transform_type == "transAxes":
                 transform = ax.transAxes
-            else:
+            elif transform_type == "transData":
                 transform = ax.transData
+
             x, y = project_point(position)
             # Calculate the new angle.
             position = np.array([x, y])
-            new_rotation = ax.transData.transform_angles(
-                np.array((rotation,)), position.reshape((1, 2)))[0]
+            new_rotation = ax.transData.transform_angles(np.array((rotation,)),
+                                                          position.reshape((1, 2)))[0]
             text = ax.text(x, y, label, rotation=new_rotation,
                            transform=transform, horizontalalignment="center",
                            **kwargs)
@@ -559,10 +591,14 @@ class TernaryAxesSubplot(object):
         color, alpha, zorder = self._background_parameters
         scale = self.get_scale()
         ax = self.get_axes()
+        axis_min_max = self.get_axis_min_max()
 
         # Remove any existing background
         if self._background_triangle:
             self._background_triangle.remove()
 
         # Draw the background
-        self._background_triangle = heatmapping.background_color(ax, color, scale, alpha=alpha, zorder=zorder)[0]
+        self._background_triangle = heatmapping.background_color(ax, color, scale,
+                                                                 axis_min_max,
+                                                                 alpha=alpha,
+                                                                 zorder=zorder)[0]

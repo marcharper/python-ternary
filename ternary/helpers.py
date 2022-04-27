@@ -112,7 +112,7 @@ def planar_to_coordinates(p, scale):
     ----------
     p: 2-tuple
         The planar simplex (x, y) point to be transformed to maps (x,y,z) coordinates
-    
+
     scale: Int
         The normalized scale of the simplex, i.e. N such that points (x,y,z)
         satisfy x + y + z == N
@@ -122,8 +122,8 @@ def planar_to_coordinates(p, scale):
     x = p[0] - y / 2.
     z = scale - x - y
     return np.array([x, y, z])
-    
-    
+
+
 def project_sequence(s, permutation=None):
     """
     Projects a point or sequence of points using `project_point` to lists xs, ys
@@ -136,7 +136,7 @@ def project_sequence(s, permutation=None):
 
     Returns
     -------
-    xs, ys: The sequence of projected points in coordinates as two lists 
+    xs, ys: The sequence of projected points in coordinates as two lists
     """
 
     xs, ys = unzip([project_point(p, permutation=permutation) for p in s])
@@ -188,7 +188,7 @@ def get_conversion(scale, limits):
                   "r": lambda x: (x - limits['r'][0]) * fr}
 
     return conversion
-    
+
 
 def convert_coordinates_sequence(qs, scale, limits, axisorder):
     """
@@ -216,7 +216,7 @@ def convert_coordinates_sequence(qs, scale, limits, axisorder):
        the points converted to simplex coordinates
     """
     conversion = get_conversion(scale, limits)
-    
+
     return [convert_coordinates(q, conversion, axisorder) for q in qs]
 
 
@@ -230,9 +230,9 @@ def get_axis_min_max(truncation, scale):
     truncation: dict (see main module)
     """
     axis_min_max = {'b' : [0,scale],
-           'r' : [0,scale],
-           'l' : [0,scale]
-           }
+                    'r' : [0,scale],
+                    'l' : [0,scale]
+                    }
 
     for k in truncation.keys():
         axis_min_max[k[0]][1] = truncation[k]
