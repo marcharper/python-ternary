@@ -330,38 +330,73 @@ class TernaryAxesSubplot(object):
     # Boundary and Gridlines
 
     def boundary(self, scale=None, axes_colors=None, **kwargs):
+        """
+        Draw a boundary around the simplex.
+
+        Parameters
+        ----------
+        scale : INT, optional
+            An int describing the scale of the boundary to be drawn.
+            Sometimes you may want to draw a bigger boundary than
+            specified in the initialisation of the tax. The default is None.
+        axes_colors: dict
+            Option for coloring boundaries different colors.
+            e.g. {'l': 'g'} for coloring the left axis boundary green
+        **kwargs : dict
+            Any kwargs to pass through to matplotlib..
+
+        Returns
+        -------
+        None.
+
+        """
         # Sometimes you want to draw a bigger boundary
         if not scale:
             scale = self._boundary_scale # defaults to self._scale
         ax = self.get_axes()
         self.resize_drawing_canvas(scale)
-        if not self._truncation:
-            lines.boundary(scale=scale, ax=ax, axis_min_max=None,
-                           axes_colors=axes_colors, **kwargs)
 
-        else:
-            lines.boundary(scale=scale, ax=ax, axis_min_max=self._axis_min_max,
-                           axes_colors=axes_colors, **kwargs)
+        lines.boundary(ax, scale, self._axis_min_max,
+                       axes_colors=axes_colors, **kwargs)
+
 
     def gridlines(self, multiple=None, horizontal_kwargs=None,
                   left_kwargs=None, right_kwargs=None, **kwargs):
+        """
+        Draw gridlines on the simplex.
+
+        Parameters
+        ----------
+        multiple: float, optional
+            Specifies which inner gridelines to draw. For example,
+            if scale=30 and multiple=6, only 5 inner gridlines will be drawn.
+            The default is None.
+        horizontal_kwargs: dict, optional
+            Any kwargs to pass through to matplotlib for horizontal gridlines
+            The default is None.
+        left_kwargs: dict, optional
+            Any kwargs to pass through to matplotlib for left parallel gridlines
+        right_kwargs: dict, optional
+            Any kwargs to pass through to matplotlib for right parallel gridlines
+            The default is None.
+        kwargs:
+            Any kwargs to pass through to matplotlib, if not using
+            horizontal_kwargs, left_kwargs, or right_kwargs
+
+        Returns
+        -------
+        None.
+
+        """
         ax = self.get_axes()
         scale = self.get_scale()
-        if not self._truncation:
-            lines.gridlines(scale=scale, axis_min_max=None,
-                            multiple=multiple, ax=ax,
-                            horizontal_kwargs=horizontal_kwargs,
-                            left_kwargs=left_kwargs,
-                            right_kwargs=right_kwargs,
-                            **kwargs)
 
-        else:
-            lines.gridlines(scale=scale, axis_min_max=self._axis_min_max,
-                            multiple=multiple, ax=ax,
-                            horizontal_kwargs=horizontal_kwargs,
-                            left_kwargs=left_kwargs,
-                            right_kwargs=right_kwargs,
-                            **kwargs)
+        lines.gridlines(ax, scale, self._axis_min_max,
+                        multiple=multiple,
+                        horizontal_kwargs=horizontal_kwargs,
+                        left_kwargs=left_kwargs,
+                        right_kwargs=right_kwargs,
+                        **kwargs)
 
     # Various Lines
 
@@ -529,7 +564,7 @@ class TernaryAxesSubplot(object):
         Convert data coordinates to simplex coordinates for plotting
         in the case that axis limits have been applied.
         """
-        return convert_coordinates_sequence(points,self._boundary_scale,
+        return convert_coordinates_sequence(points, self._boundary_scale,
                                             self._axis_limits, axisorder)
 
     # Various Plots

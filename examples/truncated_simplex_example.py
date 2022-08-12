@@ -4,7 +4,7 @@ import ternary
 ## Boundary and Gridlines
 scale = 10
 figure, tax = ternary.figure(scale=scale)
-#tax.set_truncation({'rl' : 8})
+tax.set_truncation({'rl' : 8})
 tax.ax.axis("off")
 
 
@@ -20,11 +20,11 @@ tax.bottom_axis_label(r"Logs $\longrightarrow$", fontsize=10, offset=0.08)
 
 
 # Set custom ticks
-#tax.get_ticks_from_truncation(multiple=3)
-# tax.get_ticks_from_truncation()
-# offset=0.013
-# tax.set_custom_ticks(fontsize=8, offset=offset,
-#                       tick_formats="%.1f", linewidth=0.25)
+tax.get_ticks_from_truncation(multiple=3)
+tax.get_ticks_from_truncation()
+offset=0.013
+tax.set_custom_ticks(fontsize=8, offset=offset,
+                      tick_formats="%.1f", linewidth=0.25)
 
 
 tax.ax.axis("scaled")

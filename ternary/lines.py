@@ -31,7 +31,7 @@ def line(ax, p1, p2, permutation=None, **kwargs):
     ax.add_line(Line2D((pp1[0], pp2[0]), (pp1[1], pp2[1]), **kwargs))
 
 
-def horizontal_line(ax, scale, i, axis_min_max=None, **kwargs):
+def horizontal_line(ax, scale, i, axis_min_max, **kwargs):
     """
     Draws the i-th horizontal line parallel to the lower axis.
 
@@ -44,35 +44,31 @@ def horizontal_line(ax, scale, i, axis_min_max=None, **kwargs):
     i: float
         The index of the line to draw
     axis_min_max: dict
-        giving the min max values of the axes in the case of truncation
+        The min and max values of the axes in simplex coordinates.
+        These may not be equal to (0, scale) if a truncation has been
+        applied.
     kwargs: Dictionary
         Any kwargs to pass through to Matplotlib.
     """
-    if not axis_min_max:
-        p1 = (0, i, scale - i)
-        p2 = (scale - i, i, 0)
+    if i <= axis_min_max['r'][1]:
+        if i < scale-axis_min_max['l'][1]:
+            p1 = (axis_min_max['b'][0] - i,
+                  i,
+                  axis_min_max['l'][1])
+        else:
+            p1 = (0, i, scale-i)
+
+        if i < axis_min_max['r'][0]:
+            p2 = (axis_min_max['b'][1],
+                  i,
+                  scale - axis_min_max['b'][1] - i)
+        else:
+            p2 = (scale - i, i, 0)
+
         line(ax, p1, p2, **kwargs)
 
-    else:
-        if i <= axis_min_max['r'][1]:
-            if i < scale-axis_min_max['l'][1]:
-                p1 = (axis_min_max['b'][0] - i,
-                      i,
-                      axis_min_max['l'][1])
-            else:
-                p1 = (0, i, scale-i)
 
-            if i < axis_min_max['r'][0]:
-                p2 = (axis_min_max['b'][1],
-                      i,
-                      scale - axis_min_max['b'][1] - i)
-            else:
-                p2 = (scale - i, i, 0)
-
-            line(ax, p1, p2, **kwargs)
-        
-
-def left_parallel_line(ax, scale, i,  axis_min_max=None, **kwargs):
+def left_parallel_line(ax, scale, i,  axis_min_max, **kwargs):
     """
     Draws the i-th line parallel to the left axis.
 
@@ -85,32 +81,28 @@ def left_parallel_line(ax, scale, i,  axis_min_max=None, **kwargs):
     i: float
         The index of the line to draw
     axis_min_max: dict
-        giving the min max values of the axes in the case of truncation
+        The min and max values of the axes in simplex coordinates.
+        These may not be equal to (0, scale) if a truncation has been
+        applied.
     kwargs: Dictionary
         Any kwargs to pass through to Matplotlib.
     """
-    if not axis_min_max:
-        p1 = (i, scale - i, 0)
-        p2 = (i, 0, scale - i)
+    if i <= axis_min_max['b'][1]:
+        if i < scale-axis_min_max['r'][1]:
+            p1 = (i,
+                  axis_min_max['r'][1],
+                  axis_min_max['l'][0] - i)
+        else:
+            p1 = (i, scale - i, 0)
+
+        if i < axis_min_max['b'][0]:
+            p2 = (i,
+                  scale - axis_min_max['l'][1] - i,
+                  axis_min_max['l'][1])
+        else:
+            p2 = (i, 0, scale - i)
+
         line(ax, p1, p2, **kwargs)
-
-    else:
-        if i <= axis_min_max['b'][1]:
-            if i < scale-axis_min_max['r'][1]:
-                p1 = (i,
-                      axis_min_max['r'][1],
-                      axis_min_max['l'][0] - i)
-            else:
-                p1 = (i, scale - i, 0)
-
-            if i < axis_min_max['b'][0]:
-                p2 = (i,
-                      scale - axis_min_max['l'][1] - i,
-                      axis_min_max['l'][1])
-            else:
-                p2 = (i, 0, scale - i)
-
-            line(ax, p1, p2, **kwargs)
 
 
 def right_parallel_line(ax, scale, i, axis_min_max=None, **kwargs):
@@ -126,38 +118,33 @@ def right_parallel_line(ax, scale, i, axis_min_max=None, **kwargs):
     i: float
         The index of the line to draw
     axis_min_max: dict
-        giving the min max values of the axes in the case of truncation
+        The min and max values of the axes in simplex coordinates.
+        These may not be equal to (0, scale) if a truncation has been
+        applied.
     kwargs: Dictionary
         Any kwargs to pass through to Matplotlib.
     """
-    if not axis_min_max:   
-        p1 = (0, scale - i, i)
-        p2 = (scale - i, 0, i)
+    if i <= axis_min_max['l'][1]:
+        if i < axis_min_max['l'][0]:
+            p1 = (scale - axis_min_max['r'][1] - i,
+                  axis_min_max['r'][1],
+                  i)
+        else:
+            p1 = (0, scale - i, i)
+
+        if i < scale - axis_min_max['b'][1]:
+            p2 = (axis_min_max['b'][1],
+                  scale - axis_min_max['b'][1] - i,
+                  i)
+        else:
+            p2 = (scale - i, 0, i)
+
         line(ax, p1, p2, **kwargs)
-
-
-    else:
-        if i <= axis_min_max['l'][1]:
-            if i < axis_min_max['l'][0]:
-                p1 = (scale - axis_min_max['r'][1] - i,
-                      axis_min_max['r'][1],
-                      i)
-            else:
-                p1 = (0, scale - i, i)
-
-            if i < scale - axis_min_max['b'][1]:
-                p2 = (axis_min_max['b'][1],
-                      scale - axis_min_max['b'][1] - i,
-                      i)
-            else:
-                p2 = (scale - i, 0, i)
-
-            line(ax, p1, p2, **kwargs)
 
 
 ## Boundary, Gridlines ##
 
-def boundary(ax, scale, axis_min_max=None, axes_colors=None, **kwargs):
+def boundary(ax, scale, axis_min_max, axes_colors=None, **kwargs):
     """
     Plots the boundary of the simplex. Creates and returns matplotlib axis if
     none given.
@@ -169,7 +156,9 @@ def boundary(ax, scale, axis_min_max=None, axes_colors=None, **kwargs):
     scale: float
         Simplex scale size.
     axis_min_max: dict
-        giving the min max values of the axes in the case of truncation
+        The min and max values of the axes in simplex coordinates.
+        These may not be equal to (0, scale) if a truncation has been
+        applied.
     axes_colors: dict
         Option for coloring boundaries different colors.
         e.g. {'l': 'g'} for coloring the left axis boundary green
@@ -184,28 +173,27 @@ def boundary(ax, scale, axis_min_max=None, axes_colors=None, **kwargs):
         if _axis not in axes_colors.keys():
             axes_colors[_axis] = 'black'
 
-    horizontal_line(ax, scale, 0, axis_min_max=axis_min_max,
+    horizontal_line(ax, scale, 0, axis_min_max,
                     color=axes_colors['b'], **kwargs)
-    left_parallel_line(ax, scale, 0, axis_min_max=axis_min_max,
+    left_parallel_line(ax, scale, 0, axis_min_max,
                        color=axes_colors['l'], **kwargs)
-    right_parallel_line(ax, scale, 0, axis_min_max=axis_min_max,
+    right_parallel_line(ax, scale, 0, axis_min_max,
                         color=axes_colors['r'], **kwargs)
 
-    if axis_min_max:
-        if axis_min_max['r'][1] < scale:
-            horizontal_line(ax, scale, axis_min_max['r'][1],
+    if axis_min_max['r'][1] < scale:
+        horizontal_line(ax, scale, axis_min_max['r'][1],
+                        axis_min_max=axis_min_max,
+                        color=axes_colors['r'], **kwargs)
+    if axis_min_max['b'][1] < scale:
+        left_parallel_line(ax, scale, axis_min_max['b'][1],
+                           axis_min_max=axis_min_max,
+                           color=axes_colors['b'], **kwargs)
+    if axis_min_max['l'][1] < scale:
+        right_parallel_line(ax, scale, axis_min_max['l'][1],
                             axis_min_max=axis_min_max,
-                            color=axes_colors['r'], **kwargs)
-        if axis_min_max['b'][1] < scale:
-            left_parallel_line(ax, scale, axis_min_max['b'][1],
-                               axis_min_max=axis_min_max,
-                               color=axes_colors['b'], **kwargs)
-        if axis_min_max['l'][1] < scale:
-            right_parallel_line(ax, scale, axis_min_max['l'][1],
-                                axis_min_max=axis_min_max,
-                                color=axes_colors['l'], **kwargs)
-                
-        
+                            color=axes_colors['l'], **kwargs)
+
+
     return ax
 
 
@@ -229,7 +217,7 @@ def merge_dicts(base, updates):
     return z
 
 
-def gridlines(ax, scale, axis_min_max=None, multiple=None,
+def gridlines(ax, scale, axis_min_max, multiple=None,
               horizontal_kwargs=None, left_kwargs=None, right_kwargs=None,
               **kwargs):
     """
@@ -242,7 +230,9 @@ def gridlines(ax, scale, axis_min_max=None, multiple=None,
     scale: float
         Simplex scale size.
     axis_min_max: dict
-        giving the min max values of the axes in the case of truncation
+        The min and max values of the axes in simplex coordinates.
+        These may not be equal to (0, scale) if a truncation has been
+        applied.
     multiple: float, None
         Specifies which inner gridelines to draw. For example, if scale=30 and
         multiple=6, only 5 inner gridlines will be drawn.
@@ -269,14 +259,12 @@ def gridlines(ax, scale, axis_min_max=None, multiple=None,
     ## Draw grid-lines
     # Parallel to horizontal axis
     for i in arange(0, scale, multiple):
-        horizontal_line(ax, scale, i, axis_min_max=axis_min_max,
-                        **horizontal_kwargs)
+        horizontal_line(ax, scale, i, axis_min_max, **horizontal_kwargs)
     # Parallel to left and right axes
     for i in arange(0, scale + multiple, multiple):
-        left_parallel_line(ax, scale, i, axis_min_max=axis_min_max,
-                           **left_kwargs)
-        right_parallel_line(ax, scale, i, axis_min_max=axis_min_max,
-                            **right_kwargs)
+        left_parallel_line(ax, scale, i, axis_min_max, **left_kwargs)
+        right_parallel_line(ax, scale, i, axis_min_max, **right_kwargs)
+
     return ax
 
 
@@ -433,9 +421,9 @@ def add_extra_tick(ax, axis, loc1, offset, scale, tick ,fontsize, **kwargs):
     the simplex. This may be useful if a truncation is applied.
     """
     toff = offset * scale
-    
-    if axis == 'r':   
-        loc2 = (loc1[0] + toff, loc1[1], loc1[2]-toff)       
+
+    if axis == 'r':
+        loc2 = (loc1[0] + toff, loc1[1], loc1[2]-toff)
         text_location = (loc1[0] + 2.6 * toff,
                          loc1[1] - 0.5 * toff,
                          loc1[2] - 2.6 * toff)

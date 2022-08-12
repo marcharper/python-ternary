@@ -229,9 +229,9 @@ def get_axis_min_max(truncation, scale):
 
     truncation: dict (see main module)
     """
-    axis_min_max = {'b' : [0,scale],
-                    'r' : [0,scale],
-                    'l' : [0,scale]
+    axis_min_max = {'b' : [0, scale],
+                    'r' : [0, scale],
+                    'l' : [0, scale]
                     }
 
     for k in truncation.keys():
