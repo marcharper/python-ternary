@@ -218,24 +218,3 @@ def convert_coordinates_sequence(qs, scale, limits, axisorder):
     conversion = get_conversion(scale, limits)
 
     return [convert_coordinates(q, conversion, axisorder) for q in qs]
-
-
-def get_axis_min_max(truncation, scale):
-    """
-    Get the min and max values in scale coords given various
-    truncation points.
-
-    !! Assumes the truncation lines do NOT cross each other!!
-
-    truncation: dict (see main module)
-    """
-    axis_min_max = {'b' : [0, scale],
-                    'r' : [0, scale],
-                    'l' : [0, scale]
-                    }
-
-    for k in truncation.keys():
-        axis_min_max[k[0]][1] = truncation[k]
-        axis_min_max[k[1]][0] = scale-truncation[k]
-
-    return axis_min_max

@@ -11,7 +11,7 @@ from matplotlib import pyplot as plt
 from . import heatmapping
 from . import lines
 from . import plotting
-from .helpers import project_point, convert_coordinates_sequence, get_axis_min_max
+from .helpers import project_point, convert_coordinates_sequence
 
 
 BackgroundParameters = namedtuple('BackgroundParameters', ['color', 'alpha', 'zorder'])
@@ -71,6 +71,7 @@ class TernaryAxesSubplot(object):
         self._labels = dict()
         self._corner_labels = dict()
         self._ticks = dict()
+        self._ticklocs = dict()
         # Container for data limits for the axes. Custom limits can
         # be set by the user
         self.set_axis_limits({"b" : [0, self._scale],
@@ -135,33 +136,76 @@ class TernaryAxesSubplot(object):
         """Get the data limits for each axis"""
         return self._axis_limits
 
+    def set_axis_min_max(self, truncation):
+        """
+        Set the min and max values of the axes in SIMPLEX coords
+        (rather than data coords) given various
+        truncation points.
+
+        !! Assumes the truncation lines do NOT cross each other!!
+
+        truncation: dict (see main module)
+        """
+        for k in truncation.keys():
+            self._axis_min_max[k[0]][1] = truncation[k]
+            self._axis_min_max[k[1]][0] = self._scale - truncation[k]
+
+
     def get_axis_min_max(self):
         """Get the simplex limits for each axis"""
         return self._axis_min_max
 
 
-    def set_truncation(self, truncation):
+    def set_truncation(self, truncation_data):
         """
         Set one or more truncation lines which will be used to truncate
-        the simplex i.e. cut the corners off to zoom in on a particular
-        region.
+        the simplex i.e. cut one or more corners off to remove whitespace.
 
-        truncation = dict
+        The self.axis_limits (data limits) and self.axis_min_max (simplex
+        limits) are set by this function.
+
+        Truncation lines may not cross each other!
+
+        Parameters
+        ----------
+        truncation_data : dict
             keys are 'br', 'rl' and/or 'lb'
-            values are a value in data coords giving the maximum of the
-                 first axis mentioned in the key.
-        """
-        for k in truncation.keys():
-            step = (self._axis_limits[k[0]][1]-
-                    self._axis_limits[k[0]][0])/float(self._boundary_scale)
-            self._truncation[k] = int((truncation[k]-
-                                       self._axis_limits[k[0]][0])/step)
+            values are a value in DATA coords giving the maximum of the
+            first axis mentioned in the key. These are then transformed
+            into SIMPLEX coords and stored internally.
 
-        self._axis_min_max = get_axis_min_max(self._truncation,
-                                              self._boundary_scale)
+        Returns
+        -------
+        None.
+
+        """
+        steps = {'b' : (self._axis_limits['b'][1] -
+                        self._axis_limits['b'][0]) / float(self._scale),
+                 'r' : (self._axis_limits['r'][1] -
+                        self._axis_limits['r'][0]) / float(self._scale),
+                 'l' : (self._axis_limits['l'][1] -
+                        self._axis_limits['l'][0]) / float(self._scale)}
+
+        axlim = {i:j[:] for i,j in self._axis_limits.items()}
+
+        for k in truncation_data:
+
+            self._truncation[k] = int((truncation_data[k]-
+                                       axlim[k[0]][0])/steps[k[0]])
+
+            self._axis_limits[k[0]][1] = truncation_data[k]
+
+            self._axis_limits[k[1]][0] = axlim[k[1]][0] + steps[k[1]] *\
+                                         (self._scale - self._truncation[k])
+
+        self.set_axis_min_max(self._truncation)
         self._draw_background()
 
+
     def get_truncation(self):
+        """
+        This returns the truncation in SIMPLEX coords
+        """
         return self._truncation
 
     # Title and Axis Labels
@@ -363,7 +407,7 @@ class TernaryAxesSubplot(object):
     def gridlines(self, multiple=None, horizontal_kwargs=None,
                   left_kwargs=None, right_kwargs=None, **kwargs):
         """
-        Draw gridlines on the simplex.
+        Draw gridlines on the simplex (excluding the boundary).
 
         Parameters
         ----------
@@ -448,6 +492,7 @@ class TernaryAxesSubplot(object):
         ax = self.get_axes()
         plotting.clear_matplotlib_ticks(ax=ax, axis=axis)
 
+
     def get_ticks_from_axis_limits(self, multiple=1):
         """
         Taking self._axis_limits and self._boundary_scale get the scaled
@@ -458,32 +503,30 @@ class TernaryAxesSubplot(object):
             self._ticks[k] = np.linspace(
                 self._axis_limits[k][0],
                 self._axis_limits[k][1],
-                int(self._boundary_scale / float(multiple) + 1)
+                int(self._boundary_scale / multiple + 1)
             ).tolist()
 
 
-    def get_ticks_from_truncation(self):
+    def get_ticks_from_truncation(self, multiple=1):
         """
-        Taking self._axis_min_max and self._boundary_scale get the scaled
+        Taking self._axis_min_max and self._scale get the scaled
         ticks for all three axes and store them in self._ticks under the keys
         'b' for bottom, 'l' for left and 'r' for right axes.
         """
-        self._ticklocs = {}
         for k in ['b','l','r']:
+            gg = self._axis_min_max[k][1] - self._axis_min_max[k][0]
+            gg = int(gg / multiple + 1)
 
-            gg = self._axis_min_max[k][1] - self._axis_min_max[k][0] + 1
             self._ticklocs[k] = np.linspace(self._axis_min_max[k][0],
                                             self._axis_min_max[k][1],
                                             gg).astype("int").tolist()
 
-            q = np.linspace(self._axis_limits[k][0],
-                            self._axis_limits[k][1],
-                            self._boundary_scale+1).astype("int").tolist()
+            self._ticks[k] = np.linspace(self._axis_limits[k][0],
+                                         self._axis_limits[k][1],
+                                         gg).tolist()
 
-            self._ticks[k] = q[self._axis_min_max[k][0]:
-                               self._axis_min_max[k][1]+1]
 
-        self._ticklocs['l'] = [self._boundary_scale - i for i in self._ticklocs['l']]
+        self._ticklocs['l'] = [self._scale - i for i in self._ticklocs['l']]
         self._ticks['l'].reverse()
 
 
@@ -506,6 +549,7 @@ class TernaryAxesSubplot(object):
                            axes_colors=axes_colors, tick_formats=tick_formats,
                            **kwargs)
 
+
     def ticks(self, ticks=None, locations=None, multiple=1, axis='blr',
               clockwise=False, axes_colors=None, tick_formats=None, **kwargs):
         ax = self.get_axes()
@@ -514,6 +558,7 @@ class TernaryAxesSubplot(object):
                     multiple=multiple, clockwise=clockwise, axis=axis,
                     axes_colors=axes_colors, tick_formats=tick_formats,
                     **kwargs)
+
 
     def add_extra_tick(self, axis, loc1, offset, scale, tick, fontsize,
                        **kwargs):
