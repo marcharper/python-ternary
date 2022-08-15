@@ -179,14 +179,10 @@ class TernaryAxesSubplot(object):
         None.
 
         """
-        steps = {'b' : (self._axis_limits['b'][1] -
-                        self._axis_limits['b'][0]) / float(self._scale),
-                 'r' : (self._axis_limits['r'][1] -
-                        self._axis_limits['r'][0]) / float(self._scale),
-                 'l' : (self._axis_limits['l'][1] -
-                        self._axis_limits['l'][0]) / float(self._scale)}
+        steps = {i : (j[1] - j[0]) / float(self._scale) for i, j in
+                 self._axis_limits.items()}
 
-        axlim = {i:j[:] for i,j in self._axis_limits.items()}
+        axlim = {i : j[:] for i, j in self._axis_limits.items()}
 
         for k in truncation_data:
 
