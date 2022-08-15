@@ -75,20 +75,20 @@ tax.bottom_axis_label(r"Logs $\longrightarrow$",
 
 
 # Set custom ticks
-#tax.get_ticks_from_truncation()
+tax.get_ticks_from_truncation(multiple=1)
 #tax.get_ticks_from_axis_limits()
-ticks = {'b' : [54,55,56,57],
-          'r' : [2,3,4],
-          'l' : [46,45,44]}
-ticklocs = {'b' : [4,6,8,10],
-            'r' : [4,6,8],
-            'l' : [8,6,4]}
-tax._ticks = ticks
-tax._ticklocs = ticklocs
+# ticks = {'b' : [54,55,56,57],
+#           'r' : [2,3,4],
+#           'l' : [46,45,44]}
+# ticklocs = {'b' : [4,6,8,10],
+#             'r' : [4,6,8],
+#             'l' : [8,6,4]}
+# tax._ticks = ticks
+# tax._ticklocs = ticklocs
 
 offset=0.013
 tax.set_custom_ticks(fontsize=8, offset=offset,
-                      tick_formats=None, linewidth=0.25)
+                      tick_formats="%.1f", linewidth=0.25)
 
 
 tax.add_extra_tick('r',(11,2,1),offset,scale,'1',fontsize=8,color='k',

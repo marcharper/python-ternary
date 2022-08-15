@@ -522,8 +522,10 @@ class TernaryAxesSubplot(object):
                                          gg).tolist()
 
 
-        self._ticklocs['l'] = [self._scale - i for i in self._ticklocs['l']]
-        self._ticks['l'].reverse()
+        self._ticklocs['l'] = [i - self._axis_min_max["l"][0] +
+                               (self._scale - self._axis_min_max["l"][1])
+                               for i in self._ticklocs['l']]
+
 
 
     def set_custom_ticks(self, locations=None, clockwise=False, multiple=1,
