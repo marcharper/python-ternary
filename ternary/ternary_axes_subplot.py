@@ -500,6 +500,7 @@ class TernaryAxesSubplot(object):
         NB. the tick locations for the left axis have to be shifted if there
         is a truncation of that axis, otherwise they are projected in the
         wrong place by lines.line(), which calls helpers.project_point().
+        This is handled in the last 3 lines of this function.
         """
         for k in ['b','l','r']:
             gg = self._axis_min_max[k][1] - self._axis_min_max[k][0]

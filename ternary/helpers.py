@@ -147,7 +147,7 @@ def project_sequence(s, permutation=None):
 
 def convert_coordinates(q, conversion, axisorder):
     """
-    Convert a 3-tuple in data coordinates into to simplex data
+    Convert a 3-tuple in data coordinates to simplex
     coordinates for plotting.
 
     Parameters
