@@ -415,10 +415,35 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
                     color=axes_colors['b'], fontsize=fontsize)
 
 
-def add_extra_tick(ax, axis, loc1, offset, scale, tick ,fontsize, **kwargs):
+def add_extra_tick(ax, axis, loc1, offset, scale, tick, fontsize, **kwargs):
     """
     Add an extra tick on an axis but not necessarily on
-    the simplex. This may be useful if a truncation is applied.
+    the boundary of the simplex. This may be useful if a truncation is applied.
+
+    Parameters
+    ----------
+    ax : matplotlib.Axes
+        The matplotlib Axes object containing the plot.
+    axis : STR
+        A string giving the axis on which the extra tick should be drawn.
+        One of 'l', 'b' or 'r'.
+    loc1 : 3-tuple
+        A 3-tuple giving the location of the extra tick in simplex coords.
+    offset : FLOAT
+        Defines an offset of the tick label and the length of the tick
+    scale : INT
+        The self._scale attibute of the simplex
+    tick : STR
+        A string giving the text for the tick label
+    fontsize : INT
+        Describing the font size of the tick label
+    **kwargs : DICT
+        Kwargs to pass through to matplotlib Line2D.
+
+    Returns
+    -------
+    None.
+
     """
     toff = offset * scale
 

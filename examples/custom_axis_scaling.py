@@ -114,8 +114,8 @@ tax1.ticks(multiple=10,offset=0.02)
 tax2.set_axis_limits({'b': [60, 75], 'l': [15, 30], 'r': [10, 25]})
 tax2.get_ticks_from_axis_limits(multiple=5)
 tick_formats = "%.1f"
-tax2.set_custom_ticks(fontsize=10, offset=0.025, multiple=5,
-                      axes_colors=axes_colors, tick_formats=tick_formats)
+tax2.set_custom_ticks(fontsize=10, offset=0.025, axes_colors=axes_colors,
+                      tick_formats=tick_formats)
 
 # plot some data
 points = [(62, 12, 26), (63.5, 13.5, 23), (65, 14, 21), (61, 15, 24),

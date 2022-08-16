@@ -20,10 +20,9 @@ tax.bottom_axis_label(r"Logs $\longrightarrow$", fontsize=10, offset=0.08)
 
 
 # Set custom ticks
-tax.get_ticks_from_truncation(multiple=2)
-#tax.get_ticks_from_truncation()
+tax.get_ticks_from_axis_limits(multiple=2)
 offset=0.013
-tax.set_custom_ticks(fontsize=8, offset=offset, multiple=2,
+tax.set_custom_ticks(fontsize=8, offset=offset,
                       tick_formats="%.1f", linewidth=0.25)
 
 
@@ -75,36 +74,35 @@ tax.bottom_axis_label(r"Logs $\longrightarrow$",
 
 
 # Set custom ticks
-tax.get_ticks_from_truncation(multiple=1)
-#tax.get_ticks_from_axis_limits()
-# ticks = {'b' : [54,55,56,57],
-#           'r' : [2,3,4],
-#           'l' : [46,45,44]}
-# ticklocs = {'b' : [4,6,8,10],
-#             'r' : [4,6,8],
-#             'l' : [8,6,4]}
-# tax._ticks = ticks
-# tax._ticklocs = ticklocs
+# tax.get_ticks_from_axis_limits(multiple=1)
+# define ticks in data coords:
+tax._ticks = {'b' : [54,55,56,57],
+              'r' : [2,3,4],
+              'l' : [44,45,46]}
+# define tick locations in simplex coords:
+tax._ticklocs = {'b' : [4,6,8,10],
+                 'r' : [4,6,8],
+                 'l' : [4,6,8]}
 
 offset=0.013
 tax.set_custom_ticks(fontsize=8, offset=offset,
-                      tick_formats="%.1f", linewidth=0.25)
+                      tick_formats="%i", linewidth=0.25)
 
 
-tax.add_extra_tick('r',(11,2,1),offset,scale,'1',fontsize=8,color='k',
-                      linewidth=0.25)
-tax.add_extra_tick('r',(11,0,3),offset,scale,'0',fontsize=8,color='k',
-                      linewidth=0.25)
+tax.add_extra_tick('r', (11,2,1), offset, scale, '1', fontsize=8, color='k',
+                   linewidth=0.25)
+tax.add_extra_tick('r', (11,0,3), offset, scale, '0', fontsize=8, color='k',
+                   linewidth=0.25)
 
-tax.add_extra_tick('l',(2,8,4),offset,scale,'43',fontsize=8,color='k',
-                      linewidth=0.25)
-tax.add_extra_tick('l',(4,8,2),offset,scale,'42',fontsize=8,color='k',
-                      linewidth=0.25)
-tax.add_extra_tick('l',(6,8,0),offset,scale,'41',fontsize=8,color='k',
-                      linewidth=0.25)
+tax.add_extra_tick('l', (2,8,4), offset, scale, '43', fontsize=8, color='k',
+                   linewidth=0.25)
+tax.add_extra_tick('l', (4,8,2), offset, scale, '42', fontsize=8, color='k',
+                   linewidth=0.25)
+tax.add_extra_tick('l', (6,8,0), offset, scale, '41', fontsize=8, color='k',
+                   linewidth=0.25)
 
-tax.add_extra_tick('b',(2,1,11),offset,scale,'53',fontsize=8,color='k',
-                      linewidth=0.25)
+tax.add_extra_tick('b', (2,1,11), offset, scale, '53', fontsize=8, color='k',
+                   linewidth=0.25)
 
 
 tax.ax.axis("scaled")

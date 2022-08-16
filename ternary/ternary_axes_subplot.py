@@ -407,7 +407,7 @@ class TernaryAxesSubplot(object):
 
         Parameters
         ----------
-        multiple: float, optional
+        multiple: int, optional
             Specifies which inner gridelines to draw. For example,
             if scale=30 and multiple=6, only 5 inner gridlines will be drawn.
             The default is None.
@@ -491,35 +491,28 @@ class TernaryAxesSubplot(object):
 
     def get_ticks_from_axis_limits(self, multiple=1):
         """
-        Taking self._axis_limits and self._boundary_scale get the scaled
+        Taking self._axis_limits, self.axis_min_max and self._scale get the
         ticks for all three axes and store them in self._ticks under the
-        keys 'b' for bottom, 'l' for left and 'r' for right axes.
-        """
-        for k in ['b', 'l', 'r']:
-            self._ticks[k] = np.linspace(
-                self._axis_limits[k][0],
-                self._axis_limits[k][1],
-                int(self._boundary_scale / multiple + 1)
-            ).tolist()
+        keys 'b' for bottom, 'l' for left and 'r' for right axes. Get the
+        locations of the tickes and store them under self._ticklocs with the
+        same keys.
 
-
-    def get_ticks_from_truncation(self, multiple=1):
-        """
-        Taking self._axis_min_max and self._scale get the scaled
-        ticks for all three axes and store them in self._ticks under the keys
-        'b' for bottom, 'l' for left and 'r' for right axes.
+        NB. the tick locations for the left axis have to be shifted if there
+        is a truncation of that axis, otherwise they are projected in the
+        wrong place by lines.line(), which calls helpers.project_point().
         """
         for k in ['b','l','r']:
             gg = self._axis_min_max[k][1] - self._axis_min_max[k][0]
-            gg = int(gg / multiple + 1)
+            ff = self._axis_limits[k][1] - self._axis_limits[k][0]
+            step = ff/gg
 
-            self._ticklocs[k] = np.linspace(self._axis_min_max[k][0],
-                                            self._axis_min_max[k][1],
-                                            gg).astype("int").tolist()
+            self._ticklocs[k] = np.arange(self._axis_min_max[k][0],
+                                          self._axis_min_max[k][1] + step,
+                                          multiple).astype("int").tolist()
 
-            self._ticks[k] = np.linspace(self._axis_limits[k][0],
-                                         self._axis_limits[k][1],
-                                         gg).tolist()
+            self._ticks[k] = np.arange(self._axis_limits[k][0],
+                                       self._axis_limits[k][1] + step,
+                                       step*multiple).tolist()
 
 
         self._ticklocs['l'] = [i - self._axis_min_max["l"][0] +
@@ -528,24 +521,43 @@ class TernaryAxesSubplot(object):
 
 
 
-    def set_custom_ticks(self, locations=None, clockwise=False, multiple=1,
-                         axes_colors=None, tick_formats=None, **kwargs):
+    def set_custom_ticks(self, clockwise=False, axes_colors=None,
+                         tick_formats=None, **kwargs):
         """
-        Having called get_ticks_from_axis_limits, set the custom ticks on the
-        plot.
+        Having called get_ticks_from_axis_limits(), draw the custom ticks on
+        the plot. We call self.ticks() for each axis in turn with the ticks
+        and ticklocs already defined using get_ticks_from_axis_limits().
+
+        Parameters
+        ----------
+        clockwise : BOOL, optional
+            Whether the axes of the simplex run clockwise or not.
+            The default is False.
+        axes_colors: Dict, optional
+            Option to color ticks differently for each axis, 'l', 'r', 'b'
+            e.g. {'l': 'g', 'r':'b', 'b': 'y'}
+            The default is None.
+        tick_formats: None, Dict, Str, optional
+            If None, all axes will be labelled with ints.
+            If Dict, the keys are 'b', 'l' and 'r' and the values are
+            format strings e.g. "%.3f" for a float with 3 decimal places
+            or "%.3e" for scientific format with 3 decimal places or
+            "%d" for ints.
+            If tick_formats is a string, it is assumed that this is a
+            format string to be applied to all axes.
+            The default is None
+        kwargs:
+            Any kwargs to pass through to matplotlib.
+
+        Returns
+        -------
+        None.
+
         """
-        if not self._truncation:
-            for k in ['b','l','r']:
-                self.ticks(ticks=self._ticks[k], locations=locations,
-                           axis=k, clockwise=clockwise, multiple=multiple,
-                           axes_colors=axes_colors, tick_formats=tick_formats,
-                           **kwargs)
-        else:
-            for k in ['b','l','r']:
-                self.ticks(ticks=self._ticks[k], locations=self._ticklocs[k],
-                           axis=k, clockwise=clockwise, multiple=multiple,
-                           axes_colors=axes_colors, tick_formats=tick_formats,
-                           **kwargs)
+        for k in ['b','l','r']:
+            self.ticks(ticks=self._ticks[k], locations=self._ticklocs[k],
+                       axis=k, clockwise=clockwise, axes_colors=axes_colors,
+                       tick_formats=tick_formats, **kwargs)
 
 
     def ticks(self, ticks=None, locations=None, multiple=1, axis='blr',
@@ -558,11 +570,38 @@ class TernaryAxesSubplot(object):
                     **kwargs)
 
 
-    def add_extra_tick(self, axis, loc1, offset, scale, tick, fontsize,
-                       **kwargs):
-        ax = self.get_axes()
-        lines.add_extra_tick(ax, axis, loc1, offset, scale, tick, fontsize,
-                             **kwargs)
+    def add_extra_tick(self, axis, loc1, offset, tick, fontsize, **kwargs):
+        """
+        Convenience function passthrough to lines.add_extra_tick.
+
+        Add an extra tick on an axis but not necessarily on
+        the boundary of the simplex. This may be useful if a
+        truncation is applied.
+
+        Parameters
+        ----------
+        axis : STR
+            A string giving the axis on which the extra tick should be drawn.
+            One of 'l', 'b' or 'r'.
+        loc1 : 3-tuple
+            A 3-tuple giving the location of the extra tick in simplex coords.
+        offset : FLOAT
+            Defines an offset of the tick label and the length of the tick
+        tick : STR
+            A string giving the text for the tick label
+        fontsize : INT
+            Describing the font size of the tick label
+        **kwargs : DICT
+            Kwargs to pass through to matplotlib Line2D.
+
+        Returns
+        -------
+        None.
+
+        """
+        lines.add_extra_tick(self.get_axes(), axis, loc1, offset,
+                             self.get_scale(), tick, fontsize, **kwargs)
+
 
     # Redrawing and resizing
 
@@ -572,11 +611,11 @@ class TernaryAxesSubplot(object):
             scale = self.get_scale()
         plotting.resize_drawing_canvas(ax, scale=scale)
 
+
     def _redraw_labels(self):
         """
         Redraw axis labels, typically after draw or resize events.
         """
-
         ax = self.get_axes()
         # Remove any previous labels
         for mpl_object in self._to_remove:
@@ -602,6 +641,7 @@ class TernaryAxesSubplot(object):
             text.set_rotation_mode("anchor")
             self._to_remove.append(text)
 
+
     def convert_coordinates(self, points, axisorder='blr'):
         """
         Convert data coordinates to simplex coordinates for plotting
@@ -619,17 +659,20 @@ class TernaryAxesSubplot(object):
                                  **kwargs)
         return plot_
 
+
     def plot(self, points, **kwargs):
         ax = self.get_axes()
         permutation = self._permutation
         plotting.plot(points, ax=ax, permutation=permutation,
                       **kwargs)
 
+
     def plot_colored_trajectory(self, points, cmap=None, **kwargs):
         ax = self.get_axes()
         permutation = self._permutation
         plotting.plot_colored_trajectory(points, cmap=cmap, ax=ax,
                                          permutation=permutation, **kwargs)
+
 
     def heatmap(self, data, scale=None, cmap=None, scientific=False,
                 style='triangular', colorbar=True, use_rgba=False,
@@ -646,6 +689,7 @@ class TernaryAxesSubplot(object):
                             vmin=vmin, vmax=vmax, cbarlabel=cbarlabel,
                             cb_kwargs=cb_kwargs)
 
+
     def heatmapf(self, func, scale=None, cmap=None, boundary=True,
                  style='triangular', colorbar=True, scientific=False,
                  vmin=None, vmax=None, cbarlabel=None, cb_kwargs=None):
@@ -661,9 +705,11 @@ class TernaryAxesSubplot(object):
                              vmin=vmin, vmax=vmax, cbarlabel=cbarlabel,
                              cb_kwargs=cb_kwargs)
 
+
     def set_background_color(self, color="whitesmoke", zorder=-1000, alpha=0.75):
         self._background_parameters = BackgroundParameters(color=color, alpha=alpha, zorder=zorder)
         self._draw_background()
+
 
     def _draw_background(self):
         color, alpha, zorder = self._background_parameters
