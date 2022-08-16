@@ -562,6 +562,54 @@ class TernaryAxesSubplot(object):
 
     def ticks(self, ticks=None, locations=None, multiple=1, axis='blr',
               clockwise=False, axes_colors=None, tick_formats=None, **kwargs):
+        """
+        Convenience function passthrough to lines.ticks.
+
+        Calling this function with all the default arguments results in
+        each axis of the simplex being labelled on every gridline with
+        an int. This is the simplest case where the axis_limits (data)
+        have not been set and are therefore the same as the axis_min_max
+        (simplex) limits.
+
+        If set_axis_limits() or set_truncation() has been called, this
+        function should not be used. Instead call get_ticks_from_axis_limits()
+        and then set_custom_ticks().
+
+
+        Parameters
+        ----------
+        ticks: list of strings, None
+            The tick labels
+        locations: list of points, None
+            The locations of the ticks
+        multiple: float, None
+            Specifies which ticks to draw. For example,
+            if scale=30 and multiple=6, only 5 ticks will be drawn.
+        axis: str, 'b'
+            The axis or axes to draw the ticks for. `axis` must be a
+            substring of 'lrb' (as sets)
+        offset: float, 0.01
+            controls the length of the ticks
+        clockwise: bool, False
+            Draw ticks marks clockwise or counterclockwise
+        axes_colors: Dict, None
+            Option to color ticks differently for each axis, 'l', 'r', 'b'
+            e.g. {'l': 'g', 'r':'b', 'b': 'y'}
+        tick_formats: None, Dict, Str
+            If None, all axes will be labelled with ints. If Dict, the keys
+            are 'b', 'l' and 'r' and the values are format strings
+            e.g. "%.3f" for a float with 3 decimal places or "%.3e" for
+            scientific format with 3 decimal places or "%d" for ints.
+            If tick_formats is a string, it
+            is assumed that this is a format string to be applied to all axes.
+        kwargs:
+            Any kwargs to pass through to matplotlib.
+
+        Returns
+        -------
+        None.
+
+        """
         ax = self.get_axes()
         scale = self.get_scale()
         lines.ticks(ax, scale, ticks=ticks, locations=locations,

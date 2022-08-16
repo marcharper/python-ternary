@@ -234,7 +234,7 @@ def gridlines(ax, scale, axis_min_max, multiple=None,
         These may not be equal to (0, scale) if a truncation has been
         applied.
     multiple: float, None
-        Specifies which inner gridelines to draw. For example, if scale=30 and
+        Specifies which inner gridlines to draw. For example, if scale=30 and
         multiple=6, only 5 inner gridlines will be drawn.
     horizontal_kwargs: dict, None
         Any kwargs to pass through to matplotlib for horizontal gridlines
@@ -298,7 +298,7 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
     locations: list of points, None
         The locations of the ticks
     multiple: float, None
-        Specifies which ticks gridelines to draw. For example, if scale=30 and
+        Specifies which ticks to draw. For example, if scale=30 and
         multiple=6, only 5 ticks will be drawn.
     axis: str, 'b'
         The axis or axes to draw the ticks for. `axis` must be a substring of
