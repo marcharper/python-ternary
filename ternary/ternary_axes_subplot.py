@@ -123,8 +123,6 @@ class TernaryAxesSubplot(object):
         """
         Set min and max data limits for each of the three axes.
 
-        max-min for each axis must be the same as the self._scale
-
         axis_limits = dict
             keys are 'b','l' and 'r' for the three axes
             vals are lists of the min and max values for the axis in
