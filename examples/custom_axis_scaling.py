@@ -1,12 +1,24 @@
+"""
+This script gives two examples of setting custom axis data limits instead of
+having the axis limits being from 0 to scale as is the default case.
+
+In the first example we simply set some axis data limits, get and set the
+ticks for the axes and then scatter some data. This example is then repeated
+but with the additional feature of showing custom axis tick formatting.
+
+The second example shows how to use custom axis scaling to achieve a zoom
+effect. We draw the full plot on the left and then zoom into a specific
+region and plot that on the right. The basic principle is the same as the
+first example.
+"""
+
 import ternary
 
-# Simple example:
-## Boundary and Gridlines
-scale = 9
-figure, tax = ternary.figure(scale=scale)
-
+## Simple example:
+figure, tax = ternary.figure(scale=9)
+figure.set_size_inches((4.8,4.8))
+figure.subplots_adjust(left=0.05, right=0.95, bottom=0.05, top=0.95)
 tax.ax.axis("off")
-figure.set_facecolor('w')
 
 # Draw Boundary and Gridlines
 tax.boundary(linewidth=1.0)
@@ -19,10 +31,10 @@ tax.right_axis_label("Dogs", fontsize=fontsize, offset=0.12)
 tax.bottom_axis_label("Hogs", fontsize=fontsize, offset=0.06)
 
 
-# Set custom axis limits by passing a dict into set_limits.
-# The keys are b, l and r for the three axes and the vals are a list
+# Set custom axis DATA limits by passing a dict into set_axis_limits.
+# The keys are b, l and r for the three axes and the values are a list
 # of the min and max in data coords for that axis. max-min for each
-# axis must be the same as the scale i.e. 9 in this case.
+# axis is the same as the scale i.e. 9 in this case.
 tax.set_axis_limits({'b': [67, 76], 'l': [24, 33], 'r': [0, 9]})
 # get and set the custom ticks:
 tax.get_ticks_from_axis_limits()
@@ -35,15 +47,14 @@ tax.scatter(points_c, marker='o', s=25, c='r')
 
 tax.ax.set_aspect('equal', adjustable='box')
 tax._redraw_labels()
+figure.canvas.draw()
 
 
 ## Simple example with axis tick formatting:
-## Boundary and Gridlines
-scale = 9
-figure, tax = ternary.figure(scale=scale)
-
+figure, tax = ternary.figure(scale=9)
+figure.set_size_inches((4.8,4.8))
+figure.subplots_adjust(left=0.05, right=0.95, bottom=0.05, top=0.95)
 tax.ax.axis("off")
-figure.set_facecolor('w')
 
 # Draw Boundary and Gridlines
 tax.boundary(linewidth=1.0)
@@ -55,33 +66,34 @@ tax.left_axis_label("Logs", fontsize=fontsize, offset=0.13)
 tax.right_axis_label("Dogs", fontsize=fontsize, offset=0.12)
 tax.bottom_axis_label("Hogs", fontsize=fontsize, offset=0.06)
 
-
-# Set custom axis limits by passing a dict into set_limits.
-# The keys are b, l and r for the three axes and the vals are a list
+# Set custom axis DATA limits by passing a dict into set_axis_limits.
+# The keys are b, l and r for the three axes and the values are a list
 # of the min and max in data coords for that axis. max-min for each
-# axis must be the same as the scale i.e. 9 in this case.
+# axis is the same as the scale i.e. 9 in this case.
 tax.set_axis_limits({'b': [67, 76], 'l': [24, 33], 'r': [0, 9]})
+
 # get and set the custom ticks:
 # custom tick formats:
 # tick_formats can either be a dict, like below or a single format string
 # e.g. "%.3e" (valid for all 3 axes) or None, in which case, ints are
 # plotted for all 3 axes.
 tick_formats = {'b': "%.2f", 'r': "%d", 'l': "%.1f"}
-
 tax.get_ticks_from_axis_limits()
 tax.set_custom_ticks(fontsize=10, offset=0.02, tick_formats=tick_formats)
 
 # data can be plotted by entering data coords (rather than simplex coords):
 points = [(70, 3, 27), (73, 2, 25), (68, 6, 26)]
-points_c = tax.convert_coordinates(points,axisorder='brl')
+points_c = tax.convert_coordinates(points, axisorder='brl')
 tax.scatter(points_c, marker='o', s=25, c='r')
 
 tax.ax.set_aspect('equal', adjustable='box')
 tax._redraw_labels()
+figure.canvas.draw()
+
 
 ## Zoom example:
-## Draw a plot with the full range on the left and a second plot which
-## shows a zoomed region of the left plot.
+# Draw a plot with the full range on the left and a second plot which
+# shows a zoomed region of the left plot.
 fig = ternary.plt.figure(figsize=(11, 6))
 ax1 = fig.add_subplot(2, 1, 1)
 ax2 = fig.add_subplot(2, 1, 2)
@@ -132,11 +144,10 @@ tax1.line((60, 10, 30), (75, 10, 15), color='r', lw=2.0)
 tax1.line((60, 10, 30), (60, 25, 15), color='r', lw=2.0)
 tax1.line((75, 10, 15), (60, 25, 15), color='r', lw=2.0)
 
-fig.set_facecolor("w")
-
 tax1.ax.set_position([0.01, 0.05, 0.46, 0.8])
 tax2.ax.set_position([0.50, 0.05, 0.46, 0.8])
 
 tax1.resize_drawing_canvas()
 tax2.resize_drawing_canvas()
+figure.canvas.draw()
 ternary.plt.show()

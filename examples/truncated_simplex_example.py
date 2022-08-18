@@ -52,7 +52,6 @@ figure.canvas.draw()
 ## and axes with data coordinates which are different to simplex coordinates.
 scale = 14
 figure, tax = ternary.figure(scale=scale)
-figure.set_facecolor('w')
 w_i,h_i = 3.15, 2.36
 figure.set_size_inches((w_i,h_i))
 figure.set_dpi(150)
