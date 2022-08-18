@@ -142,7 +142,10 @@ class TernaryAxesSubplot(object):
 
         !! Assumes the truncation lines do NOT cross each other!!
 
-        truncation: dict (see main module)
+        truncation: dict
+            keys are 'br', 'rl' and/or 'lb'
+            values are a value in SIMPLEX coords giving the maximum of the
+            first axis mentioned in the key
         """
         for k in truncation.keys():
             self._axis_min_max[k[0]][1] = truncation[k]
