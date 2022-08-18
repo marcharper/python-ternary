@@ -441,7 +441,7 @@ tax.set_custom_ticks(fontsize=8, offset=offset,
 ```
 
 <p align="center">
-<img src="/readme_images/truncation_top_corner.png" width="533" height="400"/>
+<img src="/readme_images/truncation_top_corner.png" width="400" height="300"/>
 <img src="/readme_images/truncation_all_corners.png" width="314" height="236"/>
 </p>
 
