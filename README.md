@@ -23,7 +23,8 @@ The library provides functions for plotting projected lines, curves (trajectorie
 <img src="/readme_images/rgba_example.png" width="150" height="150"/>
 <img src="/readme_images/various_lines.png" width="150" height="150"/>
 <img src="/readme_images/colored_trajectory.png" width="150" height="150"/>
-<img src="/readme_images/scatter.png" width="150" height="150"/><br/>
+<img src="/readme_images/scatter.png" width="150" height="150"/>
+<img src="/readme_images/truncation_all_corners.png" width="200" height="150"/><br/>
 <br/>
 <img src="/readme_images/btweinstein_example2.png" width="300" height="150"/>
 <img src="/readme_images/btweinstein_example.png" width="300" height="150"/>
@@ -394,6 +395,58 @@ do so automatically when you pass `clockwise=True` to `tax.ticks()`.
 There is a [more detailed discussion](https://github.com/marcharper/python-ternary/issues/18)
 on issue #18 (closed).
 
+# Custom Axis Data Limits
+
+By default, the axes limits are [0, scale] i.e. simplex coordinates but it is possible to set 
+custom data limits to the axes instead. This is done by passing a dict into set_axis_limits.
+The keys are b, l and r for the three axes and the values are a list of the min and max in 
+data coords for that axis. max-min for each axis is the same as the scale i.e. 9 in this case.
+
+```python
+tax.set_axis_limits({'b': [60, 75], 'l': [15, 30], 'r': [10, 25]})
+```
+
+This can be used to zoom in on a particular region, for example. Please see
+the [custom axis scaling example](examples/custom_axis_scaling.py) for further
+details.
+
+<p align="center">
+<img src="/readme_images/zoom_example.png" width="732" height="400"/>
+</p>
+
+# Truncated Simplex
+
+One or more corners can be removed from the simplex by setting a truncation. 
+This may be useful for saving whitespace if the data are grouped in one area
+of the plot. A truncation is specified in data coordinates by passing a dict
+into tax.set_truncation. The keys are two letters specifying the start and end
+axes of the truncation line and the values give the maximum of the first axis
+specified in data coordinates. For the example on the left below, we write:
+
+```python
+tax.set_truncation({'rl' : 8})
+```
+
+The result is that the truncation line has been drawn from the right axis at
+data coordinate 8 to the left axis, cutting off the top corner. As the figure is no 
+longer a triangle, we need to get and set custom axis ticks and tick labels. 
+There are convenience functions for this in the case of a truncation and/or 
+custom axis data limits. Again for the left image shown below:
+
+```python
+tax.get_ticks_from_axis_limits(multiple=2)
+offset=0.013
+tax.set_custom_ticks(fontsize=8, offset=offset,
+                     tick_formats="%.1f", linewidth=0.25)
+```
+
+<p align="center">
+<img src="/readme_images/truncation_top_corner.png" width="533" height="400"/>
+<img src="/readme_images/truncation_all_corners.png" width="314" height="236"/>
+</p>
+
+Please see the [truncated simplex example](examples/truncated_simplex_example.py) 
+for further details.
 
 # RGBA colors
 
@@ -463,6 +516,7 @@ contribute.
 - Bryan Weinstein [btweinstein](https://github.com/btweinstein): Hexagonal heatmaps, colored trajectory plots
 - [chebee7i](https://github.com/chebee7i): Docs and figures, triangular heatmapping
 - [Cory Simon](https://github.com/CorySimon): Axis Colors, colored heatmap example
+- [tgwoodcock](https://github.com/tgwoodcock): Custom axis data limits, truncated simplex
 
 # Known-Issues
 
