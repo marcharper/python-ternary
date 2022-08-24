@@ -263,7 +263,7 @@ def heatmap(data, scale, vmin=None, vmax=None, adj_vlims=False, cmap=None, ax=No
             vals.append(val)
         vmin = min(vals)
         vmax = max(vals)
-        
+
     vertices_values = polygon_generator(data, scale, style,
                                         permutation=permutation)
 
@@ -277,7 +277,7 @@ def heatmap(data, scale, vmin=None, vmax=None, adj_vlims=False, cmap=None, ax=No
             color = value  # rgba tuple (r,g,b,a) all in [0,1]
         # Matplotlib wants a list of xs and a list of ys
         xs, ys = unzip(vertices)
-        ax.fill(xs, ys, facecolor=color, edgecolor=color)
+        ax.fill(xs, ys, facecolor=color, edgecolor=None)
 
     if not cb_kwargs:
         cb_kwargs = dict()
