@@ -329,9 +329,9 @@ class TernaryAxesSubplot(object):
             kwargs['dpi'] = 200
         fig.savefig(filename, **kwargs)
 
-    def show(self):
+    def show(self, *args, **kwargs):
         self._redraw_labels()
-        plt.show()
+        plt.show(*args, **kwargs)
 
     # Axis ticks
 
