@@ -9,8 +9,10 @@ The python-ternary library has been cited in a variety of high-quality journals 
 
 
 ## Journal Articles, Conference Proceedings, and Preprints
+1. Harris, Elizabeth K., et al. [Influence of an industrial discharge on long-term dynamics of abiotic and biotic resources in Lavaca Bay, Texas, USA](https://link.springer.com/article/10.1007/s10661-022-10665-w). Environmental monitoring and assessment 195.1 (2023): 1-24.
+1. Senanayake, Ravithree D., et al. [Machine learning-assisted carbon dot synthesis: prediction of emission color and wavelength](https://pubs.acs.org/doi/pdf/10.1021/acs.jcim.2c01007). Journal of Chemical Information and Modeling 62.23 (2022): 5918-5928
+1. Ronchetti, Claudio, et al. [Machine learning techniques for data analysis in materials science](https://ieeexplore.ieee.org/abstract/document/9951839). 2022 AEIT International Annual Conference (AEIT). IEEE, 2022.
 1. Huang, Chenliang, David R. Rice, and Jason H. Steffen. [MAGRATHEA: an open-source spherical symmetric planet interior structure code](https://academic.oup.com/mnras/article-abstract/513/4/5256/6574421). Monthly Notices of the Royal Astronomical Society 513.4 (2022): 5256-5269.
-2. Harris, Elizabeth K., et al. [Influence of an industrial discharge on long-term dynamics of abiotic and biotic resources in Lavaca Bay, Texas, USA](https://link.springer.com/article/10.1007/s10661-022-10665-w). Environmental monitoring and assessment 195.1 (2023): 1-24.
 3. Chen, Wei-Chih, Da Yan, and Cheng-Chien Chen. [Machine Learning and First-Principles Discovery of Ternary Superhard Materials](https://pubs.acs.org/doi/abs/10.1021/bk-2022-1416.ch009). Machine Learning in Materials Informatics: Methods and Applications. American Chemical Society, 2022. 211-238.
 4. Chen, Wei-Chih, Yogesh K. Vohra, and Cheng-Chien Chen. [Discovering Superhard B–N–O Compounds by Iterative Machine Learning and Evolutionary Structure Predictions](https://pubs.acs.org/doi/full/10.1021/acsomega.2c01818). ACS omega 7.24 (2022): 21035-21042.
 5. Srikanth, Neha, and Rachel Rudinger. [Partial-input baselines show that NLI models can ignore context, but they don't](https://arxiv.org/abs/2205.12181). arXiv preprint arXiv:2205.12181 (2022).
@@ -20,7 +22,7 @@ The python-ternary library has been cited in a variety of high-quality journals 
 9. Zion, Matan Yah Ben, et al. [Cooperation in a fluid swarm of fuel-free micro-swimmers](https://www.nature.com/articles/s41467-021-27870-9) Nature communications 13.1 [arXiv preprint arXiv:2012.15087](https://arxiv.org/abs/2012.15087). (2022).
 10. Ravel, Guillaume, et al. "Inferring characteristics of bacterial swimming in biofilm matrix from time-lapse confocal laser scanning microscopy." [arXiv preprint arXiv:2201.04371](https://arxiv.org/abs/2201.04371) (2022).
 11. Haldemann, Jonas, et al. [Exoplanet Characterization using Conditional Invertible Neural Networks](https://arxiv.org/abs/2202.00027). arXiv preprint arXiv:2202.00027 (2022).
-12. Kumar, Darshan, et al. [Constraints on the Transition Redshift using the Cosmic Triangle and Hubble Phase Space Portrait](https://arxiv.org/abs/2205.13247). arXiv preprint arXiv:2205.13247 (2022).
+12. Kumar, Darshan, et al. [Constraints on the Transition Redshift using the Cosmic Triangle and Hubble Phase Space Portrait](https://www.worldscientific.com/doi/abs/10.1142/S0218271823500396). International Journal of Modern Physics D 32.06 (2023): 2350039. [arXiv:2205.13247](https://arxiv.org/abs/2205.13247) (2022).
 15. Stemplinger, Simon, et al. [Theory of Ternary Fluids under Centrifugal Fields.](https://pubs.acs.org/doi/abs/10.1021/acs.jpcb.1c05875) The Journal of Physical Chemistry B 125.43 (2021): 12054-12062.
 16. Fatras, Kilian, et al. "Minibatch optimal transport distances; analysis and applications." [arXiv preprint arXiv:2101.01792](https://arxiv.org/abs/2101.01792) (2021).
 17. Kim, Minjae, Jung-Kyoo Choi, and Seung Ki Baek. [Win-Stay-Lose-Shift as a self-confirming equilibrium in the iterated Prisoner’s Dilemma.](https://royalsocietypublishing.org/doi/full/10.1098/rspb.2021.1021) Proceedings of the Royal Society B 288.1953 (2021): 20211021.
@@ -84,7 +86,9 @@ The python-ternary library has been cited in a variety of high-quality journals 
 75. Marc Harper and Dashiell Fryer. [Lyapunov Functions for Time-Scale Dynamics on Riemannian Geometries of the Simplex](https://link.springer.com/article/10.1007/s13235-014-0124-0). Dynamic Games and Applications (2015)
 
 ## Dissertations
-1. Levo, Emil. [Radiation Damage in High Entropy Alloys.](https://helda.helsinki.fi/handle/10138/337574) Doctoral Dissertation. (2022).
+1. Störiko, Anna. [Integrating Molecular-Biological Data and Process-Based Models of Nitrogen Cycling](https://tobias-lib.ub.uni-tuebingen.de/xmlui/handle/10900/135233). Doctoral Dissertation. (2022).
+1. Levo, Emil. [Radiation Damage in High Entropy Alloys.](https://helda.helsinki.fi/handle/10138/337574). Doctoral Dissertation. (2022).
+1. Nikolaev, Fedor. [Incorporating Word Dependencies Into Structured Document Retrieval Models](https://search.proquest.com/openview/94faf009d9ce22f3634b2bc29ebb02b6/1?pq-origsite=gscholar&cbl=18750&diss=y). Wayne State University, 2021.
 1. Fatras, Kilian. [Deep learning and optimal transport: learning from one another](https://www.theses.fr/2021LORIS604) Diss. Lorient, 2021.
 2. Chen, Wei-Chih. [Predictive Modeling of Superhard and Topological Materials by Density Functional Theory and Machine Learning](https://search.proquest.com/openview/85c7c0efd61123b8843fa3f3a34b0de1/1?pq-origsite=gscholar&cbl=18750&diss=y). Diss. The University of Alabama at Birmingham, 2021.
 3. Lacour-Gogny-Goubert, Antoine. [Développement et étude d’alliages réfractaires complexes, à microstructure cubique centrée et orthorhombique, pour des applications aéronautiques.](https://hal.archives-ouvertes.fr/tel-03552645/) Diss. Université Paris-Est, 2020.
