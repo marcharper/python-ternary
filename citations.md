@@ -9,6 +9,8 @@ The python-ternary library has been cited in a variety of high-quality journals 
 
 
 ## Journal Articles, Conference Proceedings, and Preprints
+1. Jürries, Florian, et al. [Targeted hydrolysis and decrepitation of Mn3AlC precipitates: a route to a novel precursor of rare earth free MnAl–C permanent magnets](https://iopscience.iop.org/article/10.1088/1361-6463/ace5b9/meta). Journal of Physics D: Applied Physics 56.41 (2023): 415004.
+1. Merrifield, Anna Louise, et al. [Climate model Selection by Independence, Performance, and Spread (ClimSIPS) for regional applications.](https://egusphere.copernicus.org/preprints/2023/egusphere-2022-1520/) EGUsphere 2023 (2023): 1-49.
 1. Harris, Elizabeth K., et al. [Influence of an industrial discharge on long-term dynamics of abiotic and biotic resources in Lavaca Bay, Texas, USA](https://link.springer.com/article/10.1007/s10661-022-10665-w). Environmental monitoring and assessment 195.1 (2023): 1-24.
 1. Senanayake, Ravithree D., et al. [Machine learning-assisted carbon dot synthesis: prediction of emission color and wavelength](https://pubs.acs.org/doi/pdf/10.1021/acs.jcim.2c01007). Journal of Chemical Information and Modeling 62.23 (2022): 5918-5928
 1. Ronchetti, Claudio, et al. [Machine learning techniques for data analysis in materials science](https://ieeexplore.ieee.org/abstract/document/9951839). 2022 AEIT International Annual Conference (AEIT). IEEE, 2022.
@@ -86,6 +88,7 @@ The python-ternary library has been cited in a variety of high-quality journals 
 75. Marc Harper and Dashiell Fryer. [Lyapunov Functions for Time-Scale Dynamics on Riemannian Geometries of the Simplex](https://link.springer.com/article/10.1007/s13235-014-0124-0). Dynamic Games and Applications (2015)
 
 ## Dissertations
+1. Rice, David R. [Inferring the Compositions and Interior Structures of Small Planets](https://www.proquest.com/openview/f7504fbe891d2ec3a7673d4e2a1122c4/1?pq-origsite=gscholar&cbl=18750&diss=y). Diss. University of Nevada, Las Vegas, 2023.
 1. Störiko, Anna. [Integrating Molecular-Biological Data and Process-Based Models of Nitrogen Cycling](https://tobias-lib.ub.uni-tuebingen.de/xmlui/handle/10900/135233). Doctoral Dissertation. (2022).
 1. Levo, Emil. [Radiation Damage in High Entropy Alloys.](https://helda.helsinki.fi/handle/10138/337574). Doctoral Dissertation. (2022).
 1. Nikolaev, Fedor. [Incorporating Word Dependencies Into Structured Document Retrieval Models](https://search.proquest.com/openview/94faf009d9ce22f3634b2bc29ebb02b6/1?pq-origsite=gscholar&cbl=18750&diss=y). Wayne State University, 2021.
