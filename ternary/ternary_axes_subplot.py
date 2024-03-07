@@ -320,7 +320,7 @@ class TernaryAxesSubplot(object):
 
     def legend(self, *args, **kwargs):
         ax = self.get_axes()
-        ax.legend(*args, **kwargs)
+        return ax.legend(*args, **kwargs)
 
     def savefig(self, filename, **kwargs):
         self._redraw_labels()
@@ -425,14 +425,14 @@ class TernaryAxesSubplot(object):
     def plot(self, points, **kwargs):
         ax = self.get_axes()
         permutation = self._permutation
-        plotting.plot(points, ax=ax, permutation=permutation,
-                      **kwargs)
+        return plotting.plot(points, ax=ax, permutation=permutation,
+                             **kwargs)
 
     def plot_colored_trajectory(self, points, cmap=None, **kwargs):
         ax = self.get_axes()
         permutation = self._permutation
-        plotting.plot_colored_trajectory(points, cmap=cmap, ax=ax,
-                                         permutation=permutation, **kwargs)
+        return plotting.plot_colored_trajectory(points, cmap=cmap, ax=ax,
+                                                permutation=permutation, **kwargs)
 
     def heatmap(self, data, scale=None, cmap=None, scientific=False,
                 style='triangular', colorbar=True, use_rgba=False,
