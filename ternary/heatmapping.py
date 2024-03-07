@@ -318,7 +318,7 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
     # Pass everything to the heatmapper
     ax = heatmap(data, scale, cmap=cmap, ax=ax, style=style,
                  scientific=scientific, colorbar=colorbar,
-                 permutation=permutation, vmin=vmin, vmax=vmax, 
+                 permutation=permutation, vmin=vmin, vmax=vmax,
                  cbarlabel=cbarlabel, cb_kwargs=cb_kwargs)
     return ax
 
@@ -411,9 +411,20 @@ def svg_heatmap(data, scale, filename, vmax=None, vmin=None, style='h',
     output_file.write('</svg>\n')
 
 
-def background_color(ax, color, scale, zorder=-1000, alpha=None):
+def background_color(ax, color, scale, axis_min_max, zorder=-1000, alpha=None):
     """Draws a triangle behind the plot to serve as the background color."""
-    vertices = [(scale, 0, 0), (0, scale, 0), (0, 0, scale)]
+    vertices = [(axis_min_max["b"][1], 0, scale - axis_min_max["b"][1]),
+                (axis_min_max["b"][1], axis_min_max["r"][0], 0),
+                (scale - axis_min_max["r"][1], axis_min_max["r"][1], 0),
+                (0, axis_min_max["r"][1], axis_min_max["l"][0]),
+                (0, scale - axis_min_max["l"][1], axis_min_max["l"][1]),
+                (axis_min_max["b"][0], 0, axis_min_max["l"][1])
+                ]
+
+    _, idx = np.unique(vertices, return_index=True, axis=0)
+    idx.sort()
+    vertices = [vertices[i] for i in idx]
+
     vertices = map(project_point, vertices)
     xs, ys = unzip(vertices)
     poly = ax.fill(xs, ys, facecolor=color, edgecolor=color, zorder=zorder, alpha=alpha)

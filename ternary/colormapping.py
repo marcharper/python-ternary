@@ -91,7 +91,7 @@ def colorbar_hack(ax, vmin, vmax, cmap, scientific=False, cbarlabel=None, norm=N
     if norm is None:
         norm = plt.Normalize(vmin=vmin, vmax=vmax)
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
-    sm._A = []
+    sm.set_array(None)
     cb = plt.colorbar(sm, ax=ax, **kwargs)
     if cbarlabel is not None:
         cb.set_label(cbarlabel)
