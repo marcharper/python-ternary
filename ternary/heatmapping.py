@@ -270,7 +270,7 @@ def heatmap(data, scale, vmin=None, vmax=None, cmap=None, ax=None,
 ## User Convenience Functions ##
 
 
-def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
+def heatmapf(func, scale=10, , fargs=None, boundary=True, cmap=None, ax=None,
              scientific=False, style='triangular', colorbar=True,
              permutation=None, vmin=None, vmax=None, cbarlabel=None,
              cb_kwargs=None):
@@ -285,6 +285,8 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
         A function of 3-tuples to be heatmapped
     scale: Integer
         The scale used to partition the simplex
+    fargs: iterable
+        Additional arguments to pass to func
     boundary: Bool, True
         Include the boundary points or not
     cmap: String, None
@@ -313,8 +315,12 @@ def heatmapf(func, scale=10, boundary=True, cmap=None, ax=None,
 
     # Apply the function to a simplex partition
     data = dict()
-    for i, j, k in simplex_iterator(scale=scale, boundary=boundary):
-        data[(i, j)] = func(normalize([i, j, k]))
+    if fargs is None:
+        for i, j, k in simplex_iterator(scale=scale, boundary=boundary):
+            data[(i, j)] = func(normalize([i, j, k]))
+    else:
+        for i, j, k in simplex_iterator(scale=scale, boundary=boundary):
+            data[(i, j)] = func(normalize([i, j, k]), fargs)        
     # Pass everything to the heatmapper
     ax = heatmap(data, scale, cmap=cmap, ax=ax, style=style,
                  scientific=scientific, colorbar=colorbar,

@@ -27,6 +27,7 @@ The library provides functions for plotting projected lines, curves (trajectorie
 <br/>
 <img src="/readme_images/btweinstein_example2.png" width="300" height="150"/>
 <img src="/readme_images/btweinstein_example.png" width="300" height="150"/>
+<img src="/readme_images/argument_order.png" width="150" height="125"/>
 <br/>
 Last image from: <a href="http://biorxiv.org/content/early/2017/06/07/145631">Genetic Drift and Selection in Many-Allele Range Expansions</a>.<br/>
 <br/>
@@ -172,6 +173,13 @@ The following code draws a boundary for the simplex and gridlines.
 <img src="/readme_images/boundary_and_gridlines.png" width="600" height="450"/>
 </p>
 
+## Order of coordinates
+
+Each position in the ternary plot can be represented by a three-tuple coordinate, the first element corresponds to the value of the ''right corner element'', the second to the ''top corner element'' and the third to the ''left corner element''. Plotting the function _f(p) = (p[0] - p[1])(1 - p[2])_ gives the resulting heatmap
+<p align="center">
+<img src="/readme_images/argument_order.png" width="500" height="400"/>
+</p>
+
 ## Drawing lines
 
 You can draw individual lines between any two points with `line` and lines
@@ -292,7 +300,7 @@ Similarly, ternary can make scatter plots:
 
 Ternary can plot heatmaps in two ways and three styles. Given a function, ternary
 will evaluate the function at the specified number of steps (determined by the
-scale, expected to be an integer in this case). The simplex can be split up into
+scale, expected to be an integer in this case). Additional arguments can be passed to the function as an iterable throught the keyword argument 'fargs'. The simplex can be split up into
 triangles or hexagons and colored according to one of three styles:
 
 - Triangular -- `triangular` (default): coloring triangles by summing the values on the
@@ -394,6 +402,49 @@ do so automatically when you pass `clockwise=True` to `tax.ticks()`.
 There is a [more detailed discussion](https://github.com/marcharper/python-ternary/issues/18)
 on issue #18 (closed).
 
+Setting custom values corresponding to the max and min values of the axis, rather than the `scale` parameter can be done using a combination of `tax.get_ticks_from_axis_limits()` and `tax.set_custom_ticks()`.
+
+```python
+import ternary
+from matplotlib.cm import get_cmap
+import matplotlib.pyplot as plt
+
+cmap = get_cmap('bwr')
+
+def well_behaved_func(x):
+    return (x[0] - x[1]) * (1 - x[2])
+
+scale = 60
+
+fig, tax = ternary.figure(scale=scale)
+tax.set_axis_limits({'b' : [0,1], 'l' : [0, 1], 'r' : [0, 1]})
+tax.heatmapf(well_behaved_func, boundary=True,
+             style='triangular', cmap=cmap,
+             vmin=-1, vmax=1)
+
+
+offset = 0.14
+tax.boundary(linewidth=1.0)
+tax.top_corner_label('p[1]')
+tax.right_axis_label('p[1]', offset=offset)
+tax.right_corner_label('p[0]')
+tax.bottom_axis_label('p[0]', offset=offset)
+tax.left_corner_label('p[2]', offset=offset)
+tax.left_axis_label('p[2]', offset=offset)
+tax._redraw_labels()
+
+# This part fixes the custom ticks
+tax.get_ticks_from_axis_limits(multiple=11)
+tax.set_custom_ticks(tick_formats='%.1f', offset=0.025)
+tax.get_axes().axis('off')
+tax.clear_matplotlib_ticks()
+
+plt.savefig('meaningful_ticks')
+
+```
+<p align="center">
+<img src="/readme_images/argument_order.png" width="500" height="400"/>
+</p>
 
 # RGBA colors
 
