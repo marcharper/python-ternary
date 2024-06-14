@@ -71,6 +71,18 @@ class TernaryAxesSubplot(object):
         self._labels = dict()
         self._corner_labels = dict()
         self._ticks = dict()
+        self._ticklocs = dict()
+        # Container for data limits for the axes. Custom limits can
+        # be set by the user
+        self.set_axis_limits({"b" : [0, self._scale],
+                              "r" : [0, self._scale],
+                              "l" : [0, self._scale]})
+
+        # Container for parameters describing a possible truncation
+        self._truncation = dict()
+        self._axis_min_max = {"b" : [0, self._scale],
+                              "r" : [0, self._scale],
+                              "l" : [0, self._scale]}
         # Container for the redrawing of labels
         self._to_remove = []
         self._connect_callbacks()
@@ -119,7 +131,79 @@ class TernaryAxesSubplot(object):
         self._axis_limits = axis_limits
 
     def get_axis_limits(self):
+        """Get the data limits for each axis"""
         return self._axis_limits
+
+    def set_axis_min_max(self, truncation):
+        """
+        Set the min and max values of the axes in SIMPLEX coords
+        (rather than data coords) given various
+        truncation points.
+
+        !! Assumes the truncation lines do NOT cross each other!!
+
+        truncation: dict
+            keys are 'br', 'rl' and/or 'lb'
+            values are a value in SIMPLEX coords giving the maximum of the
+            first axis mentioned in the key
+        """
+        for k in truncation.keys():
+            self._axis_min_max[k[0]][1] = truncation[k]
+            self._axis_min_max[k[1]][0] = self._scale - truncation[k]
+
+
+    def get_axis_min_max(self):
+        """Get the simplex limits for each axis"""
+        return self._axis_min_max
+
+
+    def set_truncation(self, truncation_data):
+        """
+        Set one or more truncation lines which will be used to truncate
+        the simplex i.e. cut one or more corners off to remove whitespace.
+
+        The self.axis_limits (data limits) and self.axis_min_max (simplex
+        limits) are set by this function.
+
+        Truncation lines may not cross each other!
+
+        Parameters
+        ----------
+        truncation_data : dict
+            keys are 'br', 'rl' and/or 'lb'
+            values are a value in DATA coords giving the maximum of the
+            first axis mentioned in the key. These are then transformed
+            into SIMPLEX coords and stored internally.
+
+        Returns
+        -------
+        None.
+
+        """
+        steps = {i : (j[1] - j[0]) / float(self._scale) for i, j in
+                 self._axis_limits.items()}
+
+        axlim = {i : j[:] for i, j in self._axis_limits.items()}
+
+        for k in truncation_data:
+
+            self._truncation[k] = int((truncation_data[k]-
+                                       axlim[k[0]][0])/steps[k[0]])
+
+            self._axis_limits[k[0]][1] = truncation_data[k]
+
+            self._axis_limits[k[1]][0] = axlim[k[1]][0] + steps[k[1]] *\
+                                         (self._scale - self._truncation[k])
+
+        self.set_axis_min_max(self._truncation)
+        self._draw_background()
+
+
+    def get_truncation(self):
+        """
+        This returns the truncation in SIMPLEX coords
+        """
+        return self._truncation
 
     # Title and Axis Labels
 
@@ -128,8 +212,8 @@ class TernaryAxesSubplot(object):
         ax = self.get_axes()
         ax.set_title(title, **kwargs)
 
-    def left_axis_label(self, label, position=None,  rotation=60, offset=0.08,
-                        **kwargs):
+    def left_axis_label(self, label, position=None, rotation=60, offset=0.08,
+                        transform_type="transData", **kwargs):
         """
         Sets the label on the left axis.
 
@@ -149,10 +233,12 @@ class TernaryAxesSubplot(object):
 
         if not position:
             position = (-offset, 3./5, 2./5)
-        self._labels["left"] = (label, position, rotation, kwargs)
+            transform_type = "transAxes"
+        self._labels["left"] = (label, position, rotation,
+                                transform_type, kwargs)
 
     def right_axis_label(self, label, position=None, rotation=-60, offset=0.08,
-                         **kwargs):
+                         transform_type="transData", **kwargs):
 
         """
         Sets the label on the right axis.
@@ -173,10 +259,12 @@ class TernaryAxesSubplot(object):
 
         if not position:
             position = (2. / 5 + offset, 3. / 5, 0)
-        self._labels["right"] = (label, position, rotation, kwargs)
+            transform_type = "transAxes"
+        self._labels["right"] = (label, position, rotation,
+                                 transform_type, kwargs)
 
     def bottom_axis_label(self, label, position=None, rotation=0, offset=0.02,
-                          **kwargs):
+                          transform_type="transData", **kwargs):
         """
         Sets the label on the bottom axis.
 
@@ -196,10 +284,12 @@ class TernaryAxesSubplot(object):
 
         if not position:
             position = (0.5, -offset / 2., 0.5)
-        self._labels["bottom"] = (label, position, rotation, kwargs)
+            transform_type = "transAxes"
+        self._labels["bottom"] = (label, position, rotation,
+                                  transform_type, kwargs)
 
     def right_corner_label(self, label, position=None, rotation=0, offset=0.08,
-                           **kwargs):
+                           transform_type="transData", **kwargs):
         """
         Sets the label on the right corner (complements left axis).
 
@@ -219,10 +309,12 @@ class TernaryAxesSubplot(object):
 
         if not position:
             position = (1, offset / 2, 0)
-        self._corner_labels["right"] = (label, position, rotation, kwargs)
+            transform_type = "transAxes"
+        self._corner_labels["right"] = (label, position, rotation,
+                                        transform_type, kwargs)
 
     def left_corner_label(self, label, position=None, rotation=0, offset=0.08,
-                          **kwargs):
+                          transform_type="transData", **kwargs):
         """
         Sets the label on the left corner (complements right axis.)
 
@@ -242,10 +334,12 @@ class TernaryAxesSubplot(object):
 
         if not position:
             position = (-offset / 2, offset / 2, 0)
-        self._corner_labels["left"] = (label, position, rotation, kwargs)
+            transform_type="transAxes"
+        self._corner_labels["left"] = (label, position, rotation,
+                                       transform_type, kwargs)
 
     def top_corner_label(self, label, position=None, rotation=0, offset=0.2,
-                         **kwargs):
+                         transform_type="transData", **kwargs):
         """
         Sets the label on the bottom axis.
 
@@ -265,7 +359,9 @@ class TernaryAxesSubplot(object):
 
         if not position:
             position = (-offset / 2, 1 + offset, 0)
-        self._corner_labels["top"] = (label, position, rotation, kwargs)
+            transform_type="transAxes"
+        self._corner_labels["top"] = (label, position, rotation,
+                                      transform_type, kwargs)
 
     def annotate(self, text, position, **kwargs):
         ax = self.get_axes()
@@ -275,27 +371,80 @@ class TernaryAxesSubplot(object):
     # Boundary and Gridlines
 
     def boundary(self, scale=None, axes_colors=None, **kwargs):
+        """
+        Draw a boundary around the simplex.
+
+        Parameters
+        ----------
+        scale : INT, optional
+            An int describing the scale of the boundary to be drawn.
+            Sometimes you may want to draw a bigger boundary than
+            specified in the initialisation of the tax. The default is None.
+        axes_colors: dict
+            Option for coloring boundaries different colors.
+            e.g. {'l': 'g'} for coloring the left axis boundary green
+        **kwargs : dict
+            Any kwargs to pass through to matplotlib..
+
+        Returns
+        -------
+        None.
+
+        """
         # Sometimes you want to draw a bigger boundary
         if not scale:
-            scale = self._boundary_scale  # defaults to self._scale
+            scale = self._boundary_scale # defaults to self._scale
         ax = self.get_axes()
         self.resize_drawing_canvas(scale)
-        lines.boundary(scale=scale, ax=ax, axes_colors=axes_colors, **kwargs)
 
-    def gridlines(self, multiple=None, horizontal_kwargs=None, left_kwargs=None,
-                  right_kwargs=None, **kwargs):
+        lines.boundary(ax, scale, self._axis_min_max,
+                       axes_colors=axes_colors, **kwargs)
+
+
+    def gridlines(self, multiple=None, horizontal_kwargs=None,
+                  left_kwargs=None, right_kwargs=None, **kwargs):
+        """
+        Draw gridlines on the simplex (excluding the boundary).
+
+        Parameters
+        ----------
+        multiple: int, optional
+            Specifies which inner gridelines to draw. For example,
+            if scale=30 and multiple=6, only 5 inner gridlines will be drawn.
+            The default is None.
+        horizontal_kwargs: dict, optional
+            Any kwargs to pass through to matplotlib for horizontal gridlines
+            The default is None.
+        left_kwargs: dict, optional
+            Any kwargs to pass through to matplotlib for left parallel gridlines
+        right_kwargs: dict, optional
+            Any kwargs to pass through to matplotlib for right parallel gridlines
+            The default is None.
+        kwargs:
+            Any kwargs to pass through to matplotlib, if not using
+            horizontal_kwargs, left_kwargs, or right_kwargs
+
+        Returns
+        -------
+        None.
+
+        """
         ax = self.get_axes()
         scale = self.get_scale()
-        lines.gridlines(scale=scale, multiple=multiple,
-                        ax=ax, horizontal_kwargs=horizontal_kwargs,
-                        left_kwargs=left_kwargs, right_kwargs=right_kwargs,
+
+        lines.gridlines(ax, scale, self._axis_min_max,
+                        multiple=multiple,
+                        horizontal_kwargs=horizontal_kwargs,
+                        left_kwargs=left_kwargs,
+                        right_kwargs=right_kwargs,
                         **kwargs)
 
     # Various Lines
 
     def line(self, p1, p2, **kwargs):
         ax = self.get_axes()
-        lines.line(ax, p1, p2, **kwargs)
+        permutation = self._permutation
+        lines.line(ax, p1, p2, permutation=permutation, **kwargs)
 
     def horizontal_line(self, i, **kwargs):
         ax = self.get_axes()
@@ -340,39 +489,169 @@ class TernaryAxesSubplot(object):
         ax = self.get_axes()
         plotting.clear_matplotlib_ticks(ax=ax, axis=axis)
 
+
     def get_ticks_from_axis_limits(self, multiple=1):
         """
-        Taking self._axis_limits and self._boundary_scale get the scaled
+        Taking self._axis_limits, self.axis_min_max and self._scale get the
         ticks for all three axes and store them in self._ticks under the
-        keys 'b' for bottom, 'l' for left and 'r' for right axes.
-        """
-        for k in ['b', 'l', 'r']:
-            self._ticks[k] = np.linspace(
-                self._axis_limits[k][0],
-                self._axis_limits[k][1],
-                int(self._boundary_scale / float(multiple) + 1)
-            ).tolist()
+        keys 'b' for bottom, 'l' for left and 'r' for right axes. Get the
+        locations of the tickes and store them under self._ticklocs with the
+        same keys.
 
-    def set_custom_ticks(self, locations=None, clockwise=False, multiple=1,
-                         axes_colors=None, tick_formats=None, **kwargs):
+        NB. the tick locations for the left axis have to be shifted if there
+        is a truncation of that axis, otherwise they are projected in the
+        wrong place by lines.line(), which calls helpers.project_point().
+        This is handled in the last 3 lines of this function.
         """
-        Having called get_ticks_from_axis_limits, set the custom ticks on the
-        plot.
+        for k in ['b','l','r']:
+            gg = self._axis_min_max[k][1] - self._axis_min_max[k][0]
+            ff = self._axis_limits[k][1] - self._axis_limits[k][0]
+            step = ff/gg
+
+            self._ticklocs[k] = np.arange(self._axis_min_max[k][0],
+                                          self._axis_min_max[k][1] + step,
+                                          multiple).astype("int").tolist()
+
+            self._ticks[k] = np.arange(self._axis_limits[k][0],
+                                       self._axis_limits[k][1] + step,
+                                       step*multiple).tolist()
+
+
+        self._ticklocs['l'] = [i - self._axis_min_max["l"][0] +
+                               (self._scale - self._axis_min_max["l"][1])
+                               for i in self._ticklocs['l']]
+
+
+
+    def set_custom_ticks(self, clockwise=False, axes_colors=None,
+                         tick_formats=None, **kwargs):
         """
-        for k in ['b', 'l', 'r']:
-            self.ticks(ticks=self._ticks[k], locations=locations,
-                       axis=k, clockwise=clockwise, multiple=multiple,
-                       axes_colors=axes_colors, tick_formats=tick_formats,
-                       **kwargs)
+        Having called get_ticks_from_axis_limits(), draw the custom ticks on
+        the plot. We call self.ticks() for each axis in turn with the ticks
+        and ticklocs already defined using get_ticks_from_axis_limits().
+
+        Parameters
+        ----------
+        clockwise : BOOL, optional
+            Whether the axes of the simplex run clockwise or not.
+            The default is False.
+        axes_colors: Dict, optional
+            Option to color ticks differently for each axis, 'l', 'r', 'b'
+            e.g. {'l': 'g', 'r':'b', 'b': 'y'}
+            The default is None.
+        tick_formats: None, Dict, Str, optional
+            If None, all axes will be labelled with ints.
+            If Dict, the keys are 'b', 'l' and 'r' and the values are
+            format strings e.g. "%.3f" for a float with 3 decimal places
+            or "%.3e" for scientific format with 3 decimal places or
+            "%d" for ints.
+            If tick_formats is a string, it is assumed that this is a
+            format string to be applied to all axes.
+            The default is None
+        kwargs:
+            Any kwargs to pass through to matplotlib.
+
+        Returns
+        -------
+        None.
+
+        """
+        for k in ['b','l','r']:
+            self.ticks(ticks=self._ticks[k], locations=self._ticklocs[k],
+                       axis=k, clockwise=clockwise, axes_colors=axes_colors,
+                       tick_formats=tick_formats, **kwargs)
+
 
     def ticks(self, ticks=None, locations=None, multiple=1, axis='blr',
               clockwise=False, axes_colors=None, tick_formats=None, **kwargs):
+        """
+        Convenience function passthrough to lines.ticks.
+
+        Calling this function with all the default arguments results in
+        each axis of the simplex being labelled on every gridline with
+        an int. This is the simplest case where the axis_limits (data)
+        have not been set and are therefore the same as the axis_min_max
+        (simplex) limits.
+
+        If set_axis_limits() or set_truncation() has been called, this
+        function should not be used. Instead call get_ticks_from_axis_limits()
+        and then set_custom_ticks().
+
+
+        Parameters
+        ----------
+        ticks: list of strings, None
+            The tick labels
+        locations: list of points, None
+            The locations of the ticks
+        multiple: float, None
+            Specifies which ticks to draw. For example,
+            if scale=30 and multiple=6, only 5 ticks will be drawn.
+        axis: str, 'b'
+            The axis or axes to draw the ticks for. `axis` must be a
+            substring of 'lrb' (as sets)
+        offset: float, 0.01
+            controls the length of the ticks
+        clockwise: bool, False
+            Draw ticks marks clockwise or counterclockwise
+        axes_colors: Dict, None
+            Option to color ticks differently for each axis, 'l', 'r', 'b'
+            e.g. {'l': 'g', 'r':'b', 'b': 'y'}
+        tick_formats: None, Dict, Str
+            If None, all axes will be labelled with ints. If Dict, the keys
+            are 'b', 'l' and 'r' and the values are format strings
+            e.g. "%.3f" for a float with 3 decimal places or "%.3e" for
+            scientific format with 3 decimal places or "%d" for ints.
+            If tick_formats is a string, it
+            is assumed that this is a format string to be applied to all axes.
+        kwargs:
+            Any kwargs to pass through to matplotlib.
+
+        Returns
+        -------
+        None.
+
+        """
         ax = self.get_axes()
         scale = self.get_scale()
         lines.ticks(ax, scale, ticks=ticks, locations=locations,
                     multiple=multiple, clockwise=clockwise, axis=axis,
                     axes_colors=axes_colors, tick_formats=tick_formats,
                     **kwargs)
+
+
+    def add_extra_tick(self, axis, loc1, offset, tick, fontsize, **kwargs):
+        """
+        Convenience function passthrough to lines.add_extra_tick.
+
+        Add an extra tick on an axis but not necessarily on
+        the boundary of the simplex. This may be useful if a
+        truncation is applied.
+
+        Parameters
+        ----------
+        axis : STR
+            A string giving the axis on which the extra tick should be drawn.
+            One of 'l', 'b' or 'r'.
+        loc1 : 3-tuple
+            A 3-tuple giving the location of the extra tick in simplex coords.
+        offset : FLOAT
+            Defines an offset of the tick label and the length of the tick
+        tick : STR
+            A string giving the text for the tick label
+        fontsize : INT
+            Describing the font size of the tick label
+        **kwargs : DICT
+            Kwargs to pass through to matplotlib Line2D.
+
+        Returns
+        -------
+        None.
+
+        """
+        lines.add_extra_tick(self.get_axes(), axis, loc1, offset,
+                             self.get_scale(), tick, fontsize, **kwargs)
+
 
     # Redrawing and resizing
 
@@ -382,8 +661,11 @@ class TernaryAxesSubplot(object):
             scale = self.get_scale()
         plotting.resize_drawing_canvas(ax, scale=scale)
 
+
     def _redraw_labels(self):
-        """Redraw axis labels, typically after draw or resize events."""
+        """
+        Redraw axis labels, typically after draw or resize events.
+        """
         ax = self.get_axes()
         # Remove any previous labels
         for mpl_object in self._to_remove:
@@ -392,25 +674,30 @@ class TernaryAxesSubplot(object):
         # Redraw the labels with the appropriate angles
         label_data = list(self._labels.values())
         label_data.extend(self._corner_labels.values())
-        for (label, position, rotation, kwargs) in label_data:
-            transform = ax.transAxes
+        for (label, position, rotation, transform_type, kwargs) in label_data:
+            if transform_type == "transAxes":
+                transform = ax.transAxes
+            elif transform_type == "transData":
+                transform = ax.transData
+
             x, y = project_point(position)
             # Calculate the new angle.
             position = np.array([x, y])
-            new_rotation = ax.transData.transform_angles(
-                np.array((rotation,)), position.reshape((1, 2)))[0]
+            new_rotation = ax.transData.transform_angles(np.array((rotation,)),
+                                                          position.reshape((1, 2)))[0]
             text = ax.text(x, y, label, rotation=new_rotation,
                            transform=transform, horizontalalignment="center",
                            **kwargs)
             text.set_rotation_mode("anchor")
             self._to_remove.append(text)
 
+
     def convert_coordinates(self, points, axisorder='blr'):
         """
         Convert data coordinates to simplex coordinates for plotting
         in the case that axis limits have been applied.
         """
-        return convert_coordinates_sequence(points,self._boundary_scale,
+        return convert_coordinates_sequence(points, self._boundary_scale,
                                             self._axis_limits, axisorder)
 
     # Various Plots
@@ -422,17 +709,20 @@ class TernaryAxesSubplot(object):
                                  **kwargs)
         return plot_
 
+
     def plot(self, points, **kwargs):
         ax = self.get_axes()
         permutation = self._permutation
         plotting.plot(points, ax=ax, permutation=permutation,
                       **kwargs)
 
+
     def plot_colored_trajectory(self, points, cmap=None, **kwargs):
         ax = self.get_axes()
         permutation = self._permutation
         plotting.plot_colored_trajectory(points, cmap=cmap, ax=ax,
                                          permutation=permutation, **kwargs)
+
 
     def heatmap(self, data, scale=None, cmap=None, scientific=False,
                 style='triangular', colorbar=True, use_rgba=False,
@@ -449,6 +739,7 @@ class TernaryAxesSubplot(object):
                             vmin=vmin, vmax=vmax, cbarlabel=cbarlabel,
                             cb_kwargs=cb_kwargs)
 
+
     def heatmapf(self, func, scale=None, cmap=None, boundary=True,
                  style='triangular', colorbar=True, scientific=False,
                  vmin=None, vmax=None, cbarlabel=None, cb_kwargs=None):
@@ -464,18 +755,24 @@ class TernaryAxesSubplot(object):
                              vmin=vmin, vmax=vmax, cbarlabel=cbarlabel,
                              cb_kwargs=cb_kwargs)
 
+
     def set_background_color(self, color="whitesmoke", zorder=-1000, alpha=0.75):
         self._background_parameters = BackgroundParameters(color=color, alpha=alpha, zorder=zorder)
         self._draw_background()
+
 
     def _draw_background(self):
         color, alpha, zorder = self._background_parameters
         scale = self.get_scale()
         ax = self.get_axes()
+        axis_min_max = self.get_axis_min_max()
 
         # Remove any existing background
         if self._background_triangle:
             self._background_triangle.remove()
 
         # Draw the background
-        self._background_triangle = heatmapping.background_color(ax, color, scale, alpha=alpha, zorder=zorder)[0]
+        self._background_triangle = heatmapping.background_color(ax, color, scale,
+                                                                 axis_min_max,
+                                                                 alpha=alpha,
+                                                                 zorder=zorder)[0]
